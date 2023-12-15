@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  frontend_the_whites:
+    image: thewhites/frotend:v1.0
+    stdin_open: true
+    tty: true
+    ports:
+      - "8055:8055/udp"
+      - "8055:8055/tcp"
+    volumes:
+      - "./src:/usr/src/app/src"
+      - "./public:/usr/src/app/public"
+      - "./package.json:/usr/src/app/package.json"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - thewhites
+
+networks:
+   thewhites:
