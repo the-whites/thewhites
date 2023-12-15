@@ -31,5 +31,6 @@
             "error",
             "always"
         ]
-    }
+    },
+    "noEmit": true
 }
