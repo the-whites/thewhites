@@ -15,6 +15,9 @@
           "jsx": true
         }
     },
+    "ignorePatterns": [
+        "build/*"
+    ],
     "plugins": [
         "react"
     ],
