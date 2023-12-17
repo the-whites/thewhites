@@ -1,16 +1,15 @@
 version: "3.3"
 services:
-  frontend_the_whites:
-    image: thewhites/frontend:v1.0
+  backend_the_whites:
+    image: thewhites/backend:v1.0
     stdin_open: true
     tty: true
     ports:
-      - "8055:8055/udp"
-      - "8055:8055/tcp"
+      - "8066:8066/udp"
+      - "8066:8066/tcp"
     volumes:
-      - "./src:/usr/src/app/src"
-      - "./public:/usr/src/app/public"
-      - "./package.json:/usr/src/app/package.json"
+      - "./Controllers:/usr/api/Controllers"
+      - "./appsettings.json:/usr/api/appsettings.json"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     env_file:

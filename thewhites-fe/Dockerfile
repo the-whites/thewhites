@@ -1,22 +1,23 @@
+# Node image template (node v18.??.?? & debian-bullseye)
 FROM node:18-bullseye
 
+# Benodigdheden voor node
 WORKDIR /usr/src/app
 RUN chown node:node ./
 USER node
-
-# Defaults to production, docker-compose overrides this to development on build and run.
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 
-# Add paths
+# Voeg de folders toe die de webserver uiterst nodig heeft
 ADD ./src /src
 ADD ./public /public
 
-# Install dependencies first, as they change less often than code.
+# Installeer npm packages vanuit package.json en run een clean install.
 ADD package.json package-lock.json* ./
 RUN npm ci && npm cache clean --force
 
+# Open port 8055, om conflicten met andere poorten te voorkomen en om de toegang via deze poort toe te staan naar de webserver
 EXPOSE 8055
 
-# Execute NodeJS (not NPM script) to handle SIGTERM and SIGINT signals.
+# Start de frontend webserver (npm command)
 CMD ["npm", "run", "dev"]
