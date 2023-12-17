@@ -3,8 +3,12 @@ name: Node.js CI
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - 'thewhites-fe/**'
   pull_request:
     branches: [ "master" ]
+    paths:
+      - 'thewhites-fe/**'
 
 jobs:
   build:
