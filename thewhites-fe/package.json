@@ -14,7 +14,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "dev" : "react-scripts build & react-scripts start",
+    "dev": "react-scripts build & react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -35,5 +35,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-webpack-plugin": "^4.0.1"
   }
 }

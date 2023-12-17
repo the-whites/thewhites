@@ -36,6 +36,7 @@ jobs:
       working-directory: thewhites-fe
       run: |
         npm install eslint --save-dev
+        npm install --no-save # Ensure dependencies are installed
         npx eslint .
 
     - name: Security Check
