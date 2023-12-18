@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "thewhites-api", "thewhites-api.csproj", "{2BCB0299-CA25-43BE-9696-012E8687CE92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asp testing", "asp testing.csproj", "{6A9E22FF-39E5-4B5A-9B0B-C2F80C7FB1EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2BCB0299-CA25-43BE-9696-012E8687CE92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BCB0299-CA25-43BE-9696-012E8687CE92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BCB0299-CA25-43BE-9696-012E8687CE92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BCB0299-CA25-43BE-9696-012E8687CE92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A9E22FF-39E5-4B5A-9B0B-C2F80C7FB1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A9E22FF-39E5-4B5A-9B0B-C2F80C7FB1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A9E22FF-39E5-4B5A-9B0B-C2F80C7FB1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A9E22FF-39E5-4B5A-9B0B-C2F80C7FB1EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6880623D-016A-4D76-8FFE-6E2110F49DEB}
+		SolutionGuid = {9B5779B7-B29B-4FDB-B888-D69591888A1A}
 	EndGlobalSection
 EndGlobal
