@@ -30,3 +30,14 @@ jobs:
     - name: Test
       working-directory: thewhites-api
       run: dotnet test --no-build --verbosity normal
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY_LOGIN }}
+        port: ${{ secrets.SSH_PORT }}
+        script: whoami
