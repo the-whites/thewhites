@@ -71,6 +71,5 @@ jobs:
         key: ${{ secrets.SSH_KEY_LOGIN }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          su fivem
           cd /home/richano/projects/thewhites-api/
-          docker-compose restart
+          bash deployment-files/redeploy.sh
