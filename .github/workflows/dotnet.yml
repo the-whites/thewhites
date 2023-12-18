@@ -44,13 +44,7 @@ jobs:
           su fivem
           cd /home/richano/projects/thewhites-api/
           docker-compose down
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY_LOGIN }}
-        port: ${{ secrets.SSH_PORT }}
-        script: cd /home/richano/projects && bash ./deployment-files/cleanup-api.sh
+          cd /home/richano/projects && bash ./deployment-files/cleanup-api.sh
 
     - uses: actions/checkout@v3
     - name: Deployment - Upload files (2/4)
