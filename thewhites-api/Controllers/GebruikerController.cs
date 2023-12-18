@@ -23,7 +23,6 @@ namespace AspTest.Controllers
                 return BadRequest(ModelState);
 
             return Ok(gebruikerLijst);
-
         }
 
         [HttpGet("{gebruikerId}")]
