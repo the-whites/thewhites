@@ -1,0 +1,17 @@
+version: "3.3"
+services:
+    thewhites_db:
+        volumes:
+            - "./mssql-data/:/var/opt/mssql/data/"
+            - "./mssql-log/:/var/opt/mssql/log/"
+            - "./mssql-secrets/:/var/opt/mssql/secrets/"
+        env_file:
+            - .env
+        restart: always
+        ports:
+            - 1433:1433
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        container_name: sql1
+        hostname: sql1
+        image: thewhites/db-test:v1.0
