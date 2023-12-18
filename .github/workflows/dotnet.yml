@@ -33,7 +33,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Deployment - cleanup (1/3)
+    - name: Deployment - cleanup (1/4)
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -42,7 +42,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: cd /home/richano/projects && bash ./deployment-files/cleanup-api.sh
     - uses: actions/checkout@v3
-    - name: Deployment - Upload files (2/3)
+    - name: Deployment - Upload files (2/4)
       uses: appleboy/scp-action@v0.1.4
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -51,7 +51,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         source: "./thewhites-api/*"
         target: "/home/richano/projects/thewhites-api/"
-    - name: Deployment - ??? (3/3)
+    - name: Deployment - Fixup (3/4)
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -59,3 +59,11 @@ jobs:
         key: ${{ secrets.SSH_KEY_LOGIN }}
         port: ${{ secrets.SSH_PORT }}
         script: cd /home/richano/projects/thewhites-api/ && mv ./thewhites-api/* ./
+    - name: Deployment - Restart docker container (4/4)
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY_LOGIN }}
+        port: ${{ secrets.SSH_PORT }}
+        script: su fivem && cd /home/richano/projects/thewhites-api/ && docker-compose restart
