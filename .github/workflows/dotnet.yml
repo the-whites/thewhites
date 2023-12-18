@@ -40,7 +40,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY_LOGIN }}
         port: ${{ secrets.SSH_PORT }}
-        source: "./thewhites-api/"
+        source: "./thewhites-api/*"
         target: "/home/richano/projects/thewhites-api/"
     - name: Deployment - ??? (2/2)
       uses: appleboy/ssh-action@v1.0.0
