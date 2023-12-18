@@ -25,6 +25,7 @@ namespace AspTest.Controllers
             return Ok(gebruikerLijst);
         }
 
+
         [HttpGet("{gebruikerId}")]
         public IActionResult GetGebruikerIdUsingRoute([FromRoute(Name = "gebruikerId")] int id)
         {
