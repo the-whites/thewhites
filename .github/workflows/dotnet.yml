@@ -44,6 +44,7 @@ jobs:
           su fivem
           cd /home/richano/projects/thewhites-api/
           docker-compose down
+          exit
           cd /home/richano/projects && bash ./deployment-files/cleanup-api.sh
 
     - uses: actions/checkout@v3
