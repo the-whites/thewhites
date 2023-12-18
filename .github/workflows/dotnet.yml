@@ -41,6 +41,7 @@ jobs:
         key: ${{ secrets.SSH_KEY_LOGIN }}
         port: ${{ secrets.SSH_PORT }}
         script: |
+          su fivem
           cd /home/richano/projects && bash ./deployment-files/cleanup-api.sh
 
     - uses: actions/checkout@v3
@@ -72,4 +73,5 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /home/richano/projects/
+          su fivem
           bash deployment-files/redeploy.sh
