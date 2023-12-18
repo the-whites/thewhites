@@ -4,7 +4,7 @@ FROM debian:bullseye
 # Root path
 WORKDIR /usr/api
 
-# Installeer dotnet sdk 7.0
+# Installeer dotnet sdk 6.0
 RUN apt-get update
 RUN apt-get install -y gpg
 RUN apt-get install -y wget
@@ -15,19 +15,10 @@ RUN mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
 RUN chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
 RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 RUN apt-get update && \
-    apt-get install -y dotnet-sdk-7.0
-#RUN mkdir $HOME/dotnet_install && cd $HOME/dotnet_install
-#RUN curl -L https://aka.ms/install-dotnet-preview -o install-dotnet-preview.sh
-#RUN bash install-dotnet-preview.sh
+    apt-get install -y dotnet-sdk-6.0
 
-# Voeg de folders toe die de webserver uiterst nodig heeft
-ADD ./Controllers /Controllers
-ADD appsettings.json ./
-ADD appsettings.Development.json ./
-ADD ./*.cs ./
-ADD ./*.csproj ./
-ADD ./*.sln ./
-ADD ./Properties /Properties
+# Voeg de folders toe die de webserver nodig heeft
+ADD ./* ./
 
 # Open port 8066, om conflicten met andere poorten te voorkomen en om de toegang via deze poort toe te staan naar de webserver
 EXPOSE 8066
