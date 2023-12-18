@@ -14,6 +14,18 @@ namespace AspTest.Controllers
             _gebruikerRepository = gebruikerRepository;
         }
 
+        [HttpGet("gebruikers")]
+        public IActionResult GetGebruikers()
+        {
+            ICollection<Gebruiker> gebruikerLijst = _gebruikerRepository.GetGebruikers();
+            
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(gebruikerLijst);
+
+        }
+
         [HttpGet("{gebruikerId}")]
         public IActionResult GetGebruikerIdUsingRoute([FromRoute(Name = "gebruikerId")] int id)
         {

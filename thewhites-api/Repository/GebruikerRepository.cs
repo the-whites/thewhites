@@ -15,5 +15,10 @@ namespace AspTest.Repository
         {
             return _context.Gebruikers.ToList().Find(p => p.Id == gebruikerId);
         }
+
+        public ICollection<Gebruiker> GetGebruikers()
+        {
+            return _context.Gebruikers.ToList();
+        }
     }
 }

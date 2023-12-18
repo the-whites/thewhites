@@ -5,5 +5,6 @@ namespace AspTest
     public interface IGebruikerRepository
     {
         Gebruiker GetGebruiker(int gebruikerId);
+        ICollection<Gebruiker> GetGebruikers();
     }
 }
