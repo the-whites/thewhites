@@ -34,6 +34,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Deployment - cleanup (1/3)
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY_LOGIN }}
+        port: ${{ secrets.SSH_PORT }}
+        script: cd /home/richano/projects && bash ./deployment-files/cleanup-api.sh
     - name: Deployment - Upload files (1/2)
       uses: appleboy/scp-action@v0.1.4
       with:
@@ -42,7 +50,7 @@ jobs:
         key: ${{ secrets.SSH_KEY_LOGIN }}
         port: ${{ secrets.SSH_PORT }}
         source: "./thewhites-api/*"
-        target: "/home/richano/projects/thewhites-api/"
+        target: "/home/richano/projects/thewhites-api/*"
     - name: Deployment - ??? (2/2)
       uses: appleboy/ssh-action@v1.0.0
       with:
