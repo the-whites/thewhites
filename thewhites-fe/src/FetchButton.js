@@ -6,7 +6,7 @@ const FetchButton = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://richano.strangled.net:8066/api/Gebruiker/gebruikers');
+      const response = await fetch('https://api.dewhites.nl/api/Gebruiker/gebruikers');
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
