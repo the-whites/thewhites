@@ -78,7 +78,6 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /home/richano/projects/thewhites-fe/ && mv ./thewhites-fe/* ./
-          npm i
 
     - name: Deployment - Restart docker container (4/4)
       uses: appleboy/ssh-action@v1.0.0
