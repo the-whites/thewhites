@@ -42,3 +42,52 @@ jobs:
         npm install eslint --save-dev
         npm install --no-save # Ensure dependencies are installed
         npx eslint .
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push'
+    steps:
+    - name: Deployment - cleanup (1/4)
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY_LOGIN }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          su fivem
+          cd /home/richano/projects && bash ./deployment-files/cleanup-fe.sh
+
+    - uses: actions/checkout@v3
+    - name: Deployment - Upload files (2/4)
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY_LOGIN }}
+        port: ${{ secrets.SSH_PORT }}
+        source: "./thewhites-fe/*"
+        target: "/home/richano/projects/thewhites-fe/"
+
+    - name: Deployment - Fixup (3/4)
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY_LOGIN }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd /home/richano/projects/thewhites-fe/ && mv ./thewhites-fe/* ./
+          npm i
+
+    - name: Deployment - Restart docker container (4/4)
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY_LOGIN }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd /home/richano/projects/
+          su fivem
+          bash deployment-files/redeploy-fe.sh

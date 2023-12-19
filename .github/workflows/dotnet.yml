@@ -75,4 +75,4 @@ jobs:
         script: |
           cd /home/richano/projects/
           su fivem
-          bash deployment-files/redeploy.sh
+          bash deployment-files/redeploy-api.sh
