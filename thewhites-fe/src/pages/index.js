@@ -3,7 +3,7 @@ import Home from "./Home";
 import OverOns from "./OverOns";
 
 export {  
-    Contact,
-    Home,
-    OverOns
+	Contact,
+	Home,
+	OverOns
 };
