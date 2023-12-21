@@ -1,16 +1,17 @@
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { Home, OverOns, Contact } from "./pages/index";
 
-import Navbar from "./components/Navbar";
+import NavigationBar from "./components/Navbar";
 
 function App() {
 	return (
 		<div className="App">
-			<Navbar /> 
+			<NavigationBar /> 
 			<Routes>
 				<Route path="/" element = {<Home />} />
 				<Route path="/over-ons" element = {<OverOns />} />

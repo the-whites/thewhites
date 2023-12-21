@@ -1,86 +1,9 @@
-.active {
-    background-color: #131B56;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.nav-bar {
     background-color: #2B50EC;
 }
 
-nav ul {
-    display: flex;
-}
-
-nav ul li {
-    list-style: none;
-}
-
-nav ul li a {
-    display: block;
-    text-decoration: none;
+.nav-bar-item {
+    font-size: 23px;
     color: white;
-    padding: 0.5rem;
-    margin: 0 0.5rem;
-    border-radius: 0.5rem;
-}
-
-nav ul li a:hover {
-    background-color: #131B56;
-}
-
-nav .menu {
-    display: none;
-    position: absolute;
-    top: 1.25rem;
-    right: 0.5rem;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 6rem;
-    height: 4rem;
-}
-
-nav .menu span {
-    height: 0.65rem;
-    width: 100%;
-    background-color: white;
-    border: 0.2rem;
-    border-radius: 1rem;
-}
-
-nav .title {
-    margin-left: 1.75rem;
-}
-
-@media (max-width: 700px) {
-    nav .menu {
-        display: flex;
-    }
-
-    nav {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    nav ul {
-        width: 100%;
-        flex-direction: column;
-        margin: 0;
-        box-sizing: border-box;
-        display: none;
-    }
-
-    nav ul.toggled {
-        display: flex;
-    }
-
-    nav ul li a {
-        padding: 1rem 1rem;
-        font-size: 20px;
-    }
-
-    nav ul li {
-        width: 100%;
-    }
+    margin-right: 50px;
 }
