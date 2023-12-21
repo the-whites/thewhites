@@ -5,3 +5,31 @@ h5 {
 h4 {
     font-weight: 600;
 }
+
+.button-block {
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+    margin-right: 10rem;
+}
+
+.button-text {
+    display: block;
+    width: 250px;
+    padding-bottom: 1rem;
+    font-size: 20px;
+    text-align: left;
+}
+
+.btn-primary:hover {
+    background-color: #131B56;
+}
+
+@media (max-width: 1000px) {
+    .button-container {
+        margin-top: 36rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
