@@ -1,14 +1,21 @@
 import "./App.css";
-import FetchButton from "./FetchButton";
+
 import React from "react";
+import { Routes, Route } from "react-router-dom";
+
+import { Home, OverOns, Contact } from "./pages/index";
+
+import Navbar from "./components/Navbar";
 
 function App() {
 	return (
 		<div className="App">
-			<header className="App-header">
-				<h1>Home</h1>
-				<FetchButton />
-			</header>
+			<Navbar /> 
+			<Routes>
+				<Route path="/" element = {<Home />} />
+				<Route path="/over-ons" element = {<OverOns />} />
+				<Route path="/contact" element = {<Contact />} />
+			</Routes>
 		</div>
 	);
 }
