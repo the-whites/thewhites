@@ -55,8 +55,8 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         source: "./thewhites-api/*"
         target: "/home/richano/projects/thewhites-api/"
-
-    - name: Deployment - Fixup (3/4)
+# TODO: checken of nieuwe project packages automatisch geinstalleerd worden
+    - name: Deployment - Restore file structure & dependencies (3/4)
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -73,6 +73,6 @@ jobs:
         key: ${{ secrets.SSH_KEY_LOGIN }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd /home/richano/projects/
+          cd /home/richano/projects/thewhites-api
           su fivem
-          bash deployment-files/redeploy-api.sh
+          docker-compose up -d
