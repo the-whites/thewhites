@@ -69,7 +69,7 @@ jobs:
         source: "./thewhites-fe/*"
         target: "/home/richano/projects/thewhites-fe/"
 
-    - name: Deployment - Fixup (3/4)
+    - name: Deployment - Restore file structure & dependencies (3/4)
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -78,7 +78,10 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /home/richano/projects/thewhites-fe/ && mv ./thewhites-fe/* ./
-
+          su fivem
+          docker rmi $(docker images 'thewhites/frontend:v1.0' -a -q)
+          docker build -t thewhites/frontend:v1.0 .
+          
     - name: Deployment - Restart docker container (4/4)
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -87,6 +90,6 @@ jobs:
         key: ${{ secrets.SSH_KEY_LOGIN }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd /home/richano/projects/
+          cd /home/richano/projects/thewhites-fe
           su fivem
-          bash deployment-files/redeploy-fe.sh
+          docker-compose up -d
