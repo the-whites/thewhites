@@ -1,0 +1,7 @@
+{
+    "diffEditor.codeLens": false,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "emmet.triggerExpansionOnTab": true
+}

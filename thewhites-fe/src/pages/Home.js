@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import handi from "../images/handi-op-tablet.png";
 
 import "./Home.css";
+import FetchButton from "../FetchButton";
 
 const Home = () => {
 	return (
@@ -39,6 +40,7 @@ const Home = () => {
 						</div>
 					</Col>
 				</Row>
+				<FetchButton />
 			</Container>
 		</div>
 	);
