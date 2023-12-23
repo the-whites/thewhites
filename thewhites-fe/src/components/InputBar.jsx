@@ -6,23 +6,26 @@ import PropTypes from "prop-types";
 
 import "./InputBar.css";
 
-const InputBar = ({ type, placeholder, controlId, label, size, handleChange }) => {
-	const getSizeFromName = () => {
-		switch (size) {
-			case "small": return "15%";
-			case "medium": return "30%";
-			case "large": return "50%";
-			default: return "";
-		}
+const InputBar = ({ type, placeholder, controlId, label, size, handleChange, textPosition }) => {
+	const sizes = {
+		small: "15%",
+		medium: "30%",
+		large: "50%",
 	};
 
-	const inputBarSize = getSizeFromName(size);
+	const textPositions = {
+		left: 2,
+		top: 3,
+	};
+
+	const inputBarSize = sizes[size];
+	const textPositionSm = textPositions[textPosition];
 
 	return (
 		<Form>
 			<Form.Group as={Row} className="mb-3" controlId={controlId}>
 
-				<Form.Label column sm="3">
+				<Form.Label column sm={textPositionSm}>
 				{label}
 				</Form.Label>
 
@@ -45,7 +48,8 @@ InputBar.propTypes = {
 	controlId: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
 	size: PropTypes.oneOf(["small", "medium", "large"]).isRequired,
-	handleChange: PropTypes.func.isRequired
+	handleChange: PropTypes.func.isRequired,
+	textPosition: PropTypes.oneOf(["top", "left"]).isRequired
 };
 
 InputBar.defaultProps = {
@@ -54,7 +58,8 @@ InputBar.defaultProps = {
 	controlId: "", 
 	label: "",
 	size: "medium",
-	handleChange: () => {}
+	handleChange: () => {},
+	textPosition: "left"
   };
 
 export default InputBar;

@@ -7,14 +7,14 @@ const OverOns = () => {
 
 	const handleChange = (e) => {
 		setInputValue(e.target.value);
-	}
+	};
 
 	return (
 		<>
-		<br></br>
-		<InputBar handleChange={handleChange} size="medium" placeholder="hui" type="text" label="Vul hieronder uw email adres"/>
-		
-		{inputValue ? inputValue : "geen input"}
+			<br></br>
+			<InputBar handleChange={handleChange} textPosition="left" size="large" placeholder="jan@gmail.com" type="text" label="Vul hieronder uw email adres"/>
+			
+			{inputValue ? inputValue : "geen input"}
 		</>
 		
 	);
