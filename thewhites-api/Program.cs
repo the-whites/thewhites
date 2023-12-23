@@ -29,7 +29,7 @@ builder.Services.AddCors(options =>
                       policy  =>
                       {
                           policy.WithOrigins("http://localhost:8055");
-                          policy.WithOrigins("https://api.dewhites.nl");
+                          policy.WithOrigins("https://dewhites.nl");
                       });
 });
 builder.Services.AddControllers();
