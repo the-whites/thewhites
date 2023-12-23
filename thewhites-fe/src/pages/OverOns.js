@@ -1,6 +1,7 @@
 import React from "react";
 import InputBar from "../components/InputBar";
 import { useState } from "react";
+import { Form } from "react-bootstrap";
 
 const OverOns = () => {
 	const [inputValue, setInputValue] = useState("");
@@ -12,7 +13,9 @@ const OverOns = () => {
 	return (
 		<>
 			<br></br>
-			<InputBar handleChange={handleChange} textPosition="left" size="large" placeholder="jan@gmail.com" type="text" label="Vul hieronder uw email adres"/>
+			<Form>
+				<InputBar handleChange={handleChange} textPosition="left" size="large" placeholder="jan@gmail.com" type="text" label="Vul hieronder uw email adres"/>
+			</Form>
 			
 			{inputValue ? inputValue : "geen input"}
 		</>

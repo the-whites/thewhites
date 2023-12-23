@@ -22,23 +22,19 @@ const InputBar = ({ type, placeholder, controlId, label, size, handleChange, tex
 	const textPositionSm = textPositions[textPosition];
 
 	return (
-		<Form>
-			<Form.Group as={Row} className="mb-3" controlId={controlId}>
-
-				<Form.Label column sm={textPositionSm}>
-				{label}
-				</Form.Label>
-
-				<Col sm="10">
-					<Form.Control
-						type={type}
-						style={{ width:	inputBarSize }}
-						placeholder={placeholder}
-						onChange={handleChange}
-					/>
-				</Col>
-			</Form.Group>
-		</Form>
+		<Form.Group as={Row} className="mb-3" controlId={controlId}>
+			<Form.Label column sm={textPositionSm}>
+			{label}
+			</Form.Label>
+			<Col sm="10">
+				<Form.Control
+					type={type}
+					style={{ width:	inputBarSize }}
+					placeholder={placeholder}
+					onChange={handleChange}
+				/>
+			</Col>
+		</Form.Group>
 	);
 };
 
