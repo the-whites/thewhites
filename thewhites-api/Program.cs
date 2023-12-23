@@ -28,7 +28,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy  =>
                       {
-                          policy.WithOrigins("http://richano.strangled.net:8055");
+                          policy.WithOrigins("http://localhost:8055");
+                          policy.WithOrigins("https://api.dewhites.nl");
                       });
 });
 builder.Services.AddControllers();
