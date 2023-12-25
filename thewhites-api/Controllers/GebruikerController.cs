@@ -28,7 +28,7 @@ namespace AspTest.Controllers
         [HttpGet("{gebruikerId}")]
         public IActionResult GetGebruikerIdUsingRoute([FromRoute(Name = "gebruikerId")] int id)
         {
-            Gebruiker gebruiker = _gebruikerRepository.GetGebruiker(id);
+            Gebruiker? gebruiker = _gebruikerRepository.GetGebruikerById(id);
             
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

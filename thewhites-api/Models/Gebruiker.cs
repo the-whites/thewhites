@@ -7,6 +7,7 @@ namespace AspTest.Models
         public int Id { get; set; }
         public string Voornaam {get; set; }
         public string Achternaam {get; set; }
+        public string? GoogleId {get; set;}
         public string Emailadres { get; set; }
         public string Rol { get; set; }
 

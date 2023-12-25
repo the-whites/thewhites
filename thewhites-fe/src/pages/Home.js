@@ -5,11 +5,34 @@ import Button from "react-bootstrap/Button";
 import handi from "../images/handi-op-tablet.png";
 
 import "./Home.css";
-import FetchButton from "../FetchButton";
+import { GoogleLogin } from "@react-oauth/google";
+//import FetchButton from "../FetchButton";
 
 const Home = () => {
 	return (
 		<div className="position-relative">
+			<Row>
+				<GoogleLogin
+					onSuccess={async (credentialResponse) => {
+						console.log(credentialResponse);
+						const response = await fetch(process.env.REACT_APP_API_PATH + "api/Login/login_google", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(credentialResponse),
+						});
+
+						if (response.ok) {
+							const data = await response.json();
+							console.log("Authenticated. Data = " + JSON.stringify(data));
+						}
+					}}
+					onError={() => {
+						console.log("Login Failed");
+					}}
+				/>
+			</Row>
 			<Container>
 				<Row>
 					<Col lg="4" className="pt-5 p-2 text-start">
@@ -40,7 +63,6 @@ const Home = () => {
 						</div>
 					</Col>
 				</Row>
-				<FetchButton />
 			</Container>
 		</div>
 	);

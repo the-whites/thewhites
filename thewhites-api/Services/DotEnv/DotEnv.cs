@@ -1,5 +1,5 @@
 
-namespace AspTest
+namespace AspTest.Services
 {
     public static class DotEnv
     {
