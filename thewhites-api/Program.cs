@@ -33,9 +33,9 @@ builder.Services.AddCors(options =>
         policy  =>
         {
             policy.WithOrigins("http://localhost:8055");
+            policy.WithOrigins("https://dewhites.nl");
             policy.AllowAnyHeader();
             policy.AllowAnyMethod();
-            //policy.WithOrigins("https://dewhites.nl");
         }
     );
 });
