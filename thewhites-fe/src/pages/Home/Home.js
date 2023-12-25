@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
-import handi from "../assets/handi-op-tablet.png";
+import handi from "../../assets/handi-op-tablet.png";
 
 import "./Home.css";
 import { GoogleLogin } from "@react-oauth/google";

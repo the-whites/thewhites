@@ -4,12 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home";
-import OverOns from "./pages/OverOns";
-import Contact from "./pages/Contact";
+import Home from "./pages/Home/Home";
+import OverOns from "./pages/OverOns/OverOns";
+import Contact from "./pages/Contact/Contact";
 
 
-import NavigationBar from "./components/Navbar";
+import NavigationBar from "./components/Navbar/Navbar";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
