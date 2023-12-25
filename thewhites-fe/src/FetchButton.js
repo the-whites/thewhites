@@ -21,7 +21,7 @@ const FetchButton = () => {
 	};
 
 	return (
-		<div>
+		<>
 			<button onClick={fetchData}>Fetch Data</button>
 			{error && <p style={{ color: "red" }}>{error}</p>}
 			{data && (
@@ -30,7 +30,7 @@ const FetchButton = () => {
 					<pre>{JSON.stringify(data, null, 2)}</pre>
 				</div>
 			)}
-		</div>
+		</>
 	);
 };
 

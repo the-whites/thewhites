@@ -12,8 +12,8 @@ const NavigationBar = () => {
 		<Navbar expand="lg" className="nav-bar">
 			<Container>
 				<Navbar.Brand as={Link} to="/"><img src={logo} width={375} height={100} /></Navbar.Brand>
-				<Navbar.Toggle aria-controls="basic-navbar-nav" />
-				<Navbar.Collapse id="basic-navbar-nav">
+				<Navbar.Toggle aria-controls="dombo" />
+				<Navbar.Collapse id="dombo">
 					<Nav className="ms-auto">
 						<Nav.Link as={Link} to="over-ons" className="nav-bar-item">Over ons</Nav.Link>
 						<Nav.Link as={Link} to="contact" className="nav-bar-item">Contact</Nav.Link>
