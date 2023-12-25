@@ -15,7 +15,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
 	return (
-		<GoogleOAuthProvider clientId="712169306292-k3ch7qbttauabtsdh7p4sv0k1kthr2qg.apps.googleusercontent.com">
+		<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
 			<div className="App">
 				<NavigationBar /> 
 				<Routes>

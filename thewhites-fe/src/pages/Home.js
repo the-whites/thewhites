@@ -15,7 +15,7 @@ const Home = () => {
 				<GoogleLogin
 					onSuccess={async (credentialResponse) => {
 						console.log(credentialResponse);
-						const response = await fetch("http://localhost:8066/api/Login/login_google", {
+						const response = await fetch(process.env.REACT_APP_API_PATH + "api/Login/login_google", {
 							method: "POST",
 							headers: {
 								"Content-Type": "application/json",
