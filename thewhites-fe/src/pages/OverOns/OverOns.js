@@ -2,7 +2,9 @@ import React from "react";
 
 const OverOns = () => {
 	return (
-		<h1>over ons</h1>
+		<>
+			<p>Over ons</p>
+		</>	
 	);
 };
 export default OverOns;
