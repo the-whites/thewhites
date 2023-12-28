@@ -9,7 +9,7 @@ import OverOns from "./pages/OverOns/OverOns";
 import Contact from "./pages/Contact/Contact";
 
 
-import NavigationBar from "./components/Navbar";
+import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AxiosInterceptors } from "./components/AxiosInstance";
 import { fetchApi } from "./hooks/useApi";

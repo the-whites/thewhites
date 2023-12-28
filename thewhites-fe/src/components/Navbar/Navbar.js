@@ -6,12 +6,11 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../../assets/sa-logo.png";
 
 import "./Navbar.css";
-import { CustomLoginContext, AuthContext } from "../App";
-import { fetchApi, postApi } from "../hooks/useApi";
-import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import { CustomLoginContext, AuthContext } from "../../App";
+import { fetchApi, postApi } from "../../hooks/useApi";
+import { GoogleLogin } from "@react-oauth/google";
 import { Button } from "react-bootstrap";
-import Cookies from "js-cookie";
-import Profiel from "./Profiel";
+import Profiel from "../Profiel";
 
 const NavigationBar = () => {
 	const {loggedin, setLoggedin} = useContext(AuthContext);
@@ -45,7 +44,6 @@ const NavigationBar = () => {
 	useEffect(() => {
 		if (loggedin)
 		{
-			console.log("getg");
 			const getGebruikerInfo = async () => {
 				const response = await fetchApi({route: "api/Login/profileInfo"});
 		
