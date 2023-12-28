@@ -1,6 +1,5 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { fetchApi } from "./useApi";
-import { AuthContext } from "../App";
 
 const useUpdateLoginState = (loggedIn, setLoggedIn) => {
 	return useEffect(() => {

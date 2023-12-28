@@ -1,4 +1,3 @@
-import axios from "axios";
 import AxiosInstance from "../components/AxiosInstance";
 
 // Authenticatie is cookie-based, dus er hoeft geen Authorization header te zijn.
