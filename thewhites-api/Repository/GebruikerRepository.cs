@@ -42,5 +42,10 @@ namespace AspTest.Repository
         {
             return _context.Gebruikers.ToList();
         }
+
+        public IQueryable<Gebruiker> GetGebruikersWithQueryable()
+        {
+            return _context.Gebruikers;
+        }
     }
 }

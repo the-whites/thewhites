@@ -15,5 +15,7 @@ namespace AspTest.Models
         public Bedrijf? Bedrijf {get; set;}
 
         public ICollection<Notificatie> Notificaties {get; set;}
+
+        public ICollection<RefreshToken> RefreshTokens {get; set;}
     }
 }

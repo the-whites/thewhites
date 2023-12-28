@@ -2,6 +2,7 @@
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using AspTest.Models;
 using Google.Apis.Auth;
@@ -34,7 +35,12 @@ namespace AspTest.Services
         }
 
         // Hier wordt de JWT token/sessie-token gemaakt vanuit onze backend. Dit is nodig om geautoriseerde API calls uit te voeren.
-        public static string GenerateJwtToken(GoogleJsonWebSignature.Payload payload, string localUserId)
+        public static string GenerateJwtToken(GoogleJsonWebSignature.Payload payload, Gebruiker gebruiker)
+        {
+            return GenerateJwtToken(payload.Subject, gebruiker);
+        }
+
+        public static string GenerateJwtToken(string google_id, Gebruiker gebruiker)
         {
             var secretKey = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")!);
 
@@ -44,11 +50,13 @@ namespace AspTest.Services
                 Audience = "dewhites.nl",
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("google_id", payload.Subject),
-                    new Claim("user_id", localUserId)
-                    
+                    new Claim("google_id", google_id),
+                    new Claim("user_id", gebruiker.Id.ToString()),
+                    new Claim("user_email", gebruiker.Emailadres),
+                    new Claim("user_given_name", gebruiker.Voornaam),
+                    new Claim("user_family_name", gebruiker.Achternaam)
                 }),
-                Expires = DateTime.UtcNow.AddDays(1), // Token expiration time
+                Expires = DateTime.UtcNow.AddHours(1), // Token expiration time
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature),
             };
 
