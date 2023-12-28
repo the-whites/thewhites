@@ -13,13 +13,14 @@ import { Button } from "react-bootstrap";
 import Profiel from "../Profiel";
 
 const NavigationBar = () => {
-	const {loggedin, setLoggedin} = useContext(AuthContext);
+	const {loggedIn, setLoggedIn} = useContext(AuthContext);
 	const {googleCredentials, setGoogleCredentials} = useContext(CustomLoginContext);
 	const [gebruikerInfo, setGebruikerInfo] = useState({
 		voornaam: undefined,
 		achternaam: undefined,
 		email: undefined,
 	});
+
 	const onGoogleLoginSuccess = (credentialResponse) => {
 		console.log(credentialResponse);
 		setGoogleCredentials(credentialResponse);
@@ -33,7 +34,7 @@ const NavigationBar = () => {
 		
 				if (response.status == 200) {
 					console.log("Authenticated.");
-					setLoggedin(true);
+					setLoggedIn(true);
 				}
 			};
 			getJwtToken();
@@ -42,31 +43,29 @@ const NavigationBar = () => {
 	}, [googleCredentials]);
 
 	useEffect(() => {
-		if (loggedin)
+		if (loggedIn)
 		{
 			const getGebruikerInfo = async () => {
 				const response = await fetchApi({route: "api/Login/profileInfo"});
 		
 				if (response.status == 200) {
-					console.log("ttt");
 					setGebruikerInfo({
 						voornaam: response.data.voornaam,
 						achternaam: response.data.achternaam,
 						email: response.data.email
 					});
-					console.log(gebruikerInfo)
+					console.log(gebruikerInfo);
 				}
 			};
 			getGebruikerInfo();	
 		}
-	}, [loggedin]);
+	}, [loggedIn]);
 
 	const logout = async () => {
-		//googleLogout();
 		await postApi({route: "api/Login/logout"});
 		window.location.href = "/";
 		location.reload();
-	}
+	};
 
 	return (
 		<Navbar expand="lg" className="nav-bar">
@@ -79,7 +78,7 @@ const NavigationBar = () => {
 						<Nav.Link as={Link} to="contact" className="nav-bar-item">Contact</Nav.Link>
 						<Nav.Item className="nav-bar-item">
 							{
-								loggedin ? 
+								loggedIn ? 
 									(
 										<>
 											<Profiel voornaam={gebruikerInfo.voornaam} achternaam={gebruikerInfo.achternaam} email={gebruikerInfo.email}/>

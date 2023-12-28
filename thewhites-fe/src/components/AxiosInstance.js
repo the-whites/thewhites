@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
-import { useApi } from "../hooks/useApi";
 
 
 const AxiosInstance = axios.create({
