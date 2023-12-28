@@ -24,6 +24,7 @@ builder.Services.AddDbContext<AspDbContext>(options =>
 );
 
 builder.Services.AddScoped<IGebruikerRepository, GebruikerRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -35,7 +36,8 @@ builder.Services.AddCors(options =>
             policy.WithOrigins("http://localhost:8055");
             policy.WithOrigins("https://dewhites.nl");
             policy.AllowAnyHeader();
-            policy.AllowAnyMethod();
+            policy.AllowCredentials();
+
         }
     );
 });
@@ -61,13 +63,23 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         // Configure token validation parameters
-        ValidIssuer = "http://localhost:8066/",
-        ValidAudience = "http://localhost:8066/",
+        ValidIssuer = "api.dewhites.nl",
+        ValidAudience = "dewhites.nl",
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")!)),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true
+    };
+
+    // Set the cookie as the token source
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.Request.Cookies["ac_token"];
+            return Task.CompletedTask;
+        }
     };
 })
 .AddGoogle(googleOptions =>
@@ -91,7 +103,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();

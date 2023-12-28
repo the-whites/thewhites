@@ -9,5 +9,7 @@ namespace AspTest
         ICollection<Gebruiker> GetGebruikers();
 
         Task<Gebruiker> CreateGebruiker(string voornaam, string achternaam, string googleid, string emailadres, string rol = "ervaringsdeskundige");
+    
+        IQueryable<Gebruiker> GetGebruikersWithQueryable();
     }
 }

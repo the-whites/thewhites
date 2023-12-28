@@ -11,6 +11,8 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using AspTest.Models;
 using AspTest.Services;
+using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspTest.Controllers
 {
@@ -19,10 +21,12 @@ namespace AspTest.Controllers
     public class LoginController : Controller
     {
         private readonly IGebruikerRepository _gebruikerRepository;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public LoginController(IGebruikerRepository gebruikerRepository)
+        public LoginController(IGebruikerRepository gebruikerRepository, IRefreshTokenRepository refreshTokenRepository)
         {
             _gebruikerRepository = gebruikerRepository;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         // Hier kan een gebruiker m.b.v. de credentials vanuit de frontend (GoogleLogin component) deze route aanroepen, om een sessie-token te verkrijgen.
@@ -42,42 +46,131 @@ namespace AspTest.Controllers
             // Checken of gebruiker bestaat, zo niet dan maak een nieuwe gebruiker aan.
             Gebruiker? gebruiker = _gebruikerRepository.GetGebruikerByGoogleId(payload.Subject);
 
-            if (gebruiker != null)
-            {
-                // Doe niks voor nu
-                
-            }
-            else
+            // Register stukje
+            if (gebruiker == null)
             {
                 // Maak gebruiker
                 gebruiker = await _gebruikerRepository.CreateGebruiker(payload.GivenName, payload.FamilyName, payload.Subject, payload.Email);
             }
 
             // Maak een token
-            var token = IdentityService.GenerateJwtToken(payload, gebruiker.Id.ToString());
+            var token = IdentityService.GenerateJwtToken(payload, gebruiker);
+
+
+            var refreshToken = await _refreshTokenRepository.CreateRefreshToken(
+                Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                gebruiker,
+                DateTime.Now.AddDays(1)
+            );
+
+            Response.Cookies.Append("refresh_token", refreshToken.Token, new CookieOptions {
+                HttpOnly = true,
+                Expires = refreshToken.Expires,
+                SameSite = SameSiteMode.Strict,
+                Secure = true
+            });
+
+            Response.Cookies.Append("ac_token", token, new CookieOptions {
+                HttpOnly = true,
+                Expires = DateTime.Now.AddHours(1),
+                SameSite = SameSiteMode.Strict,
+                Secure = true
+            });
 
             // Return de gemaakte token
-            return Ok(new { Token = token });
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            Response.Cookies.Delete("ac_token");
+            Response.Cookies.Delete("refresh_token");
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            string refreshToken = Request.Cookies["refreshToken"] ?? "";
+
+            // TODO: check max length
+            if (refreshToken.Length < 1)
+            {
+                return BadRequest("Invalid refresh token. Reset cookies and re-authenticate.");
+            }
+
+            bool result = int.TryParse(User.FindFirstValue("user_id"), out int userId);
+
+            if (result)
+            {
+                Gebruiker? gebruiker = _gebruikerRepository.GetGebruikersWithQueryable().Include(g => g.RefreshTokens).FirstOrDefault(g => g.Id == userId);
+
+
+                if (gebruiker == null)
+                    return Unauthorized("No user found.");
+
+                // Checken of de refresh token verkregen uit de cookie echt bestaat in onze database
+                RefreshToken? foundRefreshToken = gebruiker.RefreshTokens.FirstOrDefault(rf => rf.Token.Equals(refreshToken));
+                
+                if (foundRefreshToken == null)
+                    return Unauthorized("Invalid refresh token.");
+                
+                if (foundRefreshToken.Expires < DateTime.Now)
+                    return Unauthorized("Token expired.");
+
+                string newJwtToken = IdentityService.GenerateJwtToken(User.FindFirstValue("google_id"), gebruiker);
+                var newRefreshToken = await _refreshTokenRepository.CreateRefreshToken(
+                    Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                    gebruiker,
+                    DateTime.Now.AddDays(1)
+                );
+
+                Response.Cookies.Append("refreshToken", newRefreshToken.Token, new CookieOptions {
+                    HttpOnly = true,
+                    Expires = newRefreshToken.Expires,
+                    SameSite = SameSiteMode.Strict,
+                    //Secure = true
+                });
+
+                Response.Cookies.Append("ac_token", newJwtToken, new CookieOptions {
+                    HttpOnly = true,
+                    Expires = DateTime.Now.AddHours(1),
+                    SameSite = SameSiteMode.Strict,
+                    //Secure = true
+                });
+
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Invalid userid. Reset cookies and re-authenticate.");
+            }
         }
 
         // Met deze route kun je checken of je ingelogd ben en verkrijg je jouw lokale id en google id.
-        [HttpGet("test/myUserInfo")]
         [Authorize]
-        public IActionResult GetUserInfoIfLoggedInTest()
+        [HttpGet("profileInfo")]
+        public IActionResult GetUserProfileInfo()
         {
             Claim? UserIdClaim = User.FindFirst("user_id");
-            Claim? GoogleIdClaim = User.FindFirst("google_id");
 
+            int.TryParse(UserIdClaim!.Value, out int userId);
 
-            string UserId = UserIdClaim!.Value ?? "";
-            string GoogleId = GoogleIdClaim!.Value ?? "";
+            Gebruiker? gebruiker = _gebruikerRepository.GetGebruikerById(userId);
 
-            var test = new {
+            if (gebruiker == null)
+                return Unauthorized("No user found.");
 
-                UserId,
-                GoogleId
+            var profile = new {
+                voornaam = gebruiker.Voornaam,
+                achternaam = gebruiker.Achternaam,
+                email = gebruiker.Emailadres
             };
-            return Ok(test);
+            return Ok(profile);
         }
     }
 }

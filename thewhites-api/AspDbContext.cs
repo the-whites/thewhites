@@ -16,6 +16,7 @@ namespace AspTest
         public DbSet<Beperking> Beperkingen { get; set; }
         public DbSet<ErvaringsdeskundigeBeperking> ErvaringsdeskundigeBeperkingen { get; set; }
         public DbSet<Notificatie> Notificaties { get; set; }
+        public DbSet<RefreshToken> RefreshTokens {get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
