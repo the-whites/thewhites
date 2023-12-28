@@ -1,3 +1,19 @@
+# The Whites - Frontend service
+
+### Belangrijke informatie
+
+Zorg dat je .env file correct is:
+
+`
+test
+
+
+`
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
