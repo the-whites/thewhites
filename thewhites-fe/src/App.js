@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import OverOns from "./pages/OverOns/OverOns";
 import Contact from "./pages/Contact/Contact";
+import BeheerderPortal from "./pages/BeheerderPortal/BeheerderPortal";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -31,6 +32,7 @@ function App() {
 							<Route path="/" element = {<Home />} />
 							<Route path="/over-ons" element = {<OverOns />} />
 							<Route path="/contact" element = {<Contact />} />
+							<Route path="/beheerder" element={<BeheerderPortal />} />
 						</Routes>
 					</CustomLoginContext.Provider>
 				</AuthContext.Provider>
