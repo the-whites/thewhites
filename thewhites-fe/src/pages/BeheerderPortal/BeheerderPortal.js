@@ -10,13 +10,13 @@ const Beheerdersportal = () => {
         <div>
             <Navbar bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand href="#home">Beheerdersdashboard</Navbar.Brand>
+                    <Navbar.Brand href="home">Beheerdersdashboard</Navbar.Brand>
                     <Nav className="me-auto">
 						<Nav.Link href="Ervaringsdeskundige">Ervaringsdeskundige</Nav.Link>
 						<Nav.Link href="Onderzoeken">Onderzoeken</Nav.Link>
 						<Nav.Link href="Bedrijven">Bedrijven</Nav.Link>
                     </Nav>
-                    <Button variant="outline-info">Uitloggen</Button>
+                    <Button variant="outline-info" className="btn-uitloggen">Uitloggen</Button>
                 </Container>
             </Navbar>
             <Container className="mt-4">
@@ -33,18 +33,3 @@ const Beheerdersportal = () => {
 };
 
 export default Beheerdersportal;
-
-
-
-
-/*import React from "react";
-
-const BeheerderPortal = () => {
-	return (
-		<>
-			<h4>BeheerderPortal Test</h4>
-		</>	
-	);
-};
-export default BeheerderPortal;
-*/

@@ -1,71 +1,35 @@
 /* Beheerdersportal.css */
-h4 {
-    font-weight: 600;
-  }
-  
-  h5 {
-    font-weight: lighter;
-  }
-  
-  .button-block {
-    margin-top: 2rem;
-    margin-bottom: 5rem;
-    margin-right: 10rem;
-  }
-  
-  .button-text {
-    display: block;
-    width: 250px;
-    padding-bottom: 1rem;
-    font-size: 20px;
-    text-align: left;
-  }
-  
-  .btn-primary {
-    font-size: 20px;
-    color: white;
-    background-color: #007bff; /* De primaire knopkleur op de afbeelding */
-    border-color: #007bff;
-  }
-  
-  .btn-primary:hover {
-    background-color: #2751a4; /* Donkerdere tint voor hover */
-    border-color: #1b356a;
-  }
-  
-  /* Aanpassingen voor mobiele weergave */
-  @media (max-width: 1000px) {
-    .button-container {
-      margin-top: 36rem;
-    }
-  
-    .button-block {
-      margin-right: 2rem;
-    }
-  
-    .button-text {
-      width: auto; /* Zorgt ervoor dat de tekst zich aanpast aan de schermgrootte */
-    }
-  }
-  
-  /* Extra stijlen voor de navbar en andere beheerdersspecifieke elementen */
-  .navbar {
-    background-color: #000000; /* Donkere achtergrond voor de navbar */
-    color: #ffffff;
-  } 
-  
+.navbar {
+  background-color: #000000; /* Donkere achtergrond voor de navbar */
+} 
+
+.nav-link {
+  color: #dcdcdc; /* Lichtgrijze tekst voor de navigatielinks */
+  margin-inline-start: 30px; /* Zorgt voor ruimte tussen de nav-links */
+}
+
+.nav-link:hover {
+  color: #ffffff; /* Witte tekst voor hover */
+}
+
+.admin-welcome {
+  font-size: 24px; /* Grotere tekstgrootte voor welkomstbericht */
+  color: #333333; /* Donkergrijze tekst */
+}
+
+.btn-uitloggen {
+  color: #ffffff; /* Witte tekst */
+  background-color: #2f39bb; /* Achtergrondkleur */
+  border-color: #ffffff; /* Randkleur */
+}
+
+.btn-uitloggen:hover {
+  background-color: #1b356a; /* Achtergrondkleur bij hover */
+  border-color: #000000; /* Randkleur bij hover */
+}
+
+@media (max-width: 1000px) {
   .nav-link {
-    color: #dcdcdc; /* Lichtgrijze tekst voor de navigatielinks */
+    margin-inline-start: 20px; /* Verklein de ruimte op kleinere schermen */
   }
-  
-  .nav-link:hover {
-    color: #ffffff; /* Witte tekst voor hover */
-  }
-  
-  .admin-welcome {
-    font-size: 24px; /* Grotere tekstgrootte voor welkomstbericht */
-    color: #333333; /* Donkergrijze tekst */
-  }
-  
-  /* Voeg hier aanvullende stijlen toe die specifiek zijn voor uw beheerdersportal */
-  
+}
