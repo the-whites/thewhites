@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Navbar, Nav } from 'react-bootstrap';
+import './BeheerderPortal.css'; 
+
 
 const Beheerdersportal = () => {
-    const [beheerdersnaam] = useState('Uw Naam');
+    const [beheerdersnaam] = useState('Test Beheerder'); // moet de beheerdersnaam nog uit de database halen 
 
     return (
         <div>
@@ -10,9 +12,9 @@ const Beheerdersportal = () => {
                 <Container>
                     <Navbar.Brand href="#home">Beheerdersdashboard</Navbar.Brand>
                     <Nav className="me-auto">
-                        <Nav.Link href="#gebruikers">Gebruikers</Nav.Link>
-                        <Nav.Link href="#rapporten">Rapporten</Nav.Link>
-                        <Nav.Link href="#instellingen">Instellingen</Nav.Link>
+						<Nav.Link href="Ervaringsdeskundige">Ervaringsdeskundige</Nav.Link>
+						<Nav.Link href="Onderzoeken">Onderzoeken</Nav.Link>
+						<Nav.Link href="Bedrijven">Bedrijven</Nav.Link>
                     </Nav>
                     <Button variant="outline-info">Uitloggen</Button>
                 </Container>

@@ -29,7 +29,7 @@ h4 {
   }
   
   .btn-primary:hover {
-    background-color: #1b356a; /* Donkerdere tint voor hover */
+    background-color: #2751a4; /* Donkerdere tint voor hover */
     border-color: #1b356a;
   }
   
@@ -50,8 +50,9 @@ h4 {
   
   /* Extra stijlen voor de navbar en andere beheerdersspecifieke elementen */
   .navbar {
-    background-color: #343a40; /* Donkere achtergrond voor de navbar */
-  }
+    background-color: #000000; /* Donkere achtergrond voor de navbar */
+    color: #ffffff;
+  } 
   
   .nav-link {
     color: #dcdcdc; /* Lichtgrijze tekst voor de navigatielinks */
