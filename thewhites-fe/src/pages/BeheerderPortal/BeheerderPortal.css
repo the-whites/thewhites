@@ -1,35 +1,35 @@
 /* Beheerdersportal.css */
 .navbar {
-  background-color: #000000; /* Donkere achtergrond voor de navbar */
+  background-color: #000000; 
 } 
 
 .nav-link {
-  color: #dcdcdc; /* Lichtgrijze tekst voor de navigatielinks */
-  margin-inline-start: 30px; /* Zorgt voor ruimte tussen de nav-links */
+  color: #dcdcdc; 
+  margin-inline-start: 30px; 
 }
 
 .nav-link:hover {
-  color: #ffffff; /* Witte tekst voor hover */
+  color: #ffffff; 
 }
 
 .admin-welcome {
-  font-size: 24px; /* Grotere tekstgrootte voor welkomstbericht */
-  color: #333333; /* Donkergrijze tekst */
+  font-size: 24px;
+  color: #333333; 
 }
 
 .btn-uitloggen {
-  color: #ffffff; /* Witte tekst */
-  background-color: #2f39bb; /* Achtergrondkleur */
-  border-color: #ffffff; /* Randkleur */
+  color: #ffffff; 
+  background-color: #2f39bb; 
+  border-color: #ffffff; 
 }
 
 .btn-uitloggen:hover {
-  background-color: #1b356a; /* Achtergrondkleur bij hover */
-  border-color: #000000; /* Randkleur bij hover */
+  background-color: #1b356a; 
+  border-color: #000000; 
 }
 
 @media (max-width: 1000px) {
   .nav-link {
-    margin-inline-start: 20px; /* Verklein de ruimte op kleinere schermen */
+    margin-inline-start: 20px; 
   }
 }
