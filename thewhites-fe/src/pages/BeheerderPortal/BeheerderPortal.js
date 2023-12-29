@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Navbar, Nav } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import './BeheerderPortal.css'; 
 
 
 const Beheerdersportal = () => {
     const [beheerdersnaam] = useState('Test Beheerder'); // moet de beheerdersnaam nog uit de database halen 
+	const navigate = useNavigate();
+
+	const handleLogout = () => {
+        // Voer hier uitloglogica uit indien nodig, zoals state bijwerken, cookies verwijderen, etc.
+        
+        // Redirect naar homepagina
+        navigate('/'); // Pas het pad aan indien uw homepagina op een ander pad is
+    };
 
     return (
         <div>
@@ -16,7 +25,7 @@ const Beheerdersportal = () => {
 						<Nav.Link href="Onderzoeken">Onderzoeken</Nav.Link>
 						<Nav.Link href="Bedrijven">Bedrijven</Nav.Link>
                     </Nav>
-                    <Button variant="outline-info" className="btn-uitloggen">Uitloggen</Button>
+                    <Button variant="outline-info" className="btn-uitloggen" onClick={handleLogout} >Uitloggen</Button>
                 </Container>
             </Navbar>
             <Container className="mt-4">
