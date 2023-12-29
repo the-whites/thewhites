@@ -3,16 +3,16 @@ import { Container, Row, Col, Button, Navbar, Nav } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './BeheerderPortal.css'; 
 
-
+//
 const Beheerdersportal = () => {
-    const [beheerdersnaam] = useState('Test Beheerder'); // moet de beheerdersnaam nog uit de database halen 
+    const [beheerdersnaam] = useState('Test Beheerder'); // moet de beheerdersnaam nog uit de database halen/ die inlogd
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
         // Voer hier uitloglogica uit indien nodig, zoals state bijwerken, cookies verwijderen, etc.
         
         // Redirect naar homepagina
-        navigate('/'); // Pas het pad aan indien uw homepagina op een ander pad is
+        navigate('/'); 
     };
 
     return (
