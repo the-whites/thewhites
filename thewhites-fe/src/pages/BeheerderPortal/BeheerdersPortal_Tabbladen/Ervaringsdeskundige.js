@@ -8,8 +8,6 @@ import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 const ErvaringsdeskundigeBHP = () => {
 	const [beheerdersnaam] = useState("Test Beheerder"); // moet de beheerdersnaam nog uit de database halen/ die inlogd is
 	
-	//components van maken button en navbar V
-	// en route toevoegen voor elke tabblad
 	return (
 		<div>
 			<NavbarPortal bg="dark" variant="dark">
@@ -24,7 +22,7 @@ const ErvaringsdeskundigeBHP = () => {
 			<Container className="mt-4">
 				<Row>
 					<Col lg={12}>
-						<h2>Welkom ervaringsdeskundescherm, {beheerdersnaam}</h2>
+						<h2>Ervaringsdeskunde scherm, {beheerdersnaam}</h2>
 						<p>Hier staat de lijst met ervaringsdeskundige.</p>
 					</Col>
 				</Row>

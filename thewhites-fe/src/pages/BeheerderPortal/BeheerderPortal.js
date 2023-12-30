@@ -24,7 +24,7 @@ const Beheerdersportal = () => {
 			<Container className="mt-4">
 				<Row>
 					<Col lg={12}>
-						<h2>Welkom, {beheerdersnaam}</h2>
+						<h2>Welkom op het BeheerdersDashboard, {beheerdersnaam}</h2>
 						<p>Beheer de inhoud van uw site en gebruikersaccounts snel en gemakkelijk.</p>
 					</Col>
 				</Row>
