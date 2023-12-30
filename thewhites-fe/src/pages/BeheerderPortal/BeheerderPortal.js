@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import NavbarPortal from "../../components/NavbarPortal1/NavbarPortal";
-import ButtonPortal from "../../components/ButtonPortal/ButtonPortal";
+import NavbarPortal from "../../components/Navbar_Portal/NavbarPortal";
+import ButtonPortal from "../../components/Button_Portal/ButtonPortal";
 import { Link } from "react-router-dom";
 import "./BeheerderPortal.css"; 
 import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
