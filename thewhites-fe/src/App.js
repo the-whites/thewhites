@@ -11,7 +11,7 @@ import BeheerderPortal from "./pages/BeheerderPortal/BeheerderPortal";
 import Ervaringsdeskundige from "./pages/BeheerderPortal/Ervaringsdeskundige/Ervaringsdeskundige";
 import Onderzoeken from "./pages/BeheerderPortal/Onderzoeken/Onderzoeken";
 import Bedrijven from "./pages/BeheerderPortal/Bedrijven/Bedrijven";
-import DefaultBeheerderPage from "./pages/BeheerderPortal/Tabs/DefaultBeheerderTab/DefaultBeheerderTab";
+import DefaultBeheerderPage from "./pages/BeheerderPortal/DefaultBeheerderTab/DefaultBeheerderTab";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";

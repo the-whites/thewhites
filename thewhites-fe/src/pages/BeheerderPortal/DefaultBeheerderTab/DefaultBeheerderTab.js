@@ -1,5 +1,5 @@
 import React from "react";
-import PortalWelcomeMessage from "../../../../components/PortalWelcomeMessage/PortalWelcomeMessage";
+import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/PortalWelcomeMessage";
 
 const DefaultBeheerderPage = () => {
 	return (
