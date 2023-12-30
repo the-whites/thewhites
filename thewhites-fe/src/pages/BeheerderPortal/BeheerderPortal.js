@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import NavbarPortal from "../../components/Navbar_Portal/NavbarPortal";
-import ButtonPortal from "../../components/Button_Portal/ButtonPortal";
+import ButtonPortal  from "../../components/Logout_ButtonPortal/Logout_ButtonPortal";
 import { Link } from "react-router-dom";
 import "./BeheerderPortal.css"; 
 import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 
 const Beheerdersportal = () => {
-	const [beheerdersnaam] = useState("Test Beheerder"); // moet de beheerdersnaam nog uit de database halen/ die inlogd
+	const [beheerdersnaam] = useState("Test Beheerder"); // moet de beheerdersnaam nog uit de database halen/ die inlogd is
 	
-	//components van maken button en navbar
+	//components van maken button en navbar V
 	// en route toevoegen voor elke tabblad
 	return (
 		<div>
