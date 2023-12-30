@@ -1,0 +1,12 @@
+.navbar {
+    background-color: #000000; 
+  } 
+  
+  .nav-link {
+    color: #dcdcdc; 
+    margin-inline-start: 30px; 
+  }
+  
+  .nav-link:hover {
+    color: #ffffff; 
+  }
