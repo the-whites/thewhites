@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "./Logout_ButtonPortal.css";
+import "./LogoutButton.css";
 
 const ButtonPortal = () => {
 	const navigate = useNavigate();
