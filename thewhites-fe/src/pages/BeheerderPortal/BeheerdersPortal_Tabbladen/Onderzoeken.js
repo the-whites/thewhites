@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import NavbarPortal from "../../../components/Navbar_Portal/NavbarPortal";
 import ButtonPortal  from "../../../components/Logout_ButtonPortal/Logout_ButtonPortal";
 import { Link } from "react-router-dom";
-import "./Ervaringsdeskundige.css"; 
+import "./Onderzoeken.css"; 
 import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 
-const ErvaringsdeskundigeBHP = () => {
+const OnderzoekenBHP = () => {
 	const [beheerdersnaam] = useState("Test Beheerder"); // moet de beheerdersnaam nog uit de database halen/ die inlogd is
 	
 	//components van maken button en navbar V
@@ -15,8 +15,8 @@ const ErvaringsdeskundigeBHP = () => {
 			<NavbarPortal bg="dark" variant="dark">
 				<Navbar.Brand as={Link} to="/beheerder">Beheerdersdashboard</Navbar.Brand>
 				<Nav className="me-auto">
-					<Nav.Link as={Link} to=" ">Ervaringsdeskundige</Nav.Link>
-					<Nav.Link as={Link} to="/beheerder/onderzoeken">Onderzoeken</Nav.Link>
+					<Nav.Link as={Link} to="/beheerder/ervaringsdeskundige">Ervaringsdeskundige</Nav.Link>
+					<Nav.Link as={Link} to=" ">Onderzoeken</Nav.Link>
 					<Nav.Link as={Link} to="/beheerder/bedrijven">Bedrijven</Nav.Link>
 				</Nav>
 				<ButtonPortal/>
@@ -24,8 +24,8 @@ const ErvaringsdeskundigeBHP = () => {
 			<Container className="mt-4">
 				<Row>
 					<Col lg={12}>
-						<h2>Welkom ervaringsdeskundescherm, {beheerdersnaam}</h2>
-						<p>Hier staat de lijst met ervaringsdeskundige.</p>
+						<h2>Welkom Onderzoekenscherm, {beheerdersnaam}</h2>
+						<p>Hier staat de lijst met Onderzoeken.</p>
 					</Col>
 				</Row>
 				{/* Extra functionaliteiten kunnen hier worden toegevoegd */}
@@ -34,4 +34,4 @@ const ErvaringsdeskundigeBHP = () => {
 	);
 };
 
-export default ErvaringsdeskundigeBHP;
+export default OnderzoekenBHP;

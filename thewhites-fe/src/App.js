@@ -9,6 +9,7 @@ import OverOns from "./pages/OverOns/OverOns";
 import Contact from "./pages/Contact/Contact";
 import BeheerderPortal from "./pages/BeheerderPortal/BeheerderPortal";
 import Ervaringsdeskundige from "./pages/BeheerderPortal/BeheerdersPortal_Tabbladen/Ervaringsdeskundige";
+import Onderzoeken from "./pages/BeheerderPortal/BeheerdersPortal_Tabbladen/Onderzoeken";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -35,6 +36,7 @@ function App() {
 							<Route path="/contact" element = {<Contact />} />
 							<Route path="/beheerder" element={<BeheerderPortal />} />
 							<Route path="/beheerder/ervaringsdeskundige" element={<Ervaringsdeskundige />} />
+							<Route path="/beheerder/onderzoeken" element={<Onderzoeken />} />
 						</Routes>
 					</CustomLoginContext.Provider>
 				</AuthContext.Provider>
