@@ -13,11 +13,11 @@ const Beheerdersportal = () => {
 	return (
 		<div>
 			<NavbarPortal bg="dark" variant="dark">
-				<Navbar.Brand as={Link} to="/">Beheerdersdashboard</Navbar.Brand>
+				<Navbar.Brand as={Link} to="/beheerder">Beheerdersdashboard</Navbar.Brand>
 				<Nav className="me-auto">
-					<Nav.Link as={Link} to="/ervaringsdeskundige">Ervaringsdeskundige</Nav.Link>
-					<Nav.Link as={Link} to="/onderzoeken">Onderzoeken</Nav.Link>
-					<Nav.Link as={Link} to="/bedrijven">Bedrijven</Nav.Link>
+					<Nav.Link as={Link} to="/beheerder/ervaringsdeskundige">Ervaringsdeskundige</Nav.Link>
+					<Nav.Link as={Link} to="/beheerder/onderzoeken">Onderzoeken</Nav.Link>
+					<Nav.Link as={Link} to="/beheerder/bedrijven">Bedrijven</Nav.Link>
 				</Nav>
 				<ButtonPortal/>
 			</NavbarPortal>
