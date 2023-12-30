@@ -13,15 +13,13 @@ const Beheerdersportal = () => {
 	return (
 		<div>
 			<NavbarPortal bg="dark" variant="dark">
-				<Container>
-					<Navbar.Brand as={Link} to="/">Beheerdersdashboard</Navbar.Brand>
-					<Nav className="me-auto">
-						<Nav.Link as={Link} to="/ervaringsdeskundige">Ervaringsdeskundige</Nav.Link>
-						<Nav.Link as={Link} to="/onderzoeken">Onderzoeken</Nav.Link>
-						<Nav.Link as={Link} to="/bedrijven">Bedrijven</Nav.Link>
-					</Nav>
-					<ButtonPortal/>
-				</Container>
+				<Navbar.Brand as={Link} to="/">Beheerdersdashboard</Navbar.Brand>
+				<Nav className="me-auto">
+					<Nav.Link as={Link} to="/ervaringsdeskundige">Ervaringsdeskundige</Nav.Link>
+					<Nav.Link as={Link} to="/onderzoeken">Onderzoeken</Nav.Link>
+					<Nav.Link as={Link} to="/bedrijven">Bedrijven</Nav.Link>
+				</Nav>
+				<ButtonPortal/>
 			</NavbarPortal>
 			<Container className="mt-4">
 				<Row>
