@@ -1,35 +1,4 @@
-/* Beheerdersportal.css */
-.navbar {
-  background-color: #000000; 
-} 
-
-.nav-link {
-  color: #dcdcdc; 
-  margin-inline-start: 30px; 
-}
-
-.nav-link:hover {
-  color: #ffffff; 
-}
-
 .admin-welcome {
   font-size: 24px;
   color: #333333; 
-}
-
-.btn-uitloggen {
-  color: #ffffff; 
-  background-color: #2f39bb; 
-  border-color: #ffffff; 
-}
-
-.btn-uitloggen:hover {
-  background-color: #1b356a; 
-  border-color: #000000; 
-}
-
-@media (max-width: 1000px) {
-  .nav-link {
-    margin-inline-start: 20px; 
-  }
 }
