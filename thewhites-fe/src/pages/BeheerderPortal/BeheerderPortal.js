@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NavbarPortal from "../../components/NavbarPortal/NavbarPortal";
+import NavbarPortal from "../../components/NavbarPortal1/NavbarPortal";
 import ButtonPortal from "../../components/ButtonPortal/ButtonPortal";
 import { Link } from "react-router-dom";
 import "./BeheerderPortal.css"; 
