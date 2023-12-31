@@ -6,7 +6,15 @@ import NavbarPortal from "../../components/NavbarPortal/NavbarPortal";
 const Bedrijvenportal = () => {
 	return (
 		<>
-			<NavbarPortal />
+			<NavbarPortal 
+				portalName="Bedrijfs Portaal"
+				portalPath="/bedrijf"
+				links={[
+					{ name: "Opdrachten", path: "/bedrijf/opdrachten" },
+					{ name: "chat", path: "/bedrijf/chat" },
+					{ name: "Profiel", path: "/bedrijf/profiel" }
+				]} 
+			/>
 			<Outlet />
 		</>
 	);
