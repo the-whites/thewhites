@@ -11,7 +11,7 @@ const Bedrijvenportal = () => {
 				portalPath="/bedrijf"
 				links={[
 					{ name: "Opdrachten", path: "/bedrijf/opdrachten" },
-					{ name: "chat", path: "/bedrijf/chat" },
+					{ name: "Chat", path: "/bedrijf/chat" },
 					{ name: "Profiel", path: "/bedrijf/profiel" }
 				]} 
 			/>

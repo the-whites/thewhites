@@ -14,6 +14,8 @@ import Bedrijven from "./pages/BeheerderPortal/Bedrijven/Bedrijven";
 import DefaultBeheerderPage from "./pages/BeheerderPortal/DefaultBeheerderTab/DefaultBeheerderTab";
 import BedrijvenPortal from "./pages/BedrijvenPortal/BedrijvenPortal";
 import DefaultBedrijvenPage from "./pages/BedrijvenPortal/DefaultBedrijvenTab/DefaultBedrijvenTab";
+import Chat from "./pages/BedrijvenPortal/Chat/Chat";
+import Opdrachten from "./pages/BedrijvenPortal/Opdrachten/Opdrachten";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -46,6 +48,8 @@ function App() {
 							</Route>
 							<Route path="/bedrijf" element={<BedrijvenPortal />} >
 								<Route index element={<DefaultBedrijvenPage />} />
+								<Route path="chat" element={<Chat />} />
+								<Route path="opdrachten" element={<Opdrachten />} />
 							</Route>
 						</Routes>
 					</CustomLoginContext.Provider>
