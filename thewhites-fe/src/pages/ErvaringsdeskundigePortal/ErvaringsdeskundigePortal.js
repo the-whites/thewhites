@@ -11,7 +11,7 @@ const Ervaringsdeskundigeportal = () => {
 				portalPath="/ervaringsdeskundige"
 				links={[
 					{ name: "Chat", path: "/ervaringsdeskundige/chatErvaringdeskundige" },
-					{ name: "Onderzoeken", path: "/ervaringsdeskundige/onderzoeken" },
+					{ name: "Onderzoeken", path: "/ervaringsdeskundige/OverzichtOnderzoeken" },
 					{ name: "Profiel", path: "/ervaringsdeskundige/profiel" }
 				]} 
 			/>
