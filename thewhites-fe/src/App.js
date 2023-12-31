@@ -24,6 +24,7 @@ import ErvaringsdekundigePortal from "./pages/ErvaringsdeskundigePortal/Ervaring
 import DefaultErvaringsdeskundigePage from "./pages/ErvaringsdeskundigePortal/DefaultErvaringsdeskundigeTab/DefaultErvaringsdeskundigeTab";
 import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
 import Overzichtonderzoeken from "./pages/ErvaringsdeskundigePortal/OverzichtOnderzoeken/OverzichtOnderzoeken";
+import ProfielErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ProfielErvaringsdeskundige/ProfielErvaringdeskundige";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -64,7 +65,8 @@ function App() {
 							<Route path="/ervaringsdeskundige" element={<ErvaringsdekundigePortal />} >
 								<Route index element={<DefaultErvaringsdeskundigePage />} />
 								<Route path="chatErvaringdeskundige" element={<ChatErvaringsdeskundige />} />
-								<Route path="Overzichtonderzoeken" element={<Overzichtonderzoeken />} />
+								<Route path="overzichtonderzoeken" element={<Overzichtonderzoeken />} />
+								<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
 							</Route>
 						</Routes>
 					</CustomLoginContext.Provider>
