@@ -12,6 +12,8 @@ import Ervaringsdeskundige from "./pages/BeheerderPortal/Ervaringsdeskundige/Erv
 import Onderzoeken from "./pages/BeheerderPortal/Onderzoeken/Onderzoeken";
 import Bedrijven from "./pages/BeheerderPortal/Bedrijven/Bedrijven";
 import DefaultBeheerderPage from "./pages/BeheerderPortal/DefaultBeheerderTab/DefaultBeheerderTab";
+import BedrijvenPortal from "./pages/BedrijvenPortal/BedrijvenPortal";
+import DefaultBedrijvenPage from "./pages/BedrijvenPortal/DefaultBedrijvenTab/DefaultBedrijvenTab";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -41,6 +43,9 @@ function App() {
 								<Route path="ervaringsdeskundige" element={<Ervaringsdeskundige />} />
 								<Route path="onderzoeken" element={<Onderzoeken />} />
 								<Route path="bedrijven" element={<Bedrijven />} />
+							</Route>
+							<Route path="/bedrijf" element={<BedrijvenPortal />} >
+								<Route index element={<DefaultBedrijvenPage />} />
 							</Route>
 						</Routes>
 					</CustomLoginContext.Provider>
