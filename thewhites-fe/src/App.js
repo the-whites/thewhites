@@ -14,7 +14,7 @@ import Bedrijven from "./pages/BeheerderPortal/Bedrijven/Bedrijven";
 import DefaultBeheerderPage from "./pages/BeheerderPortal/DefaultBeheerderTab/DefaultBeheerderTab";
 import BedrijvenPortal from "./pages/BedrijvenPortal/BedrijvenPortal";
 import DefaultBedrijvenPage from "./pages/BedrijvenPortal/DefaultBedrijvenTab/DefaultBedrijvenTab";
-import Chat from "./pages/BedrijvenPortal/Chat/Chat";
+import Chat from "./pages/BedrijvenPortal/ChatBedrijf/ChatBedrijf";
 import Opdrachten from "./pages/BedrijvenPortal/Opdrachten/Opdrachten";
 import Profiel from "./pages/BedrijvenPortal/ProfielUpdate/ProfielUpdate";
 
