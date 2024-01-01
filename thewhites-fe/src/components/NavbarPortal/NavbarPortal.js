@@ -5,20 +5,21 @@ import ButtonPortal from "../LogoutButton/LogoutButton";
 import "./NavbarPortal.css";
 import { Link } from "react-router-dom";
 
-const NavbarPortal = () => {
+const NavbarPortal = ({ portalName, portalPath, links }) => {
 	return (
 		<Navbar bg="dark" variant="dark">
 			<Container>
-				<Navbar.Brand as={Link} to="/beheerder">Beheerders Portaal</Navbar.Brand>
+				<Navbar.Brand as={Link} to={portalPath}>{portalName}</Navbar.Brand>
 				<Nav className="me-auto">
-					<Nav.Link as={Link} to="./ervaringsdeskundige">Ervaringsdeskundige</Nav.Link>
-					<Nav.Link as={Link} to="./onderzoeken">Onderzoeken</Nav.Link>
-					<Nav.Link as={Link} to="./bedrijven">Bedrijven</Nav.Link>
+					{links.map((link, index) => (
+						<Nav.Link key={index} as={Link} to={link.path}>{link.name}</Nav.Link>
+					))}
 				</Nav>
 				<ButtonPortal/>
 			</Container>
 		</Navbar>
 	);
 };
+
 
 export default NavbarPortal;
