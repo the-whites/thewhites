@@ -7,19 +7,16 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import OverOns from "./pages/OverOns/OverOns";
 import Contact from "./pages/Contact/Contact";
-
 import BeheerderPortal from "./pages/BeheerderPortal/BeheerderPortal";
 import ErvaringsdeskundigeBHP from "./pages/BeheerderPortal/Ervaringsdeskundige/Ervaringsdeskundige";
 import Onderzoeken from "./pages/BeheerderPortal/Onderzoeken/Onderzoeken";
 import Bedrijven from "./pages/BeheerderPortal/Bedrijven/Bedrijven";
 import DefaultBeheerderPage from "./pages/BeheerderPortal/DefaultBeheerderTab/DefaultBeheerderTab";
-
 import BedrijvenPortal from "./pages/BedrijvenPortal/BedrijvenPortal";
 import DefaultBedrijvenPage from "./pages/BedrijvenPortal/DefaultBedrijvenTab/DefaultBedrijvenTab";
 import Chat from "./pages/BedrijvenPortal/ChatBedrijf/ChatBedrijf";
 import Opdrachten from "./pages/BedrijvenPortal/Opdrachten/Opdrachten";
 import Profiel from "./pages/BedrijvenPortal/ProfielUpdate/ProfielUpdate";
-
 import ErvaringsdekundigePortal from "./pages/ErvaringsdeskundigePortal/ErvaringsdeskundigePortal";
 import DefaultErvaringsdeskundigePage from "./pages/ErvaringsdeskundigePortal/DefaultErvaringsdeskundigeTab/DefaultErvaringsdeskundigeTab";
 import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
