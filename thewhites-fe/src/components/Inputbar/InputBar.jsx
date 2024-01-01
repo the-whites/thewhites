@@ -17,21 +17,21 @@ const InputBar = ({ type = "text", placeholder = "", label = "", handleChange = 
 
 	return (
 		<>
-		<Form.Group as={Row} className="mb-3">
-			<Form.Label column sm={textPositionSm}>
-			{label}
-			</Form.Label>
-			<Col sm="10">
-				<Form.Control
-					type={type}
-					placeholder={placeholder}
-					onChange={handleChange}
-					required={true}
-					className="input-bar"
-				/>
-			</Col>
-		</Form.Group>
-	</>
+			<Form.Group as={Row} className="mb-3">
+				<Form.Label column sm={textPositionSm}>
+					{label}
+				</Form.Label>
+				<Col sm="10">
+					<Form.Control
+						type={type}
+						placeholder={placeholder}
+						onChange={handleChange}
+						required={true}
+						className="input-bar"
+					/>
+				</Col>
+			</Form.Group>
+		</>
 	);
 };
 

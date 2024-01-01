@@ -168,7 +168,8 @@ namespace AspTest.Controllers
             var profile = new {
                 voornaam = gebruiker.Voornaam,
                 achternaam = gebruiker.Achternaam,
-                email = gebruiker.Emailadres
+                email = gebruiker.Emailadres,
+                rol = gebruiker.Rol
             };
             return Ok(profile);
         }

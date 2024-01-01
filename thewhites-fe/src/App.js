@@ -16,6 +16,7 @@ import DefaultBeheerderPage from "./pages/BeheerderPortal/DefaultBeheerderTab/De
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import useUpdateLoginState from "./hooks/useUpdateLoginState";
+import { UserProvider } from "./contexts/UserContext";
 
 export const CustomLoginContext = createContext("");
 export const AuthContext = createContext("");
@@ -28,24 +29,26 @@ function App() {
 
 	return (
 		<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
-			<div className="App">
-				<AuthContext.Provider value={{loggedIn, setLoggedIn}}>
-					<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
-						<NavigationBar /> 
-						<Routes>
-							<Route path="/" element={<Home />} />
-							<Route path="/over-ons" element={<OverOns />} />
-							<Route path="/contact" element={<Contact />} />
-							<Route path="/beheerder" element={<BeheerderPortal />}>
-								<Route index element={<DefaultBeheerderPage />} />
-								<Route path="ervaringsdeskundige" element={<Ervaringsdeskundige />} />
-								<Route path="onderzoeken" element={<Onderzoeken />} />
-								<Route path="bedrijven" element={<Bedrijven />} />
-							</Route>
-						</Routes>
-					</CustomLoginContext.Provider>
-				</AuthContext.Provider>
-			</div>
+			<UserProvider>
+				<div className="App">
+					<AuthContext.Provider value={{loggedIn, setLoggedIn}}>
+						<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
+							<NavigationBar /> 
+							<Routes>
+								<Route path="/" element={<Home />} />
+								<Route path="/over-ons" element={<OverOns />} />
+								<Route path="/contact" element={<Contact />} />
+								<Route path="/beheerder" element={<BeheerderPortal />}>
+									<Route index element={<DefaultBeheerderPage />} />
+									<Route path="ervaringsdeskundige" element={<Ervaringsdeskundige />} />
+									<Route path="onderzoeken" element={<Onderzoeken />} />
+									<Route path="bedrijven" element={<Bedrijven />} />
+								</Route>
+							</Routes>
+						</CustomLoginContext.Provider>
+					</AuthContext.Provider>
+				</div>
+			</UserProvider>
 		</GoogleOAuthProvider>
 	);
 }

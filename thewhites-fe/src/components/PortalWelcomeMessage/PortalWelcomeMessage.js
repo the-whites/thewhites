@@ -1,9 +1,12 @@
-import React from "react";
+import { React, useContext }from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { UserContext } from "../../contexts/UserContext";
 
 import "./PortalWelcomeMessage.css";
 
-const PortalWelcomeMessage = ( {name, text, username} ) => {
+const PortalWelcomeMessage = ( {name, text} ) => {
+	const { username } = useContext(UserContext);
+
 	return (
 		<>
 			<Container className="mt-4">
