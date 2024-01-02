@@ -1,6 +1,6 @@
 import { React, useContext }from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/UserProvider";
 
 import "./PortalWelcomeMessage.css";
 

@@ -26,7 +26,9 @@ import ProfielErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/Profie
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import useUpdateLoginState from "./hooks/useUpdateLoginState";
-import { UserProvider } from "./contexts/UserContext";
+import { UserProvider } from "./contexts/UserProvider";
+import RequireAuth from "./components/RequireAuth/RequireAuth";
+import { ROLES } from "./constants/roles";
 
 export const CustomLoginContext = createContext("");
 export const AuthContext = createContext("");
@@ -39,38 +41,44 @@ function App() {
 
 	return (
 		<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
-			<UserProvider>
-				<div className="App">
-					<AuthContext.Provider value={{loggedIn, setLoggedIn}}>
-						<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
+			<div className="App">
+				<AuthContext.Provider value={{loggedIn, setLoggedIn}}>
+					<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
+						<UserProvider>
 							<NavigationBar /> 
 							<Routes>
 								<Route path="/" element={<Home />} />
 								<Route path="/over-ons" element={<OverOns />} />
 								<Route path="/contact" element={<Contact />} />
-								<Route path="/beheerder" element={<BeheerderPortal />}>
-									<Route index element={<DefaultBeheerderPage />} />
-									<Route path="ervaringsdeskundigBHP" element={<ErvaringsdeskundigeBHP />} />
-									<Route path="onderzoeken" element={<Onderzoeken />} />
-									<Route path="bedrijven" element={<Bedrijven />} />
+								<Route element={<RequireAuth allowedRoles={[ROLES.beheerder]} />}>
+									<Route path="/beheerder" element={<BeheerderPortal />}>
+										<Route index element={<DefaultBeheerderPage />} />
+										<Route path="ervaringsdeskundigBHP" element={<ErvaringsdeskundigeBHP />} />
+										<Route path="onderzoeken" element={<Onderzoeken />} />
+										<Route path="bedrijven" element={<Bedrijven />} />
+									</Route>
 								</Route>
-								<Route path="/bedrijf" element={<BedrijvenPortal />} >
-								<Route index element={<DefaultBedrijvenPage />} />
-								<Route path="chat" element={<Chat />} />
-								<Route path="opdrachten" element={<Opdrachten />} />
-								<Route path="profiel" element={<Profiel />} />
-							</Route>
-							<Route path="/ervaringsdeskundige" element={<ErvaringsdekundigePortal />} >
-								<Route index element={<DefaultErvaringsdeskundigePage />} />
-								<Route path="chatErvaringdeskundige" element={<ChatErvaringsdeskundige />} />
-								<Route path="overzichtonderzoeken" element={<Overzichtonderzoeken />} />
-								<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
-							</Route>
-						</Routes>
-						</CustomLoginContext.Provider>
-					</AuthContext.Provider>
-				</div>
-			</UserProvider>
+								<Route element={<RequireAuth allowedRoles={[ROLES.bedrijf]} />}>
+									<Route path="/bedrijf" element={<BedrijvenPortal />} >
+										<Route index element={<DefaultBedrijvenPage />} />
+										<Route path="chat" element={<Chat />} />
+										<Route path="opdrachten" element={<Opdrachten />} />
+										<Route path="profiel" element={<Profiel />} />
+									</Route>
+								</Route>
+								<Route element={<RequireAuth allowedRoles={[ROLES.ervaringsdeskundige]} />}>
+									<Route path="/ervaringsdeskundige" element={<ErvaringsdekundigePortal />} >
+										<Route index element={<DefaultErvaringsdeskundigePage />} />
+										<Route path="chat" element={<ChatErvaringsdeskundige />} />
+										<Route path="overzicht" element={<Overzichtonderzoeken />} />
+										<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
+									</Route>
+								</Route>
+							</Routes>
+						</UserProvider>
+					</CustomLoginContext.Provider>
+				</AuthContext.Provider>
+			</div>
 		</GoogleOAuthProvider>
 	);
 }

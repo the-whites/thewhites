@@ -1,20 +1,19 @@
 import React, { useContext, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { CustomLoginContext, AuthContext } from "../../App";
-import { fetchApi, postApi } from "../../hooks/useApi";
+import { CustomLoginContext } from "../../App";
 import { GoogleLogin } from "@react-oauth/google";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
+import { ROLES } from "../../constants/roles";
 import handi from "../../assets/handi-op-tablet.png";
 
 import "./Home.css";
 
 const Home = () => {
 	
-	const {loggedIn, setLoggedIn} = useContext(AuthContext);
-	const {googleCredentials, setGoogleCredentials} = useContext(CustomLoginContext);
+	const {setGoogleCredentials} = useContext(CustomLoginContext);
 
-	const { setUsername, setRole, role, username, roles } = useContext(UserContext);
+	const { role, username } = useContext(UserContext);
 
 	const navigate = useNavigate();
 
@@ -24,53 +23,17 @@ const Home = () => {
 	};
 
 	useEffect(() => {
-		if (googleCredentials)
-		{
-			const getJwtToken = async () => {
-				const response = await postApi({route: "api/Login/login_google", body: JSON.stringify(googleCredentials)});
-		
-				if (response.status == 200) {
-					console.log("Authenticated.");
-					setLoggedIn(true);
-				}
-			};
-			getJwtToken();
-		}
-
-	}, [googleCredentials]);
-
-	useEffect(() => {
-		if (loggedIn)
-		{
-			const getGebruikerInfo = async () => {
-				const response = await fetchApi({route: "api/Login/profileInfo"});
-		
-				if (response.status == 200) {
-					setUsername(response.data.voornaam); // Dit moet uiteindelijk de gebruikersnaam worden
-					
-					if(Object.values(roles).includes(response.data.rol)) {
-						setRole(response.data.rol);
-					} else {
-						console.log(`Tried to set role: "${response.data.rol}" while it doesn't exist.`);
-					}
-				}
-			};
-			getGebruikerInfo();	
-		}
-	}, [loggedIn]);
-
-	useEffect(() => {
 		if (role && username) {
 			console.log(`Role: ${role}, Username: ${username} are set.`);
 
 			switch (role) {
-			case roles.beheerder:
+			case ROLES.beheerder:
 				navigate("/beheerder");
 				break;
-			case roles.bedrijf:
+			case ROLES.bedrijf:
 				navigate("/bedrijf");
 				break;
-			case roles.ervaringsdeskundige:
+			case ROLES.ervaringsdeskundige:
 				navigate("/ervaringsdeskundige");
 				break;
 			default:
