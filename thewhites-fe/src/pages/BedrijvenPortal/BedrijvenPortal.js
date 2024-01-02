@@ -7,7 +7,7 @@ const Bedrijvenportal = () => {
 	return (
 		<>
 			<NavbarPortal 
-				portalName="Bedrijfs Portaal"
+				portalName="Bedrijf Portaal"
 				portalPath="/bedrijf"
 				links={[
 					{ name: "Opdrachten", path: "/bedrijf/opdrachten" },

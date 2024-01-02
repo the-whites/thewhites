@@ -29,6 +29,8 @@ import useUpdateLoginState from "./hooks/useUpdateLoginState";
 import { UserProvider } from "./contexts/UserProvider";
 import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { ROLES } from "./constants/roles";
+import NieuwOpdracht from "./pages/BedrijvenPortal/Opdrachten/NieuwOpdracht/NieuwOpdracht";
+import DefaultOpdrachtenTab from "./pages/BedrijvenPortal/Opdrachten/DefaultOpdrachtenTab/DefaultOpdrachtenTab";
 
 export const CustomLoginContext = createContext("");
 export const AuthContext = createContext("");
@@ -62,7 +64,10 @@ function App() {
 									<Route path="/bedrijf" element={<BedrijvenPortal />} >
 										<Route index element={<DefaultBedrijvenPage />} />
 										<Route path="chat" element={<Chat />} />
-										<Route path="opdrachten" element={<Opdrachten />} />
+										<Route path="opdrachten" element={<Opdrachten />}>
+											<Route index element={<DefaultOpdrachtenTab />} />
+											<Route path="nieuw" element={<NieuwOpdracht />} />
+										</Route>
 										<Route path="profiel" element={<Profiel />} />
 									</Route>
 								</Route>

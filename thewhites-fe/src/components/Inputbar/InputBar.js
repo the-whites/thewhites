@@ -28,6 +28,8 @@ const InputBar = ({ type = "text", placeholder = "", label = "", handleChange = 
 						onChange={handleChange}
 						required={true}
 						className="input-bar"
+						as={type === "textarea" ? "textarea" : "input"}
+						rows={type === "textarea" ? 4 : 1}
 					/>
 				</Col>
 			</Form.Group>

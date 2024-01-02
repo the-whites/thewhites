@@ -1,0 +1,28 @@
+.selection-badge {
+    margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    margin-top: 0.85rem;
+    font-size: 0.9rem;
+}
+
+.col-align-left {
+    display: flex;
+    justify-content: left;
+}
+
+.checkmark {
+    color: green;
+}
+
+.bg-grey {
+    background-color: #ECE7E7;
+}
+
+.dropdown-menu {
+    min-width: 600px;
+}
+
+.dropdown-item:hover {
+    background-color: gray;
+    outline: 1px solid rgb(73, 73, 73);
+}
