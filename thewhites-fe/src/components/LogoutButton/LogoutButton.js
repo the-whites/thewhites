@@ -1,14 +1,16 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { postApi } from "../../hooks/useApi";
 import "./LogoutButton.css";
 
 const ButtonPortal = () => {
 	const navigate = useNavigate();
-  
-	const handleLogout = () => {
-		// Voer hier uitloglogica uit indien nodig, zoals state bijwerken, cookies verwijderen, etc.
-		navigate("/"); // Redirect naar homepagina
+
+	const handleLogout = async () => {
+		await postApi({route: "api/Login/logout"});
+		navigate("/");
+		location.reload();
 	};
   
 	return (

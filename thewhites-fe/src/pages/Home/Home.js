@@ -1,12 +1,48 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-
+import { CustomLoginContext } from "../../contexts/UserProvider";
+import { GoogleLogin } from "@react-oauth/google";
+import { UserContext } from "../../contexts/UserProvider";
+import { useNavigate } from "react-router-dom";
+import { ROLES } from "../../constants/roles";
 import handi from "../../assets/handi-op-tablet.png";
 
 import "./Home.css";
 
 const Home = () => {
+	
+	const {setGoogleCredentials} = useContext(CustomLoginContext);
+
+	const { role, username } = useContext(UserContext);
+
+	const navigate = useNavigate();
+
+	const onGoogleLoginSuccess = (credentialResponse) => {
+		console.log(credentialResponse);
+		setGoogleCredentials(credentialResponse);
+	};
+
+	useEffect(() => {
+		if (role && username) {
+			console.log(`Role: ${role}, Username: ${username} are set.`);
+
+			switch (role) {
+			case ROLES.beheerder:
+				navigate("/beheerder");
+				break;
+			case ROLES.bedrijf:
+				navigate("/bedrijf");
+				break;
+			case ROLES.ervaringsdeskundige:
+				navigate("/ervaringsdeskundige");
+				break;
+			default:
+				console.log(`No directory set for ${role}`);
+				break;
+			}
+		}
+	}, [role, username]);
+	
 	return (
 		<div className="position-relative">
 			<Container>
@@ -30,13 +66,18 @@ const Home = () => {
 				<Row>
 					<Col lg="12" className="d-flex flex-column align-items-end">
 						<div className="button-block d-grid gap-2">
-							<p className="button-text">Wilt u deelnemen hieraan klik dan op <strong>Inloggen</strong></p>
-							<Button variant="primary" size="lg" className="button" onClick={() => alert("L")}>Inloggen</Button>
-						</div>
-						<div className="button-block d-grid gap-2">
-							<p className="button-text">Heeft u nog geen account klik dan op <strong>Registreren</strong></p>
-							<Button variant="primary" size="lg" className="button" onClick={() => alert("L")}>Registreren</Button>
-						</div>
+							<h1>Log in</h1>
+							<p className="button-text">Log in om naar je portaal te komen. Geen account? Log in via google om automatisch een account voor jezelf aan te maken</p>
+							<GoogleLogin
+								theme="filled_blue"
+								shape="rectangular"
+								size="large"
+								text="continue_with"
+								onSuccess={onGoogleLoginSuccess}
+								onError={(error) => console.log("Error:", error)}
+								className="w-100 h-100"
+							/>
+						</div> 
 					</Col>
 				</Row>
 			</Container>
