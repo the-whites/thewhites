@@ -1,18 +1,19 @@
-import React, { useEffect, useContext, createContext, useState } from "react";
-import { AuthContext } from "../App";
-import { CustomLoginContext } from "../App";
+import React, { useEffect, createContext, useState } from "react";
 import { postApi } from "../hooks/useApi";
 import { fetchApi } from "../hooks/useApi";
 import { ROLES } from "../constants/roles";
+import useUpdateLoginState from "../hooks/useUpdateLoginState";
 
 export const UserContext = createContext();
+export const CustomLoginContext = createContext("");
+export const AuthContext = createContext("");
 
 export const UserProvider = ({ children }) => {
 	const [username, setUsername] = useState("");
 	const [role, setRole] = useState("");
 
-	const {loggedIn, setLoggedIn} = useContext(AuthContext);
-	const {googleCredentials} = useContext(CustomLoginContext);
+	const [googleCredentials, setGoogleCredentials] = useState("");
+	const [loggedIn, setLoggedIn] = useState(false);
 
 	useEffect(() => {
 		if (googleCredentials)
@@ -53,9 +54,16 @@ export const UserProvider = ({ children }) => {
 		}
 	};
 
+	useUpdateLoginState(loggedIn, setLoggedIn);
+
+
 	return (
-		<UserContext.Provider value={{ username, setUsername, role, setRole: setValidRole }}>
-			{children}
-		</UserContext.Provider>
+		<AuthContext.Provider value={{loggedIn, setLoggedIn}}>
+			<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
+				<UserContext.Provider value={{ username, setUsername, role, setRole: setValidRole }}>
+					{children}
+				</UserContext.Provider>
+			</CustomLoginContext.Provider>
+		</AuthContext.Provider>
 	);
 };

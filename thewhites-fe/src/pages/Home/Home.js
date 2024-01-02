@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { CustomLoginContext } from "../../App";
+import { CustomLoginContext } from "../../contexts/UserProvider";
 import { GoogleLogin } from "@react-oauth/google";
 import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
