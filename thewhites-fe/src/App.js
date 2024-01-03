@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import OverOns from "./pages/OverOns/OverOns";
 import Contact from "./pages/Contact/Contact";
+import ProfielPagina from "./pages/ProfielPagina/ProfielPagina";
 import BeheerderPortal from "./pages/BeheerderPortal/BeheerderPortal";
 import ErvaringsdeskundigeBHP from "./pages/BeheerderPortal/Ervaringsdeskundige/Ervaringsdeskundige";
 import Onderzoeken from "./pages/BeheerderPortal/Onderzoeken/Onderzoeken";
@@ -42,6 +43,7 @@ function App() {
 						<Route path="/" element={<Home />} />
 						<Route path="/over-ons" element={<OverOns />} />
 						<Route path="/contact" element={<Contact />} />
+						<Route path="/profielpagina" element={<ProfielPagina />} />
 						<Route element={<RequireAuth allowedRoles={[ROLES.beheerder]} />}>
 							<Route path="/beheerder" element={<BeheerderPortal />}>
 								<Route index element={<DefaultBeheerderPage />} />
