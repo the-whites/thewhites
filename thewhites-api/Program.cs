@@ -41,6 +41,7 @@ builder.Services.AddCors(options =>
         }
     );
 });
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -51,12 +52,6 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = "Google";
 })
-/*.AddCookie("cookies", options =>
-{
-   options.Cookie.Name = "appcookie";
-   options.Cookie.SameSite = SameSiteMode.Strict;
-   options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-})*/
 .AddJwtBearer(options =>
 {
     // Configure JwtBearer options as needed
@@ -69,18 +64,19 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
-        ValidateIssuerSigningKey = true
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero
     };
 
     // Set the cookie as the token source
-    options.Events = new JwtBearerEvents
+    /*options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
         {
             context.Token = context.Request.Cookies["ac_token"];
             return Task.CompletedTask;
         }
-    };
+    };*/
 })
 .AddGoogle(googleOptions =>
 {
@@ -94,6 +90,7 @@ builder.Services.AddAuthentication(options =>
         return Task.CompletedTask;
     };
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

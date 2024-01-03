@@ -1,6 +1,22 @@
-import AxiosInstance from "../components/AxiosInstance";
+import AxiosInstance, { getToken, refreshToken } from "../components/AxiosInstance";
 
-// Authenticatie is cookie-based, dus er hoeft geen Authorization header te zijn.
+export var lastRefreshTime = 0;
+export const setLastRefreshTime = (value) => lastRefreshTime = value;
+
+const checkForRefreshToken = async () => {
+	if (lastRefreshTime < Date.now() - 30 * 1000)
+	{
+		console.log("attempting to refresh the token...");
+		lastRefreshTime = Date.now();
+		await refreshToken();
+	}
+	else
+	{
+		//console.log("skipping refresh...");
+	}
+}
+
+// Authenticate = JWT (bearer)
 export const fetchApi = async ({
 	route, 
 	options = {
@@ -9,7 +25,8 @@ export const fetchApi = async ({
 		}
 	}
 }) => {
-	return await AxiosInstance.get(route, {...options, withCredentials: true });
+	await checkForRefreshToken();
+	return await AxiosInstance.get(route, {...options, withCredentials: true, headers: {...options.headers, Authorization: "Bearer " + getToken()} });
 };
 
 export const postApi = async ({
@@ -21,7 +38,8 @@ export const postApi = async ({
 		}
 	}
 }) => {
-	return await AxiosInstance.post(route, body, {...options, withCredentials: true  });
+	await checkForRefreshToken();
+	return await AxiosInstance.post(route, body, {...options, withCredentials: true, headers: {...options.headers, Authorization: "Bearer " + getToken()} });
 };
 
 

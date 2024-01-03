@@ -22,9 +22,19 @@ namespace AspTest.Repository
             
             _token.Gebruiker = gebruiker;
 
+            _context.RefreshTokens.Add(_token);
+
             await _context.SaveChangesAsync();
 
             return _token;
+        }
+
+        public async Task DeleteRefreshToken(RefreshToken token)
+        {
+            _context.RefreshTokens.Remove(token);
+            
+            await _context.SaveChangesAsync();
+
         }
     }
 }

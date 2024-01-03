@@ -3,14 +3,18 @@ import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { postApi } from "../../hooks/useApi";
 import "./LogoutButton.css";
+import { logout } from "../logout";
 
 const ButtonPortal = () => {
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
-		await postApi({route: "api/Login/logout"});
-		navigate("/");
-		location.reload();
+		logout();
+		setTimeout(() => {
+			// navigate werkt soms niet zo goed?
+			//navigate("/");
+			window.location.href = "/";
+		}, 1500);
 	};
   
 	return (

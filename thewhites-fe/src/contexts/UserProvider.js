@@ -3,6 +3,9 @@ import { postApi } from "../hooks/useApi";
 import { fetchApi } from "../hooks/useApi";
 import { ROLES } from "../constants/roles";
 import useUpdateLoginState from "../hooks/useUpdateLoginState";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoggedIn } from "../redux/loginSlice";
+import { setToken } from "../components/AxiosInstance";
 
 export const UserContext = createContext();
 export const CustomLoginContext = createContext("");
@@ -11,9 +14,9 @@ export const AuthContext = createContext("");
 export const UserProvider = ({ children }) => {
 	const [username, setUsername] = useState("");
 	const [role, setRole] = useState("");
-
 	const [googleCredentials, setGoogleCredentials] = useState("");
-	const [loggedIn, setLoggedIn] = useState(false);
+	const loggedIn = useSelector((state) => state.login_status.isLoggedIn);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		if (googleCredentials)
@@ -23,7 +26,8 @@ export const UserProvider = ({ children }) => {
 		
 				if (response.status == 200) {
 					console.log("Authenticated.");
-					setLoggedIn(true);
+					setToken(response.data.token);
+					dispatch(setLoggedIn(true));
 				}
 			};
 			getJwtToken();
@@ -58,12 +62,10 @@ export const UserProvider = ({ children }) => {
 
 
 	return (
-		<AuthContext.Provider value={{loggedIn, setLoggedIn}}>
-			<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
-				<UserContext.Provider value={{ username, setUsername, role, setRole: setValidRole }}>
-					{children}
-				</UserContext.Provider>
-			</CustomLoginContext.Provider>
-		</AuthContext.Provider>
+		<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
+			<UserContext.Provider value={{ username, setUsername, role, setRole: setValidRole }}>
+				{children}
+			</UserContext.Provider>
+		</CustomLoginContext.Provider>
 	);
 };
