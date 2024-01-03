@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace AspTest.Models
 {
     public class Onderzoek
@@ -5,7 +7,10 @@ namespace AspTest.Models
         public int Id { get; set; }
         public string Titel {get; set; }
         public string Beschrijving {get; set; }
+        
+        [JsonIgnore]
         public int BedrijfId { get; set; }
+        
         public Bedrijf Bedrijf { get; set; }
         public DateTime StartDatum { get; set; }
         public DateTime EindDatum { get; set; }

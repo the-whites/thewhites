@@ -11,9 +11,11 @@ namespace AspTest
             DateTime startdatum, 
             DateTime einddatum, 
             string locatie,
+            string beloning,
             ICollection<OnderzoekBeperkingCriteria> beperkingCriteria,
             ICollection<OnderzoekLeeftijdCriteria> leeftijdCriteria,
-            ICollection<OnderzoekPostcodeCriteria> postcodeCriteria);
+            ICollection<OnderzoekPostcodeCriteria> postcodeCriteria,
+            ICollection<OnderzoekCategories> onderzoekCategories);
         
         ICollection<Onderzoek> GetOnderzoeken();
     }

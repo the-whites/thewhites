@@ -1,4 +1,5 @@
 using AspTest.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspTest.Repository
 {
@@ -17,9 +18,11 @@ namespace AspTest.Repository
                 DateTime startdatum, 
                 DateTime einddatum, 
                 string locatie,
+                string beloning,
                 ICollection<OnderzoekBeperkingCriteria> beperkingCriteria,
                 ICollection<OnderzoekLeeftijdCriteria> leeftijdCriteria,
-                ICollection<OnderzoekPostcodeCriteria> postcodeCriteria)
+                ICollection<OnderzoekPostcodeCriteria> postcodeCriteria,
+                ICollection<OnderzoekCategories> onderzoekCategories)
         {
             Onderzoek onderzoek = new Onderzoek
             {
@@ -29,9 +32,11 @@ namespace AspTest.Repository
                 StartDatum = startdatum,
                 EindDatum = einddatum,
                 Locatie = locatie,
+                Beloning = beloning,
                 BeperkingCriteria = beperkingCriteria,
                 LeeftijdCriteria = leeftijdCriteria,
-                PostcodeCriteria = postcodeCriteria
+                PostcodeCriteria = postcodeCriteria,
+                OnderzoekCategories = onderzoekCategories
             };
 
             _context.Onderzoeken.Add(onderzoek);
@@ -43,7 +48,15 @@ namespace AspTest.Repository
 
         public ICollection<Onderzoek> GetOnderzoeken()
         {
-            return _context.Onderzoeken.ToList();
+            return _context.Onderzoeken.AsNoTracking()
+                .Include(o => o.Bedrijf)
+                .Include(o => o.OnderzoekCategories)
+                    .ThenInclude(oc => oc.Type)
+                .Include(o => o.BeperkingCriteria)
+                    .ThenInclude(bc => bc.Beperking)
+                .Include(o => o.LeeftijdCriteria)
+                .Include(o => o.PostcodeCriteria)
+                .ToList();
         }
     }
 }

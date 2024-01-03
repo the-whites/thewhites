@@ -1,5 +1,6 @@
 using AspTest.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace AspTest
 {
@@ -27,32 +28,69 @@ namespace AspTest
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            ConfigureEntity<ErvaringsdeskundigeBeperking>(modelBuilder, "BeperkingId", typeof(Beperking), "Beperking");
-            ConfigureEntity<ErvaringsdeskundigeBeperking>(modelBuilder, "ErvaringsdeskundigeId", typeof(Ervaringsdeskundige), "Ervaringsdeskundige");
+            // TODO: maak methode voor relaties die hetzelfde zijn (many to many)
+            modelBuilder.Entity<ErvaringsdeskundigeBeperking>()
+                .HasKey(pc => new { pc.BeperkingId, pc.ErvaringsdeskundigeId });
 
-            ConfigureEntity<Onderzoek>(modelBuilder, "BedrijfId", typeof(Bedrijf), "Bedrijf");
+            modelBuilder.Entity<ErvaringsdeskundigeBeperking>()
+                .HasOne(p => p.Beperking)
+                .WithMany(pc => pc.ErvaringsdeskundigeBeperkingen)
+                .HasForeignKey(p => p.BeperkingId);
 
-            ConfigureEntity<OnderzoekLeeftijdCriteria>(modelBuilder, "OnderzoekId", typeof(Onderzoek), "Onderzoek");
+            modelBuilder.Entity<ErvaringsdeskundigeBeperking>()
+                .HasOne(p => p.Ervaringsdeskundige)
+                .WithMany(pc => pc.ErvaringsdeskundigeBeperkingen)
+                .HasForeignKey(p => p.ErvaringsdeskundigeId);
 
-            ConfigureEntity<OnderzoekPostcodeCriteria>(modelBuilder, "OnderzoekId", typeof(Onderzoek), "Onderzoek");
-
-            ConfigureEntity<OnderzoekBeperkingCriteria>(modelBuilder, "BeperkingId", typeof(Beperking), "Beperking");
-            ConfigureEntity<OnderzoekBeperkingCriteria>(modelBuilder, "OnderzoekId", typeof(Onderzoek), "Onderzoek");
-
-            ConfigureEntity<OnderzoekCategories>(modelBuilder, "TypeId", typeof(OnderzoekType), "Type");
-            ConfigureEntity<OnderzoekCategories>(modelBuilder, "OnderzoekId", typeof(Onderzoek), "Onderzoek");
-        }
-
-        private void ConfigureEntity<T>(ModelBuilder modelBuilder, string primaryKey, Type targetEntityType, string navigationProperty) where T : class
-        {
-            modelBuilder.Entity<T>()
-                .HasKey(primaryKey);
-
-            modelBuilder.Entity<T>()
-                .HasOne(targetEntityType, navigationProperty)
-                .WithMany()
-                .HasForeignKey(primaryKey)
+            modelBuilder.Entity<Onderzoek>()
+                .HasOne(o => o.Bedrijf)
+                .WithMany(b => b.Onderzoeken)
+                .HasForeignKey(o => o.BedrijfId)
                 .IsRequired();
+
+            modelBuilder.Entity<OnderzoekBeperkingCriteria>()
+                .HasKey(pc => new { pc.OnderzoekId, pc.BeperkingId });
+
+            modelBuilder.Entity<OnderzoekBeperkingCriteria>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.BeperkingCriteria)
+                .HasForeignKey(pc => pc.OnderzoekId)
+                .HasPrincipalKey(o => o.Id);
+
+             modelBuilder.Entity<OnderzoekBeperkingCriteria>()
+                .HasOne(pc => pc.Beperking)
+                .WithMany(b => b.OnderzoekBeperkingCriterias)
+                .HasForeignKey(pc => pc.BeperkingId);
+
+            modelBuilder.Entity<OnderzoekLeeftijdCriteria>()
+                .HasKey(pc => new { pc.OnderzoekId });
+
+            modelBuilder.Entity<OnderzoekLeeftijdCriteria>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.LeeftijdCriteria)
+                .HasForeignKey(pc => pc.OnderzoekId)
+                .HasPrincipalKey(o => o.Id);
+
+            modelBuilder.Entity<OnderzoekPostcodeCriteria>()
+                .HasKey(pc => new { pc.OnderzoekId });
+
+            modelBuilder.Entity<OnderzoekPostcodeCriteria>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.PostcodeCriteria)
+                .HasForeignKey(pc => pc.OnderzoekId);
+
+            modelBuilder.Entity<OnderzoekCategories>()
+                .HasKey(pc => new { pc.OnderzoekId, pc.TypeId });
+
+            modelBuilder.Entity<OnderzoekCategories>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.OnderzoekCategories)
+                .HasForeignKey(pc => pc.OnderzoekId);
+
+            modelBuilder.Entity<OnderzoekCategories>()
+                .HasOne(pc => pc.Type)
+                .WithMany(o => o.OnderzoekCategories)
+                .HasForeignKey(pc => pc.TypeId);
         }
     }
 }

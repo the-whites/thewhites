@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using AspTest;
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,7 @@ builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IOnderzoekRepository, OnderzoekRepository>();
 builder.Services.AddScoped<IBedrijfRepository, BedrijfRepository>();
 builder.Services.AddScoped<IBeperkingRepository, BeperkingRepository>();
+builder.Services.AddScoped<IOnderzoekTypeRepository, OnderzoekTypeRepository>();
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

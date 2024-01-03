@@ -12,5 +12,6 @@ namespace AspTest.Models
         public ICollection<string> postcodeCriteriaList { get; set; }
         public ICollection<int> leeftijdCriteriaList { get; set; }
         public ICollection<int> beperkingCriteriaList { get; set; }
+        public ICollection<int> categoriesList { get; set; }
     }
 }
