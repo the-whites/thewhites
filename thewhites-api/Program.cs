@@ -25,6 +25,9 @@ builder.Services.AddDbContext<AspDbContext>(options =>
 
 builder.Services.AddScoped<IGebruikerRepository, GebruikerRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IOnderzoekRepository, OnderzoekRepository>();
+builder.Services.AddScoped<IBedrijfRepository, BedrijfRepository>();
+builder.Services.AddScoped<IBeperkingRepository, BeperkingRepository>();
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

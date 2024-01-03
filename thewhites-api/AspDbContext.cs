@@ -17,23 +17,42 @@ namespace AspTest
         public DbSet<ErvaringsdeskundigeBeperking> ErvaringsdeskundigeBeperkingen { get; set; }
         public DbSet<Notificatie> Notificaties { get; set; }
         public DbSet<RefreshToken> RefreshTokens {get; set; }
+        public DbSet<Onderzoek> Onderzoeken { get; set; }
+        public DbSet<OnderzoekPostcodeCriteria> OnderzoekPostcodeCriteria { get; set; }
+        public DbSet<OnderzoekLeeftijdCriteria> OnderzoekLeeftijdCriteria { get; set; }
+        public DbSet<OnderzoekBeperkingCriteria> OnderzoekBeperkingCriteria { get; set; }
+        public DbSet<OnderzoekType> OnderzoekType { get; set; }
+        public DbSet<OnderzoekCategories> OnderzoekCategories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ErvaringsdeskundigeBeperking>()
-                .HasKey(pc => new { pc.BeperkingId, pc.ErvaringsdeskundigeId });
+            ConfigureEntity<ErvaringsdeskundigeBeperking>(modelBuilder, "BeperkingId", typeof(Beperking), "Beperking");
+            ConfigureEntity<ErvaringsdeskundigeBeperking>(modelBuilder, "ErvaringsdeskundigeId", typeof(Ervaringsdeskundige), "Ervaringsdeskundige");
 
-            modelBuilder.Entity<ErvaringsdeskundigeBeperking>()
-                .HasOne(p => p.Beperking)
-                .WithMany(pc => pc.ErvaringsdeskundigeBeperkingen)
-                .HasForeignKey(p => p.BeperkingId);
+            ConfigureEntity<Onderzoek>(modelBuilder, "BedrijfId", typeof(Bedrijf), "Bedrijf");
 
-            modelBuilder.Entity<ErvaringsdeskundigeBeperking>()
-                .HasOne(p => p.Ervaringsdeskundige)
-                .WithMany(pc => pc.ErvaringsdeskundigeBeperkingen)
-                .HasForeignKey(p => p.ErvaringsdeskundigeId);
+            ConfigureEntity<OnderzoekLeeftijdCriteria>(modelBuilder, "OnderzoekId", typeof(Onderzoek), "Onderzoek");
 
+            ConfigureEntity<OnderzoekPostcodeCriteria>(modelBuilder, "OnderzoekId", typeof(Onderzoek), "Onderzoek");
+
+            ConfigureEntity<OnderzoekBeperkingCriteria>(modelBuilder, "BeperkingId", typeof(Beperking), "Beperking");
+            ConfigureEntity<OnderzoekBeperkingCriteria>(modelBuilder, "OnderzoekId", typeof(Onderzoek), "Onderzoek");
+
+            ConfigureEntity<OnderzoekCategories>(modelBuilder, "TypeId", typeof(OnderzoekType), "Type");
+            ConfigureEntity<OnderzoekCategories>(modelBuilder, "OnderzoekId", typeof(Onderzoek), "Onderzoek");
+        }
+
+        private void ConfigureEntity<T>(ModelBuilder modelBuilder, string primaryKey, Type targetEntityType, string navigationProperty) where T : class
+        {
+            modelBuilder.Entity<T>()
+                .HasKey(primaryKey);
+
+            modelBuilder.Entity<T>()
+                .HasOne(targetEntityType, navigationProperty)
+                .WithMany()
+                .HasForeignKey(primaryKey)
+                .IsRequired();
         }
     }
 }

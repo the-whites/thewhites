@@ -56,7 +56,10 @@ function App() {
 							<Route path="/bedrijf" element={<BedrijvenPortal />} >
 								<Route index element={<DefaultBedrijvenPage />} />
 								<Route path="chat" element={<Chat />} />
-								<Route path="opdrachten" element={<Opdrachten />} />
+								<Route path="opdrachten" element={<Opdrachten />}>
+									<Route index element={<DefaultOpdrachtenTab />} />
+									<Route path="nieuw" element={<NieuwOpdracht />} />
+								</Route>
 								<Route path="profiel" element={<Profiel />} />
 							</Route>
 						</Route>

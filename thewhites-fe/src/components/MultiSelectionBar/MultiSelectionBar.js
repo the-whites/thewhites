@@ -55,7 +55,6 @@ const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", item
 								<Dropdown.Item
 									key={index}
 									onClick={() => selectItem(option)}
-									bg="blue"
 									className={`d-flex justify-content-between dropdown-item ${index % 2 === 0 ? "" : "bg-grey"}`} 
 								>
 									{option}
