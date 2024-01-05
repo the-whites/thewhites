@@ -13,11 +13,11 @@
 .profile-page h1 {
     text-align: middle;
     color: #333;
-    margin-bottom: 30px; 
+    margin-bottom: 15px; 
 }
 
 .form-group {
-    margin-bottom: 30px;
+    margin-top: 30px;
     position: relative; /* Needed for custom arrow positioning */
 }
 

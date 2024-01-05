@@ -20,6 +20,7 @@ const ProfielPagina = () => {
 			<form onSubmit={handleSubmit}>
 				<div className="form-group">
 					<label htmlFor="Telefoon">Telefoonnummer *</label>
+					<p>Vul u telefoonnummer in de volgende format in : 0612345678</p>
 					<input 
 						type="Algemeen" 
 						id="phone" 
