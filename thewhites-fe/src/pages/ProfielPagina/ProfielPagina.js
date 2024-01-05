@@ -1,40 +1,42 @@
 import React, { useState } from "react";
-import "./ProfielPagina.css"; // Make sure this path is correct
+import "./ProfielPagina.css";
 
 const ProfielPagina = () => {
-	const [phone, setPhone] = useState("");
-	const [disabilityType, setDisabilityType] = useState("");
-	const [aid, setAid] = useState("");
-	const [condition, setCondition] = useState("");
+	const [Telefoon, setTelefoon] = useState("");
+	const [Beperkingstype, setBeperkingstype] = useState("");
+	const [Hulpmiddelen, setHulpmiddelen] = useState("");
+	const [Aandoening, setAandoening] = useState("");
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// Process the entered data here
-		console.log({ phone, disabilityType, aid, condition });
+		console.log({ Telefoon, Beperkingstype, Hulpmiddelen, Aandoening });
 	};
 
 	return (
 		<div className="profile-page">
-			<h2>Registratieformulier 1/2</h2>
+			<h1>Profielpagina</h1>
+			<h3>Profielformulier 1/2</h3>
 			<form onSubmit={handleSubmit}>
 				<div className="form-group">
-					<label htmlFor="phone">Telefoonnummer *</label>
+					<label htmlFor="Telefoon">Telefoonnummer *</label>
 					<input 
 						type="tel" 
 						id="phone" 
-						value={phone}
-						onChange={(e) => setPhone(e.target.value)}
+						value={Telefoon}
+						onChange={(e) => setTelefoon(e.target.value)}
 						placeholder="0612345678"
 						required 
 					/>
 				</div>
         
 				<div className="form-group">
-					<label htmlFor="disabilityType">Type beperking *</label>
+					<label htmlFor="Beperkingstype">Type beperking *</label>
 					<select 
-						id="disabilityType" 
-						value={disabilityType}
-						onChange={(e) => setDisabilityType(e.target.value)}
+						id="Beperkingstype" 
+						value={Beperkingstype}
+						onChange={(e) => setBeperkingstype(e.target.value)}
+						placeholder="Selecteer beperkingen"
 						required
 					>
 						<option value="">Selecteer beperkingen</option>
@@ -46,21 +48,23 @@ const ProfielPagina = () => {
 				</div>
 
 				<div className="form-group">
-					<label htmlFor="aid">Hulpmiddelen</label>
-					<textarea 
-						id="aid" 
-						value={aid}
-						onChange={(e) => setAid(e.target.value)}
+					<label htmlFor="Hulpmiddelen">Hulpmiddelen</label>
+					<input 
+						id="Hulpmiddelen" 
+						value={Hulpmiddelen}
+						onChange={(e) => setHulpmiddelen(e.target.value)}
+						placeholder="Rolstoel, gehoorapparaat"
+						required 
 					/>
 				</div>
 
 				<div className="form-group">
-					<label htmlFor="condition">Aandoening/ziekte *</label>
+					<label htmlFor="Aandoening">Aandoening/ziekte *</label>
 					<input 
 						type="text" 
-						id="condition" 
-						value={condition}
-						onChange={(e) => setCondition(e.target.value)}
+						id="Aandoening" 
+						value={Aandoening}
+						onChange={(e) => setAandoening(e.target.value)}
 						required 
 					/>
 				</div>
