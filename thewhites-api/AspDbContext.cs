@@ -19,11 +19,11 @@ namespace AspTest
         public DbSet<Notificatie> Notificaties { get; set; }
         public DbSet<RefreshToken> RefreshTokens {get; set; }
         public DbSet<Onderzoek> Onderzoeken { get; set; }
-        /**public DbSet<OnderzoekPostcodeCriteria> OnderzoekPostcodeCriteria { get; set; }
+        public DbSet<OnderzoekPostcodeCriteria> OnderzoekPostcodeCriteria { get; set; }
         public DbSet<OnderzoekLeeftijdCriteria> OnderzoekLeeftijdCriteria { get; set; }
-        public DbSet<OnderzoekBeperkingCriteria> OnderzoekBeperkingCriteria { get; set; }**/
+        public DbSet<OnderzoekBeperkingCriteria> OnderzoekBeperkingCriteria { get; set; }
         public DbSet<OnderzoekType> OnderzoekType { get; set; }
-        //public DbSet<OnderzoekCategories> OnderzoekCategories { get; set; }
+        public DbSet<OnderzoekCategories> OnderzoekCategories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,7 +48,7 @@ namespace AspTest
                 .HasForeignKey(o => o.BedrijfId)
                 .IsRequired();
 
-            /**modelBuilder.Entity<OnderzoekBeperkingCriteria>()
+            modelBuilder.Entity<OnderzoekBeperkingCriteria>()
                 .HasKey(pc => new { pc.OnderzoekId, pc.BeperkingId });
 
             modelBuilder.Entity<OnderzoekBeperkingCriteria>()
@@ -90,7 +90,7 @@ namespace AspTest
             modelBuilder.Entity<OnderzoekCategories>()
                 .HasOne(pc => pc.Type)
                 .WithMany(o => o.OnderzoekCategories)
-                .HasForeignKey(pc => pc.TypeId);**/
+                .HasForeignKey(pc => pc.TypeId);
         }
     }
 }
