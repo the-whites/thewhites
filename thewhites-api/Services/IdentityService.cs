@@ -56,7 +56,7 @@ namespace AspTest.Services
                     new Claim("user_given_name", gebruiker.Voornaam),
                     new Claim("user_family_name", gebruiker.Achternaam)
                 }),
-                Expires = DateTime.UtcNow.AddHours(1), // Token expiration time
+                Expires = DateTime.UtcNow.AddMinutes(30), // Token expiration time
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature),
             };
 
@@ -64,6 +64,22 @@ namespace AspTest.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public static ClaimsPrincipal? ValidateAndGetExpiredJwtToken(string token)
+        {
+            var validationSettings = new TokenValidationParameters
+            {
+                ValidIssuer = "api.dewhites.nl",
+                ValidAudience = "dewhites.nl",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")!)),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true
+            };
+
+            return new JwtSecurityTokenHandler().ValidateToken(token, validationSettings, out _);
         }
     }
 }

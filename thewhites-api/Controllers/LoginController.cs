@@ -70,40 +70,48 @@ namespace AspTest.Controllers
                 Secure = true
             });
 
-            Response.Cookies.Append("ac_token", token, new CookieOptions {
+            /*Response.Cookies.Append("ac_token", token, new CookieOptions {
                 HttpOnly = true,
                 Expires = DateTime.Now.AddHours(1),
                 SameSite = SameSiteMode.Strict,
                 Secure = true
-            });
+            });*/
 
             // Return de gemaakte token
-            return Ok();
+            return Ok(new {token = token});
         }
 
         [Authorize]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            Response.Cookies.Delete("ac_token");
+            //Response.Cookies.Delete("ac_token");
             Response.Cookies.Delete("refresh_token");
 
             return Ok();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenBodyModel oldTokenModel)
         {
-            string refreshToken = Request.Cookies["refreshToken"] ?? "";
+            string refreshToken = Request.Cookies["refresh_token"] ?? "";
 
             // TODO: check max length
             if (refreshToken.Length < 1)
-            {
                 return BadRequest("Invalid refresh token. Reset cookies and re-authenticate.");
-            }
+            
+            if (oldTokenModel.oldToken == null || oldTokenModel.oldToken.Equals(""))
+                return BadRequest("Invalid access token.");
 
-            bool result = int.TryParse(User.FindFirstValue("user_id"), out int userId);
+            ClaimsPrincipal? tokenPrincipalStore = IdentityService.ValidateAndGetExpiredJwtToken(oldTokenModel.oldToken);
+            string? userIdString = tokenPrincipalStore?.FindFirstValue("user_id");
+
+            if (userIdString == null)
+                return Unauthorized("Invalid token.");
+
+
+            bool result = int.TryParse(userIdString, out int userId);
 
             if (result)
             {
@@ -121,33 +129,33 @@ namespace AspTest.Controllers
                 
                 if (foundRefreshToken.Expires < DateTime.Now)
                     return Unauthorized("Token expired.");
+                
+                if (gebruiker.GoogleId == null)
+                    return Unauthorized("No google account was found.");
 
-                string newJwtToken = IdentityService.GenerateJwtToken(User.FindFirstValue("google_id"), gebruiker);
-                var newRefreshToken = await _refreshTokenRepository.CreateRefreshToken(
+                // Delete old refresh token
+                //await _refreshTokenRepository.DeleteRefreshToken(foundRefreshToken);
+
+                string newJwtToken = IdentityService.GenerateJwtToken(gebruiker.GoogleId, gebruiker);
+                
+                /*var newRefreshToken = await _refreshTokenRepository.CreateRefreshToken(
                     Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                     gebruiker,
                     DateTime.Now.AddDays(1)
-                );
+                );*/
 
-                Response.Cookies.Append("refreshToken", newRefreshToken.Token, new CookieOptions {
+                /*Response.Cookies.Append("refresh_token", newRefreshToken.Token, new CookieOptions {
                     HttpOnly = true,
                     Expires = newRefreshToken.Expires,
                     SameSite = SameSiteMode.Strict,
                     //Secure = true
-                });
+                });*/
 
-                Response.Cookies.Append("ac_token", newJwtToken, new CookieOptions {
-                    HttpOnly = true,
-                    Expires = DateTime.Now.AddHours(1),
-                    SameSite = SameSiteMode.Strict,
-                    //Secure = true
-                });
-
-                return Ok();
+                return Ok(new {token = newJwtToken});
             }
             else
             {
-                return BadRequest("Invalid userid. Reset cookies and re-authenticate.");
+                return BadRequest("Something went wrong while parsing the user id.");
             }
         }
 
