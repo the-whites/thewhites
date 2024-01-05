@@ -63,7 +63,7 @@ namespace AspTest
                 .HasForeignKey(pc => pc.BeperkingId);
 
             modelBuilder.Entity<OnderzoekLeeftijdCriteria>()
-                .HasKey(pc => new { pc.OnderzoekId });
+                .HasKey(pc => new { pc.OnderzoekId, pc.Leeftijd });
 
             modelBuilder.Entity<OnderzoekLeeftijdCriteria>()
                 .HasOne(pc => pc.Onderzoek)
@@ -72,7 +72,7 @@ namespace AspTest
                 .HasPrincipalKey(o => o.Id);
 
             modelBuilder.Entity<OnderzoekPostcodeCriteria>()
-                .HasKey(pc => new { pc.OnderzoekId });
+                .HasKey(pc => new { pc.OnderzoekId, pc.Postcode });
 
             modelBuilder.Entity<OnderzoekPostcodeCriteria>()
                 .HasOne(pc => pc.Onderzoek)

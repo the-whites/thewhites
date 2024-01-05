@@ -31,7 +31,7 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { ROLES } from "./constants/roles";
 import NieuwOpdracht from "./pages/BedrijvenPortal/Opdrachten/NieuwOpdracht/NieuwOpdracht";
 import DefaultOpdrachtenTab from "./pages/BedrijvenPortal/Opdrachten/DefaultOpdrachtenTab/DefaultOpdrachtenTab";
-
+import Layout from "./pages/Layout";
 function App() {
 
 	return (
@@ -53,7 +53,7 @@ function App() {
 							</Route>
 						</Route>
 						<Route element={<RequireAuth allowedRoles={[ROLES.bedrijf]} />}>
-							<Route path="/bedrijf" element={<BedrijvenPortal />} >
+							<Route path="/bedrijf" element={<Layout><BedrijvenPortal /></Layout>} >
 								<Route index element={<DefaultBedrijvenPage />} />
 								<Route path="chat" element={<Chat />} />
 								<Route path="opdrachten" element={<Opdrachten />}>

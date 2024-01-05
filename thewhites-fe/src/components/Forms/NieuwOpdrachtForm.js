@@ -3,7 +3,8 @@ import { Container, Col, Row, Button, Form } from "react-bootstrap";
 import InputBar from "../Inputbar/InputBar";
 import CustomDatePicker from "../CustomDatePicker/CustomDatePicker";
 import MultiSelectionBar from "../MultiSelectionBar/MultiSelectionBar";
-import { postcodeValidator } from 'postcode-validator';
+import { postcodeValidator } from "postcode-validator";
+import { useNavigate } from "react-router-dom";
 
 const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperkingen }) => {
 	const [localOpdrachtData, setLocalOpdrachtData] = useState({
@@ -15,6 +16,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		postcode: [],
 		startDatum: null,
 		eindDatum: null,
+		locatie: "",
+		beloning: ""
 	});
 
 	const [isInvalidFields, setIsInvalidFields] = useState({
@@ -23,10 +26,13 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		typeOpdrachten: false,
 		startDatum: false,
 		eindDatum: false,
-		postcode: false
+		postcode: false,
+		locatie: false
 	});
 
 	const [invalidPostcodes, setInvalidPostcodes] = useState([]);
+
+	const navigate = useNavigate();
 
 	const getIdByNaam = (naam, data) => {
 		const foundItem = data.find(item => item.naam === naam);
@@ -93,10 +99,19 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		setLocalOpdrachtData((prevData) => ({ ...prevData, eindDatum: date }));
 	};
 
+	const handleLocatieChange = (locatie) => {
+		setLocalOpdrachtData((prevData) => ({ ...prevData, locatie: locatie}));
+	};
+
+	const handleBeloningChange = (beloning) => {
+		setLocalOpdrachtData((prevData) => ({ ...prevData, beloning: beloning }));
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const valid = validateOpdrachtData();
 
+		console.log("is het valid?? ", valid);
 		if(valid)
 			handleOpdrachtDataChange(localOpdrachtData);
 	};
@@ -152,6 +167,10 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 
 	const postcodeErrorText = `De volgende postcodes zijn ongeldig: ${invalidPostcodes.join(", ")}`;
 
+	const handleAnnuleer = () => {
+		navigate(-1);
+	};
+
 	useEffect(() => {
 		const hasInvalidPostcodes = invalidPostcodes.length !== 0 && !invalidPostcodes.includes("");
 		setIsInvalidFields(prevState => ({ ...prevState, postcode: hasInvalidPostcodes }));
@@ -160,7 +179,7 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 	return (
 		<Form>
 			<Container className="center-container">
-				<h1 className="title">Nieuwe opdracht aanmaken</h1>
+				<h1 className="title">nieuwe opdracht aanmaken</h1>
 				<Row className="justify-content-center">
 					<Col md={{ span: 12, offset: 3 }}>
 						
@@ -168,6 +187,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 						<div className="mb-3">
 							<InputBar textPosition="left" label="Opdracht naam" type="text" placeholder="bijv. The Whites Website Accessibility" required={true} isInvalid={isInvalidFields.opdrachtNaam} handleChange={handleOpdrachtNaamChange}/>
 							<InputBar textPosition="left" label="Opdracht omschrijving" type="textarea" placeholder="Dit dat" required={true} isInvalid={isInvalidFields.opdrachtOmschrijving} handleChange={handleOpdrachtOmschrijvingChange} />
+							<InputBar textPosition="left" label="Locatie van opdracht" type="text" placeholder="Hoofdkantoor The Whites" required={true} isInvalid={isInvalidFields.locatie} handleChange={handleLocatieChange} />
+							<InputBar textPosition="left" label="Beloning" type="text" placeholder="5 doezoe" handleChange={handleBeloningChange} />
 						</div>
 						<div className="mb-3">
 							<MultiSelectionBar label="Type opdracht" buttonText="Selecteer type" items={mapItemsToStrings(typeOpdrachten)} isInvalid={isInvalidFields.typeOpdrachten} required={true} handleSelection={handleTypeSelection} />
@@ -181,9 +202,9 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 							<InputBar textPosition="left" label="Postcode" type="text" placeholder="bijv. 1234AB" infoText="Je kan meerdere postcodes invullen doormiddel van een scheiding met een komma: 2554GW, 2551AB" errorMessage={postcodeErrorText} isInvalid={isInvalidFields.postcode} handleChange={handlePostcodeChange} />
 						</div>
 						<h1 className="text-center mb-3 header ">Datum</h1>
-						<CustomDatePicker label="Start datum" isInvalid={isInvalidFields.startDatum} handleChange={handleStartDateChange} />
+						<CustomDatePicker label="Start datum" required={true} isInvalid={isInvalidFields.startDatum} handleChange={handleStartDateChange} />
 						<div className="mb-3" />
-						<CustomDatePicker label="Eind datum" isInvalid={isInvalidFields.eindDatum} handleChange={handleEndDateChange}/>
+						<CustomDatePicker label="Eind datum" required={true} isInvalid={isInvalidFields.eindDatum} handleChange={handleEndDateChange}/>
 					</Col>
 				</Row>
 
@@ -191,13 +212,12 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 
 				<Row className="justify-content-center mt-3">
 					<Col md={4} className="text-start">
-						<Button variant="danger">Annuleren</Button>
+						<Button onClick={handleAnnuleer} variant="danger">Annuleren</Button>
 					</Col>
 					<Col md={2} className="text-end">
 						<Button onClick={handleSubmit}>Maak opdracht aan</Button>
 					</Col>
 				</Row>
-				{invalidPostcodes.length}
 				<div className="mb-4" />
 			</Container>
 		</Form>
