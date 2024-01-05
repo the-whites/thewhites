@@ -1,7 +1,12 @@
-import { useEffect } from "react";
-import { fetchApi } from "./useApi";
+import { useContext, useEffect } from "react";
+import { fetchApi, setLastRefreshTime } from "./useApi";
+import { getToken } from "../components/AxiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoggedIn } from "../redux/loginSlice";
 
-const useUpdateLoginState = (loggedIn, setLoggedIn) => {
+const useUpdateLoginState = () => {
+	const dispatch = useDispatch();
+
 	return useEffect(() => {
 
 		const fetchLoginStatus = async () => {
@@ -14,13 +19,13 @@ const useUpdateLoginState = (loggedIn, setLoggedIn) => {
 			if (response)
 			{
 				if (response.status == 200) {
-					setLoggedIn(true);
+					dispatch(setLoggedIn(true));
 				}
 				else if (response.status == 401) {
-					setLoggedIn(false);
+					//dispatch(setLoggedIn(false));
 				}
 				else {
-					setLoggedIn(false);
+					//dispatch(setLoggedIn(false));
 					// send error?
 				}
 			}
