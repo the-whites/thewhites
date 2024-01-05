@@ -1,5 +1,6 @@
 using AspTest.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace AspTest
 {
@@ -17,10 +18,17 @@ namespace AspTest
         public DbSet<ErvaringsdeskundigeBeperking> ErvaringsdeskundigeBeperkingen { get; set; }
         public DbSet<Notificatie> Notificaties { get; set; }
         public DbSet<RefreshToken> RefreshTokens {get; set; }
+        public DbSet<Onderzoek> Onderzoeken { get; set; }
+        public DbSet<OnderzoekPostcodeCriteria> OnderzoekPostcodeCriteria { get; set; }
+        public DbSet<OnderzoekLeeftijdCriteria> OnderzoekLeeftijdCriteria { get; set; }
+        public DbSet<OnderzoekBeperkingCriteria> OnderzoekBeperkingCriteria { get; set; }
+        public DbSet<OnderzoekType> OnderzoekType { get; set; }
+        public DbSet<OnderzoekCategories> OnderzoekCategories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // TODO: maak methode voor relaties die hetzelfde zijn (many to many)
             modelBuilder.Entity<ErvaringsdeskundigeBeperking>()
                 .HasKey(pc => new { pc.BeperkingId, pc.ErvaringsdeskundigeId });
 
@@ -34,6 +42,55 @@ namespace AspTest
                 .WithMany(pc => pc.ErvaringsdeskundigeBeperkingen)
                 .HasForeignKey(p => p.ErvaringsdeskundigeId);
 
+            modelBuilder.Entity<Onderzoek>()
+                .HasOne(o => o.Bedrijf)
+                .WithMany(b => b.Onderzoeken)
+                .HasForeignKey(o => o.BedrijfId)
+                .IsRequired();
+
+            modelBuilder.Entity<OnderzoekBeperkingCriteria>()
+                .HasKey(pc => new { pc.OnderzoekId, pc.BeperkingId });
+
+            modelBuilder.Entity<OnderzoekBeperkingCriteria>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.BeperkingCriteria)
+                .HasForeignKey(pc => pc.OnderzoekId)
+                .HasPrincipalKey(o => o.Id);
+
+             modelBuilder.Entity<OnderzoekBeperkingCriteria>()
+                .HasOne(pc => pc.Beperking)
+                .WithMany(b => b.OnderzoekBeperkingCriterias)
+                .HasForeignKey(pc => pc.BeperkingId);
+
+            modelBuilder.Entity<OnderzoekLeeftijdCriteria>()
+                .HasKey(pc => new { pc.OnderzoekId });
+
+            modelBuilder.Entity<OnderzoekLeeftijdCriteria>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.LeeftijdCriteria)
+                .HasForeignKey(pc => pc.OnderzoekId)
+                .HasPrincipalKey(o => o.Id);
+
+            modelBuilder.Entity<OnderzoekPostcodeCriteria>()
+                .HasKey(pc => new { pc.OnderzoekId });
+
+            modelBuilder.Entity<OnderzoekPostcodeCriteria>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.PostcodeCriteria)
+                .HasForeignKey(pc => pc.OnderzoekId);
+
+            modelBuilder.Entity<OnderzoekCategories>()
+                .HasKey(pc => new { pc.OnderzoekId, pc.TypeId });
+
+            modelBuilder.Entity<OnderzoekCategories>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.OnderzoekCategories)
+                .HasForeignKey(pc => pc.OnderzoekId);
+
+            modelBuilder.Entity<OnderzoekCategories>()
+                .HasOne(pc => pc.Type)
+                .WithMany(o => o.OnderzoekCategories)
+                .HasForeignKey(pc => pc.TypeId);
         }
     }
 }
