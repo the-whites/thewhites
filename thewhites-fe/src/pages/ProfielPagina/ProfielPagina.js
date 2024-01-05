@@ -3,7 +3,7 @@ import "./ProfielPagina.css";
 
 const ProfielPagina = () => {
 	const [Telefoon, setTelefoon] = useState("");
-	const [Beperkingstype, setBeperkingstype] = useState("");
+	const [Beperkingstype, setBeperkingstype] = useState();
 	const [Hulpmiddelen, setHulpmiddelen] = useState("");
 	const [Aandoening, setAandoening] = useState("");
 
@@ -20,7 +20,7 @@ const ProfielPagina = () => {
 			<form onSubmit={handleSubmit}>
 				<div className="form-group">
 					<label htmlFor="Telefoon">Telefoonnummer *</label>
-					<p>Vul u telefoonnummer in de volgende format in : 0612345678</p>
+					<p>Vul u telefoonnummer in de volgende format in: 0612345678</p>
 					<input 
 						type="Algemeen" 
 						id="phone" 
