@@ -8,7 +8,7 @@ namespace AspTest.Models
         public string Type {get; set; }
         public string Beschrijving {get; set; }
 
-        [JsonIgnore]
+       [JsonIgnore]
         public ICollection<OnderzoekCategories> OnderzoekCategories {get; set;}
     }
 }

@@ -1,4 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace AspTest.Models
 {
@@ -8,7 +11,6 @@ namespace AspTest.Models
         public string Titel {get; set; }
         public string Beschrijving {get; set; }
         
-        [JsonIgnore]
         public int BedrijfId { get; set; }
         
         public Bedrijf Bedrijf { get; set; }

@@ -1,5 +1,8 @@
 using AspTest.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AspTest.Repository
 {
@@ -12,43 +15,22 @@ namespace AspTest.Repository
             _context = context;
         }
 
-        public async Task<Onderzoek> CreateOnderzoek(string titel, 
-                string beschrijving, 
-                Bedrijf bedrijf, 
-                DateTime startdatum, 
-                DateTime einddatum, 
-                string locatie,
-                string beloning,
-                ICollection<OnderzoekBeperkingCriteria> beperkingCriteria,
-                ICollection<OnderzoekLeeftijdCriteria> leeftijdCriteria,
-                ICollection<OnderzoekPostcodeCriteria> postcodeCriteria,
-                ICollection<OnderzoekCategories> onderzoekCategories)
+        public async Task CreateOnderzoek(Onderzoek onderzoek)
         {
-            Onderzoek onderzoek = new Onderzoek
+            try
             {
-                Titel = titel,
-                Beschrijving = beschrijving,
-                Bedrijf = bedrijf,
-                StartDatum = startdatum,
-                EindDatum = einddatum,
-                Locatie = locatie,
-                Beloning = beloning,
-                BeperkingCriteria = beperkingCriteria,
-                LeeftijdCriteria = leeftijdCriteria,
-                PostcodeCriteria = postcodeCriteria,
-                OnderzoekCategories = onderzoekCategories
-            };
-
-            _context.Onderzoeken.Add(onderzoek);
-
-            await _context.SaveChangesAsync();
-
-            return onderzoek;
+                _context.Onderzoeken.Add(onderzoek);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error creating Onderzoek: {ex.Message}");
+            }
         }
 
         public ICollection<Onderzoek> GetOnderzoeken()
         {
-            return _context.Onderzoeken.AsNoTracking()
+            return _context.Onderzoeken
                 .Include(o => o.Bedrijf)
                 .Include(o => o.OnderzoekCategories)
                     .ThenInclude(oc => oc.Type)

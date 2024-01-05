@@ -1,10 +1,13 @@
+// MultiSelectionBar.js
+
 import React, { useEffect, useState } from "react";
 import { Dropdown, Badge, CloseButton, Container, Row, Col } from "react-bootstrap";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
+import "../MainStyles.css";
 import "./MultiSelectionBar.css";
 
-const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", items, handleSelection = () => {}}) => {
+const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", items, required = false, handleSelection = () => {}, isInvalid = false }) => {
 	const [selectedItems, setSelectedItems] = useState([]); 
 
 	const selectItem = (option) => { 
@@ -22,10 +25,9 @@ const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", item
 	useEffect(() => {
 		handleSelection(selectedItems);
 	}, [selectedItems]); 
-	
-
+  
 	return (
-		<Container fluid className="justify-content-start">
+		<Container fluid className={`justify-content-start ${isInvalid ? "is-invalid" : ""}`}>
 			<Row>
 				<Col xs={2}></Col>
 				<Col xs={4} className="col-align-left">
@@ -43,11 +45,11 @@ const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", item
 			</Row>
 			<Row className="g-2">
 				<Col xs={2}>
-					<p>{label}</p>
+					<p className="label">{label} {required && "*"}</p>
 				</Col>
-				<Col xs={1}>
+				<Col xs={6}>
 					<Dropdown className="w-100">
-						<Dropdown.Toggle variant="success" id="dropdown-basic">
+						<Dropdown.Toggle variant={isInvalid ? "danger" : "success"} className="dropdown-button-w" id="dropdown-basic">
 							{buttonText}
 						</Dropdown.Toggle>
 						<Dropdown.Menu className="dropdown-menu">
@@ -69,6 +71,7 @@ const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", item
 							))}
 						</Dropdown.Menu>
 					</Dropdown>
+					{isInvalid && <p className="invalid-text">Het is verplicht om een {label.toLowerCase()} te selecteren</p>}
 				</Col>
 			</Row>
 		</Container>

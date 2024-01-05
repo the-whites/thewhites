@@ -15,7 +15,7 @@
 }
 
 .bg-grey {
-    background-color: #ece7e700;
+    background-color: #ECE7E7;
 }
 
 .dropdown-menu {
@@ -25,4 +25,7 @@
 .dropdown-item:hover {
     background-color: gray;
     outline: 1px solid rgb(73, 73, 73);
+}
+.dropdown-button-w {
+    margin-right: 100%;
 }

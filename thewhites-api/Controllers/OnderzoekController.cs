@@ -41,10 +41,10 @@ namespace AspTest.Controllers
                     beloning = onderzoek.Beloning,
                     startDatum = onderzoek.StartDatum,
                     eindDatum = onderzoek.EindDatum,
-                    OnderzoekCategories = onderzoek.OnderzoekCategories,
-                    BeperkingCriteria = onderzoek.BeperkingCriteria,
-                    LeeftijdCriteria = onderzoek.LeeftijdCriteria,
-                    PostcodeCriteria = onderzoek.PostcodeCriteria,
+                    //OnderzoekCategories = onderzoek.OnderzoekCategories,
+                    //BeperkingCriteria = onderzoek.BeperkingCriteria,
+                    //LeeftijdCriteria = onderzoek.LeeftijdCriteria, // (!) FIX : leeftijd wordt altijd leeg gegeven terwijl het in database correct is
+                    //PostcodeCriteria = onderzoek.PostcodeCriteria,
                     bedrijf = new BedrijfDto
                     {
                         Id = onderzoek.Bedrijf.Id,
@@ -62,54 +62,22 @@ namespace AspTest.Controllers
         }
 
         [HttpPost("create-onderzoek")]
-        public async Task<IActionResult> CreateOnderzoek([FromBody] OnderzoekCreateModel onderzoek)
+        public async Task<IActionResult> CreateOnderzoek([FromBody] Onderzoek onderzoek)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            Bedrijf? bedrijf = bedrijfRepository.GetBedrijfById(onderzoek.bedrijfId);
-
-            if (bedrijf == null)
-                return BadRequest("Bedrijf bestaat niet");
-
-            ICollection<OnderzoekBeperkingCriteria> beperkingCriteria = new List<OnderzoekBeperkingCriteria>();
-
-            foreach (int beperkingId in onderzoek.beperkingCriteriaList)
+            try
             {
-                Beperking? beperking = beperkingRepository.GetBeperkingById(beperkingId);
+                if (!ModelState.IsValid)
+                {
+                    return StatusCode(899, new { Message = "Validation error", Errors = ModelState.Values.SelectMany(v => v.Errors) });
+                }
 
-                if (beperking == null)
-                    return BadRequest($"Beperking id {beperkingId} bestaat niet");
-
-                beperkingCriteria.Add(new OnderzoekBeperkingCriteria { Beperking = beperking });
+                await onderzoekRepository.CreateOnderzoek(onderzoek);
+                return Ok(new { Message = "Onderzoek has been created." });
             }
-
-            ICollection<OnderzoekLeeftijdCriteria> leeftijdCriteria = new List<OnderzoekLeeftijdCriteria>();
-
-            foreach (int leeftijd in onderzoek.leeftijdCriteriaList)
+            catch (Exception ex)
             {
-                leeftijdCriteria.Add(new OnderzoekLeeftijdCriteria { Leeftijd = leeftijd });
+                return StatusCode(500, new { Message = $"Error creating Onderzoek: {ex.Message}" });
             }
-
-            ICollection<OnderzoekPostcodeCriteria> postcodeCriteria = new List<OnderzoekPostcodeCriteria>();
-            foreach (string postcode in onderzoek.postcodeCriteriaList)
-            {
-                postcodeCriteria.Add(new OnderzoekPostcodeCriteria { Postcode = postcode });
-            }
-
-            ICollection<OnderzoekCategories> onderzoekCategories = new List<OnderzoekCategories>();
-            foreach (int typeId in onderzoek.categoriesList)
-            {
-                OnderzoekType? onderzoekType = onderzoekTypeRepository.GetOnderzoekTypeById(typeId);
-
-                if (onderzoekType == null)
-                    return BadRequest($"Onderzoek type id {typeId} bestaat niet");
-
-                onderzoekCategories.Add(new OnderzoekCategories { Type = onderzoekType });
-            }
-
-            var createdOnderzoek = await onderzoekRepository.CreateOnderzoek(onderzoek.titel, onderzoek.beschrijving, bedrijf, onderzoek.startDatum, onderzoek.eindDatum, onderzoek.locatie, onderzoek.beloning, beperkingCriteria, leeftijdCriteria, postcodeCriteria, onderzoekCategories);
-            return Ok(createdOnderzoek);
         }
     }
 }

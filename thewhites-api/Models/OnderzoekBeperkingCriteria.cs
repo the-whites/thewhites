@@ -13,4 +13,3 @@ namespace AspTest.Models
         public Beperking Beperking { get; set; }
     }
 }
- 

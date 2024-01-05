@@ -9,9 +9,9 @@ namespace AspTest.Models
         public int bedrijfId { get; set; }
         public string beloning { get; set; }
         public string locatie { get; set;}
-        public ICollection<string> postcodeCriteriaList { get; set; }
-        public ICollection<int> leeftijdCriteriaList { get; set; }
-        public ICollection<int> beperkingCriteriaList { get; set; }
-        public ICollection<int> categoriesList { get; set; }
+        public List<string> postcodeCriteriaList { get; set; }
+        public List<int> leeftijdCriteriaList { get; set; }
+        public List<int> beperkingCriteriaList { get; set; }
+        public List<int> categoriesList { get; set; }
     }
 }
