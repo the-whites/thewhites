@@ -21,7 +21,7 @@ const ProfielPagina = () => {
 				<div className="form-group">
 					<label htmlFor="Telefoon">Telefoonnummer *</label>
 					<input 
-						type="tel" 
+						type="Algemeen" 
 						id="phone" 
 						value={Telefoon}
 						onChange={(e) => setTelefoon(e.target.value)}
@@ -33,6 +33,7 @@ const ProfielPagina = () => {
 				<div className="form-group">
 					<label htmlFor="Beperkingstype">Type beperking *</label>
 					<select 
+						type= "Algemeen"
 						id="Beperkingstype" 
 						value={Beperkingstype}
 						onChange={(e) => setBeperkingstype(e.target.value)}
@@ -50,6 +51,7 @@ const ProfielPagina = () => {
 				<div className="form-group">
 					<label htmlFor="Hulpmiddelen">Hulpmiddelen</label>
 					<input 
+						type= "Algemeen"
 						id="Hulpmiddelen" 
 						value={Hulpmiddelen}
 						onChange={(e) => setHulpmiddelen(e.target.value)}
@@ -61,10 +63,11 @@ const ProfielPagina = () => {
 				<div className="form-group">
 					<label htmlFor="Aandoening">Aandoening/ziekte *</label>
 					<input 
-						type="text" 
+						type="Algemeen" 
 						id="Aandoening" 
 						value={Aandoening}
 						onChange={(e) => setAandoening(e.target.value)}
+						placeholder="dyslexie, gehoorverlies"
 						required 
 					/>
 				</div>

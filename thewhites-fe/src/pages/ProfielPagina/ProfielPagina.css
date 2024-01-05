@@ -29,7 +29,7 @@
     min-width: 150px; /* Set a minimum width for the labels */
 }
 
-.form-group input[type="tel"],
+.form-group input[type="Algemeen"],
 .form-group select,
 .form-group textarea {
     width: calc(100% - 22px);
@@ -56,6 +56,7 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #0056b3;
 }
+
 
 /* Hide default arrow in Firefox */
 @-moz-document url-prefix() {
