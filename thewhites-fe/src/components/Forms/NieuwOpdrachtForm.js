@@ -5,30 +5,17 @@ import CustomDatePicker from "../CustomDatePicker/CustomDatePicker";
 import MultiSelectionBar from "../MultiSelectionBar/MultiSelectionBar";
 import { postcodeValidator } from "postcode-validator";
 import { useNavigate } from "react-router-dom";
+import { OPDRACHT_DATA, initialOpdrachtState } from "../../constants/opdrachtData";
 
 const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperkingen }) => {
-	const [localOpdrachtData, setLocalOpdrachtData] = useState({
-		opdrachtNaam: "",
-		opdrachtOmschrijving: "",
-		typeOpdracht: [],
-		beperking: [],
-		leeftijd: [],
-		postcode: [],
-		startDatum: null,
-		eindDatum: null,
-		locatie: "",
-		beloning: ""
-	});
+	// Gebruik alle fields van opdracht data, maar zet alles op false
+	const initialInvalidFields = Object.keys(OPDRACHT_DATA).reduce((acc, fieldName) => {
+		acc[fieldName] = false;
+		return acc;
+	}, {});
 
-	const [isInvalidFields, setIsInvalidFields] = useState({
-		opdrachtNaam: false,
-		opdrachtOmschrijving: false,
-		typeOpdrachten: false,
-		startDatum: false,
-		eindDatum: false,
-		postcode: false,
-		locatie: false
-	});
+	const [localOpdrachtData, setLocalOpdrachtData] = useState(initialOpdrachtState);
+	const [isInvalidFields, setIsInvalidFields] = useState(initialInvalidFields);
 
 	const [invalidPostcodes, setInvalidPostcodes] = useState([]);
 
@@ -39,12 +26,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		return foundItem ? foundItem.id : null;
 	};
 
-	const handleOpdrachtNaamChange = (value) => {
-		setLocalOpdrachtData((prevData) => ({ ...prevData, opdrachtNaam: value }));
-	};
-	
-	const handleOpdrachtOmschrijvingChange = (value) => {
-		setLocalOpdrachtData((prevData) => ({ ...prevData, opdrachtOmschrijving: value }));
+	const handleOpdrachtDataItemChange = (value, item) => {
+		setLocalOpdrachtData((prevData) => ({ ...prevData, [item]: value }));
 	};
 	
 	const handleTypeSelection = (items) => {
@@ -89,22 +72,6 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		}
 
 		setLocalOpdrachtData((prevData) => ({ ...prevData, postcode: postcoden }));
-	};
-	
-	const handleStartDateChange = (date) => {
-		setLocalOpdrachtData((prevData) => ({ ...prevData, startDatum: date }));
-	};
-	
-	const handleEndDateChange = (date) => {
-		setLocalOpdrachtData((prevData) => ({ ...prevData, eindDatum: date }));
-	};
-
-	const handleLocatieChange = (locatie) => {
-		setLocalOpdrachtData((prevData) => ({ ...prevData, locatie: locatie}));
-	};
-
-	const handleBeloningChange = (beloning) => {
-		setLocalOpdrachtData((prevData) => ({ ...prevData, beloning: beloning }));
 	};
 
 	const handleSubmit = (event) => {
@@ -185,10 +152,10 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 						
 						<h1 className="text-center mb-4 header">Algemeen</h1>
 						<div className="mb-3">
-							<InputBar textPosition="left" label="Opdracht naam" type="text" placeholder="bijv. The Whites Website Accessibility" required={true} isInvalid={isInvalidFields.opdrachtNaam} handleChange={handleOpdrachtNaamChange}/>
-							<InputBar textPosition="left" label="Opdracht omschrijving" type="textarea" placeholder="Dit dat" required={true} isInvalid={isInvalidFields.opdrachtOmschrijving} handleChange={handleOpdrachtOmschrijvingChange} />
-							<InputBar textPosition="left" label="Locatie van opdracht" type="text" placeholder="Hoofdkantoor The Whites" required={true} isInvalid={isInvalidFields.locatie} handleChange={handleLocatieChange} />
-							<InputBar textPosition="left" label="Beloning" type="text" placeholder="5 doezoe" handleChange={handleBeloningChange} />
+							<InputBar textPosition="left" label="Opdracht naam" type="text" placeholder="bijv. The Whites Website Accessibility" required={true} isInvalid={isInvalidFields.opdrachtNaam} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.OPRACHT_NAAM])}/>
+							<InputBar textPosition="left" label="Opdracht omschrijving" type="textarea" placeholder="Dit dat" required={true} isInvalid={isInvalidFields.opdrachtOmschrijving} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.OPRACHT_OMSCHRIJVING])} />
+							<InputBar textPosition="left" label="Locatie van opdracht" type="text" placeholder="Hoofdkantoor The Whites" required={true} isInvalid={isInvalidFields.locatie} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.LOCATIE])} />
+							<InputBar textPosition="left" label="Beloning" type="text" placeholder="5 doezoe" handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.BELONING])} />
 						</div>
 						<div className="mb-3">
 							<MultiSelectionBar label="Type opdracht" buttonText="Selecteer type" items={mapItemsToStrings(typeOpdrachten)} isInvalid={isInvalidFields.typeOpdrachten} required={true} handleSelection={handleTypeSelection} />
@@ -202,9 +169,9 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 							<InputBar textPosition="left" label="Postcode" type="text" placeholder="bijv. 1234AB" infoText="Je kan meerdere postcodes invullen doormiddel van een scheiding met een komma: 2554GW, 2551AB" errorMessage={postcodeErrorText} isInvalid={isInvalidFields.postcode} handleChange={handlePostcodeChange} />
 						</div>
 						<h1 className="text-center mb-3 header ">Datum</h1>
-						<CustomDatePicker label="Start datum" required={true} isInvalid={isInvalidFields.startDatum} handleChange={handleStartDateChange} />
+						<CustomDatePicker label="Start datum" required={true} isInvalid={isInvalidFields.startDatum} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.START_DATUM])} />
 						<div className="mb-3" />
-						<CustomDatePicker label="Eind datum" required={true} isInvalid={isInvalidFields.eindDatum} handleChange={handleEndDateChange}/>
+						<CustomDatePicker label="Eind datum" required={true} isInvalid={isInvalidFields.eindDatum} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.EIND_DATUM])}/>
 					</Col>
 				</Row>
 

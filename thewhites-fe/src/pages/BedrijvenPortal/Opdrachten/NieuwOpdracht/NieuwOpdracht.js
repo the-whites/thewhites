@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal";
 import { fetchApi, postApi } from "../../../../hooks/useApi";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
+import { initialOpdrachtState } from "../../../../constants/opdrachtData";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./NieuwOpdracht.css";
@@ -13,18 +14,7 @@ const NieuwOpdracht = () => {
 	const [beperkingen, setBeperkingen] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 
-	const [opdrachtData, setOpdrachtData] = useState({
-		opdrachtNaam: "",
-		opdrachtOmschrijving: "",
-		typeOpdracht: [],
-		beperking: [],
-		leeftijd: [],
-		postcode: [],
-		startDatum: null,
-		eindDatum: null,
-		locatie: "",
-		beloning: ""
-	});
+	const [opdrachtData, setOpdrachtData] = useState(initialOpdrachtState);
 
 	const navigate = useNavigate();
 
