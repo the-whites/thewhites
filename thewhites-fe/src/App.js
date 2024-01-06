@@ -45,8 +45,9 @@ function App() {
 						<Route path="/over-ons" element={<OverOns />} />
 						<Route path="/contact" element={<Contact />} />
 
-						<Route path="/profielpaginas" element={<ProfielPaginas />}/>
-						<Route path="/profielpagina" element={<ProfielPagina />} />
+						<Route path="/profielpaginas" element={<ProfielPaginas />}>
+							<Route path="profielpagina" element={<ProfielPagina />} />
+						</Route>
 						
 
 
