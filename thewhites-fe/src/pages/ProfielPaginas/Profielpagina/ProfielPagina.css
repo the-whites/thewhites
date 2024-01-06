@@ -1,0 +1,71 @@
+.profile-page {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Increased bottom margin for more space between headings */
+.profile-page h2,
+.profile-page h1 {
+    text-align: middle;
+    color: #333;
+    margin-bottom: 15px; 
+}
+
+.form-group {
+    margin-top: 30px;
+    position: relative; /* Needed for custom arrow positioning */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+    min-width: 150px; /* Set a minimum width for the labels */
+}
+
+.form-group input[type="Algemeen"],
+.form-group select,
+.form-group textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+/* Hide default arrow in Firefox */
+@-moz-document url-prefix() {
+    .form-group select {
+        text-indent: 0.01px;
+        text-overflow: '';
+    }
+    .form-group:after {
+        height: 0;
+        width: 0;
+    }
+}

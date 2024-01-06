@@ -33,6 +33,7 @@ const ProfielPagina = () => {
         
 				<div className="form-group">
 					<label htmlFor="Beperkingstype">Type beperking *</label>
+					<p>Selecteer u type beperking: </p>
 					<select 
 						type= "Algemeen"
 						id="Beperkingstype" 
@@ -51,6 +52,7 @@ const ProfielPagina = () => {
 
 				<div className="form-group">
 					<label htmlFor="Hulpmiddelen">Hulpmiddelen</label>
+					<p>Vul u hulpmiddelen in die u gebruikt in dien van toepassing: </p>
 					<input 
 						type= "Algemeen"
 						id="Hulpmiddelen" 
@@ -63,6 +65,7 @@ const ProfielPagina = () => {
 
 				<div className="form-group">
 					<label htmlFor="Aandoening">Aandoening/ziekte *</label>
+					<p>Vul u aandoening in bijvoorbeeld: dyslexie</p>
 					<input 
 						type="Algemeen" 
 						id="Aandoening" 
