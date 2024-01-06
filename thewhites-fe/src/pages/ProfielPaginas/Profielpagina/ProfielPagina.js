@@ -2,44 +2,91 @@ import React, { useState } from "react";
 import "./ProfielPagina.css";
 
 const ProfielPagina = () => {
-	const [Telefoon, setTelefoon] = useState("");
-	const [Beperkingstype, setBeperkingstype] = useState();
-	const [Hulpmiddelen, setHulpmiddelen] = useState("");
-	const [Aandoening, setAandoening] = useState("");
+	const [voornaam, setVoornaam] = useState("");
+	const [achternaam, setAchternaam] = useState("");
+	const [postcode, setPostcode] = useState("");
+	const [email, setEmail] = useState("");
+	const [telefoonnummer, setTelefoonnummer] = useState("");
+	const [beperkingstype, setBeperkingstype] = useState("");
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// Process the entered data here
-		console.log({ Telefoon, Beperkingstype, Hulpmiddelen, Aandoening });
+		console.log({ voornaam, achternaam, postcode, email, telefoonnummer, beperkingstype });
 	};
 
 	return (
 		<div className="profile-page">
-			<h1>Profielpagina</h1>
-			<h3>Profielformulier 1/2</h3>
+			<h1>Profielformulier</h1>
 			<form onSubmit={handleSubmit}>
+				{/* Voornaam */}
 				<div className="form-group">
-					<label htmlFor="Telefoon">Telefoonnummer *</label>
-					<p>Vul u telefoonnummer in de volgende format in: 0612345678</p>
-					<input 
-						type="Algemeen" 
-						id="phone" 
-						value={Telefoon}
-						onChange={(e) => setTelefoon(e.target.value)}
-						placeholder="0612345678"
-						required 
+					<label htmlFor="voornaam">Voornaam *</label>
+					<input
+						type="Algemeen"
+						id="voornaam"
+						value={voornaam}
+						onChange={(e) => setVoornaam(e.target.value)}
+						required
 					/>
 				</div>
-        
+
+				{/* Achternaam */}
 				<div className="form-group">
-					<label htmlFor="Beperkingstype">Type beperking *</label>
-					<p>Selecteer u type beperking: </p>
-					<select 
-						type= "Algemeen"
-						id="Beperkingstype" 
-						value={Beperkingstype}
+					<label htmlFor="achternaam">Achternaam *</label>
+					<input
+						type="Algemeen"
+						id="achternaam"
+						value={achternaam}
+						onChange={(e) => setAchternaam(e.target.value)}
+						required
+					/>
+				</div>
+
+				{/* Postcode */}
+				<div className="form-group">
+					<label htmlFor="postcode">Postcode *</label>
+					<input
+						type="Algemeen"
+						id="postcode"
+						value={postcode}
+						onChange={(e) => setPostcode(e.target.value)}
+						required
+					/>
+				</div>
+
+				{/* E-mailadres */}
+				<div className="form-group">
+					<label htmlFor="email">E-mailadres *</label>
+					<input
+						type="Algemeen"
+						id="email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						required
+					/>
+				</div>
+
+				{/* Telefoonnummer */}
+				<div className="form-group">
+					<label htmlFor="telefoonnummer">Telefoonnummer *</label>
+					<input
+						type="Algemeen"
+						id="telefoonnummer"
+						value={telefoonnummer}
+						onChange={(e) => setTelefoonnummer(e.target.value)}
+						placeholder="0612345678"
+						required
+					/>
+				</div>
+
+				{/* Type beperking */}
+				<div className="form-group">
+					<label htmlFor="beperkingstype">Type beperking (lijst) *</label>
+					<select
+						id="beperkingstype"
+						value={beperkingstype}
 						onChange={(e) => setBeperkingstype(e.target.value)}
-						placeholder="Selecteer beperkingen"
 						required
 					>
 						<option value="">Selecteer beperkingen</option>
@@ -50,32 +97,6 @@ const ProfielPagina = () => {
 					</select>
 				</div>
 
-				<div className="form-group">
-					<label htmlFor="Hulpmiddelen">Hulpmiddelen</label>
-					<p>Vul u hulpmiddelen in die u gebruikt in dien van toepassing: </p>
-					<input 
-						type= "Algemeen"
-						id="Hulpmiddelen" 
-						value={Hulpmiddelen}
-						onChange={(e) => setHulpmiddelen(e.target.value)}
-						placeholder="Rolstoel, gehoorapparaat"
-						required 
-					/>
-				</div>
-
-				<div className="form-group">
-					<label htmlFor="Aandoening">Aandoening/ziekte *</label>
-					<p>Vul u aandoening in bijvoorbeeld: dyslexie</p>
-					<input 
-						type="Algemeen" 
-						id="Aandoening" 
-						value={Aandoening}
-						onChange={(e) => setAandoening(e.target.value)}
-						placeholder="dyslexie, gehoorverlies"
-						required 
-					/>
-				</div>
-
 				<button type="submit">Volgende</button>
 			</form>
 		</div>
@@ -83,3 +104,4 @@ const ProfielPagina = () => {
 };
 
 export default ProfielPagina;
+
