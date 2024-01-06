@@ -8,14 +8,17 @@ import { useNavigate } from "react-router-dom";
 import { OPDRACHT_DATA, initialOpdrachtState } from "../../constants/opdrachtData";
 
 const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperkingen }) => {
-	// Gebruik alle fields van opdracht data, maar zet alles op false
-	const initialInvalidFields = Object.keys(OPDRACHT_DATA).reduce((acc, fieldName) => {
-		acc[fieldName] = false;
-		return acc;
-	}, {});
-
 	const [localOpdrachtData, setLocalOpdrachtData] = useState(initialOpdrachtState);
-	const [isInvalidFields, setIsInvalidFields] = useState(initialInvalidFields);
+
+	// Dit zijn de verplichte velden die ingevuld moeten worden
+	const [isInvalidFields, setIsInvalidFields] = useState({
+		[OPDRACHT_DATA.OPRACHT_NAAM]: false,
+		[OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: false,
+		[OPDRACHT_DATA.LOCATIE]: false,
+		[OPDRACHT_DATA.TYPE_OPDRACHT]: false,
+		[OPDRACHT_DATA.START_DATUM]: false,
+		[OPDRACHT_DATA.EIND_DATUM]: false,
+	});
 
 	const [invalidPostcodes, setInvalidPostcodes] = useState([]);
 
@@ -87,8 +90,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 	const validateOpdrachtData = () => {
 		const invalidFields = {};
 
-		for (const key in localOpdrachtData) {
-			if (Object.prototype.hasOwnProperty.call(localOpdrachtData, key) && !localOpdrachtData[key]) {
+		for (const key in isInvalidFields) {
+			if (localOpdrachtData[key] === null || localOpdrachtData[key] === "") {
 				invalidFields[key] = true;
 			} else {
 				invalidFields[key] = false;
@@ -119,7 +122,6 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		}
 
 		setIsInvalidFields(prevState => ({ ...prevState, ...invalidFields }));
-		console.log(invalidFields);
 		return Object.values(invalidFields).every(value => value === false);
 	};
 
