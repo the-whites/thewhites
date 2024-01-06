@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal";
 import { fetchApi, postApi } from "../../../../hooks/useApi";
+import {  toast } from "react-toastify";
+import { initialOpdrachtState } from "../../../../constants/opdrachtData";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./NieuwOpdracht.css";
 import NieuwOpdrachtForm from "../../../../components/Forms/NieuwOpdrachtForm";
@@ -10,16 +14,9 @@ const NieuwOpdracht = () => {
 	const [beperkingen, setBeperkingen] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 
-	const [opdrachtData, setOpdrachtData] = useState({
-		opdrachtNaam: "",
-		opdrachtOmschrijving: "",
-		typeOpdracht: [],
-		beperking: [],
-		leeftijd: [],
-		postcode: [],
-		startDatum: null,
-		eindDatum: null,
-	});
+	const [opdrachtData, setOpdrachtData] = useState(initialOpdrachtState);
+
+	const navigate = useNavigate();
 
 	const handleOpdrachtDataChange = (newOpdrachtData) => {
 		setOpdrachtData(newOpdrachtData);
@@ -58,35 +55,39 @@ const NieuwOpdracht = () => {
 	};
 
 	const createOnderzoek = async () => {
-		const onderzoekData = {
-			Titel: opdrachtData.opdrachtNaam,
-			Beschrijving: opdrachtData.opdrachtOmschrijving,
-			StartDatum: opdrachtData.startDatum,
-			EindDatum: opdrachtData.eindDatum,
-			BedrijfId: 2, // Replace with your actual bedrijfId
-			Beloning: "Test beloning", // Replace with your actual beloning
-			Locatie: "Locatie", // Replace with your actual locatie
-			/**OnderzoekCategories: opdrachtData.typeOpdracht.map(typeId => ({ TypeId: typeId })),
-			BeperkingCriteria: opdrachtData.beperking.map(beperkingId => ({ beperkingId: beperkingId })),
-			LeeftijdCriteria: opdrachtData.leeftijd.map(leeftijd => ({ leeftijd: leeftijd })),
-			PostcodeCriteria: opdrachtData.postcode.map(postcode => ({ postcode: postcode })),**/
+		const onderzoekDataObject = {
+			titel: opdrachtData.opdrachtNaam,
+			beschrijving: opdrachtData.opdrachtOmschrijving,
+			startDatum: opdrachtData.startDatum,
+			eindDatum: opdrachtData.eindDatum,
+			beloning: opdrachtData.beloning,
+			locatie: opdrachtData.locatie,
+			postcodeCriteriaList: opdrachtData.postcode.map(postcode => postcode),
+			categoriesList: opdrachtData.typeOpdracht.map(typeId => typeId),
+			beperkingCriteriaList: opdrachtData.beperking.map(beperkingId => beperkingId),
+			leeftijdCriteriaList: opdrachtData.leeftijd.map(leeftijd => leeftijd)
 		};
-		
-		console.log(JSON.stringify(onderzoekData));
+
 		try {
 			const response = await postApi({
 				route: "/api/onderzoek/create-onderzoek",
-				body: JSON.stringify(onderzoekData)
+				body: JSON.stringify(onderzoekDataObject)
 			});
 	
 			if (response.status === 200) {
+				toast.success("Opdracht is aangemaakt");
 				console.log("Onderzoek has been created.");
 			} else {
+				toast.error("Er is iets misgegaan bij het opslaan van de opdracht data");
 				console.error("Error creating Onderzoek:", response.statusText);
 			}
 		} catch (error) {
+			toast.error("Er is iets misgegaan bij het versturen van de opdracht data");
 			console.error("Error while trying to create Onderzoek:", error);
 		}
+
+		handleCloseModal();
+		navigate(-1);
 	};
 	
 	useEffect(() => {

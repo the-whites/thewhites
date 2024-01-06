@@ -15,5 +15,10 @@ namespace AspTest.Repository
         {
             return _context.Bedrijven.ToList().Find(p => p.Id == bedrijfId);
         }
+
+        public Bedrijf? GetBedrijfByUserId(int userId)
+        {
+            return _context.Bedrijven.ToList().Find(p => p.GebruikerId == userId);
+        }
     }
 }

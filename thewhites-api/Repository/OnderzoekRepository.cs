@@ -17,15 +17,9 @@ namespace AspTest.Repository
 
         public async Task CreateOnderzoek(Onderzoek onderzoek)
         {
-            try
-            {
-                _context.Onderzoeken.Add(onderzoek);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error creating Onderzoek: {ex.Message}");
-            }
+            _context.Onderzoeken.Add(onderzoek);
+            
+            await _context.SaveChangesAsync();
         }
 
         public ICollection<Onderzoek> GetOnderzoeken()

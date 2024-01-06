@@ -31,3 +31,5 @@ Gebruiker het volgende om migrations te gebruiken:
 Commands:
 - `dotnet ef migrations add NUMMER`: maak nieuwe versie van de database schema na wijzigingen van de database code (Models etc.).
 - `dotnet ef database update`: Als je dit moet gebruiken op de cloud database (/db.dewhites.nl), stuur ff bericht naar richano.
+
+NOTE: Sommige tables bevatten noodzakelijke informatie om functies volledig te laten werken zoals OnderzoekType & Beperkingen. Als je de database dropt zorg ervoor dat je de values weer insert

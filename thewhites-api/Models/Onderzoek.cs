@@ -20,6 +20,7 @@ namespace AspTest.Models
         public string Locatie {get;set;}
         public ICollection<OnderzoekCategories> OnderzoekCategories {get; set;}
         public ICollection<OnderzoekBeperkingCriteria> BeperkingCriteria {get; set;}
+        // Kan dit geen <int> en <string> zijn? aangezien er niks anders gebonden is aan postcodes en leeftijden anders dan de values zelf?
         public ICollection<OnderzoekLeeftijdCriteria> LeeftijdCriteria {get; set;}
         public ICollection<OnderzoekPostcodeCriteria> PostcodeCriteria {get; set;}
     }

@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../MainStyles.css";
 import "./CustomDatePicker.css";
 
-const CustomDatePicker = ({ label = "", placeholder = "Kies een datum", isInvalid = false, handleChange = () => {} }) => {
+const CustomDatePicker = ({ label = "", placeholder = "Kies een datum", isInvalid = false, required = false, handleChange = () => {} }) => {
 	const [selectedDateTime, setSelectedDateTime] = useState(null);
 
 	const handleDateChange = (date) => {
@@ -21,7 +21,7 @@ const CustomDatePicker = ({ label = "", placeholder = "Kies een datum", isInvali
 		<>
 			<Row className="mb-3">
 				<Col md={2}>
-					<p className="label">{label}</p>
+					<p className="label">{label} {required && "*"}</p>
 				</Col>
 				<Col md={1}>
 					<DatePicker

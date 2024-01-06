@@ -12,6 +12,7 @@ namespace AspTest.Models
         public string Link {get; set; }
         public string Locatie {get; set; }
 
+        [JsonIgnore]
         public Gebruiker Gebruiker {get; set;}
         public int GebruikerId {get; set;}
         [JsonIgnore]
