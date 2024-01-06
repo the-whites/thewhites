@@ -76,6 +76,7 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
+		console.log(isInvalidFields);
 		const valid = validateOpdrachtData();
 
 		console.log("is het valid?? ", valid);
@@ -118,7 +119,7 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		}
 
 		setIsInvalidFields(prevState => ({ ...prevState, ...invalidFields }));
-
+		console.log(invalidFields);
 		return Object.values(invalidFields).every(value => value === false);
 	};
 
