@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Profielinformatie.css";
 import { useNavigate } from "react-router-dom";
 
 const Profielinformatie = () => {
-	const [aandoening, setAandoening] = useState("");
-	const [hulpmiddelen, setHulpmiddelen] = useState("");
-	const [onderzoekType, setOnderzoekType] = useState("");
-	const [benaderingsvoorkeur, setBenaderingsvoorkeur] = useState("");
-	const [beschikbaarheid, setBeschikbaarheid] = useState(""); // Je zou hier een date-time picker kunnen integreren
-	const [toestemmingCommercieel, setToestemmingCommercieel] = useState(false);
+	const [aandoening, setAandoening] = useState(localStorage.getItem("aandoening") ||"");
+	const [hulpmiddelen, setHulpmiddelen] = useState(localStorage.getItem("hulpmiddelen") ||"");
+	const [onderzoekType, setOnderzoekType] = useState(localStorage.getItem("onderzoekType") ||"");
+	const [benaderingsvoorkeur, setBenaderingsvoorkeur] = useState(localStorage.getItem("benaderingsvoorkeur") ||"");
+	const [beschikbaarheid, setBeschikbaarheid] = useState(localStorage.getItem("beschikbaarheid") ||""); // Je zou hier een date-time picker kunnen integreren
+	const [toestemmingCommercieel, setToestemmingCommercieel] = useState(localStorage.getItem("toestemmingCommercieel") ||"");
+
+	useEffect(() => {
+		// Update localStorage wanneer de state verandert
+		localStorage.setItem("aandoening", aandoening);
+		localStorage.setItem("hulpmiddelen", hulpmiddelen);
+		localStorage.setItem("onderzoekType", onderzoekType);
+		localStorage.setItem("benaderingsvoorkeur", benaderingsvoorkeur);
+		localStorage.setItem("beschikbaarheid", beschikbaarheid);
+		localStorage.setItem("toestemmingCommercieel", toestemmingCommercieel);
+		// Doe dit voor alle andere velden...
+	}, [aandoening, hulpmiddelen, onderzoekType, benaderingsvoorkeur, beschikbaarheid, toestemmingCommercieel]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();

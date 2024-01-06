@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ProfielPagina.css";
 import { useNavigate } from "react-router-dom";
 
 const ProfielPagina = () => {
-	const [voornaam, setVoornaam] = useState("");
-	const [achternaam, setAchternaam] = useState("");
-	const [postcode, setPostcode] = useState("");
-	const [email, setEmail] = useState("");
-	const [telefoonnummer, setTelefoonnummer] = useState("");
-	const [beperkingstype, setBeperkingstype] = useState("");
+	const [voornaam, setVoornaam] = useState(localStorage.getItem("voornaam") || "");
+	const [achternaam, setAchternaam] = useState(localStorage.getItem("achternaam") ||"");
+	const [postcode, setPostcode] = useState(localStorage.getItem("postcode") ||"");
+	const [email, setEmail] = useState(localStorage.getItem("email") ||"");
+	const [telefoonnummer, setTelefoonnummer] = useState(localStorage.getItem("telefoonnummer") ||"");
+	const [beperkingstype, setBeperkingstype] = useState(localStorage.getItem("beperkingstype") ||"");
+
+	useEffect(() => {
+		// Update localStorage wanneer de state verandert
+		localStorage.setItem("voornaam", voornaam);
+		localStorage.setItem("achternaam", achternaam);
+		localStorage.setItem("postcode", postcode);
+		localStorage.setItem("email", email);
+		localStorage.setItem("telefoonnummer", telefoonnummer);
+		localStorage.setItem("beperkingstype", beperkingstype);
+		// Doe dit voor alle andere velden...
+	}, [voornaam, achternaam, postcode, email, telefoonnummer, beperkingstype]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
