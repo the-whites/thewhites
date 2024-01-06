@@ -47,8 +47,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 	const handleLeeftijdChange = (value) => {
 		let leeftijden = [];
 
-		if (value.includes('-')) {
-			const [start, end] = value.split('-');
+		if (value.includes("-")) {
+			const [start, end] = value.split("-");
 			const startLeeftijd = parseInt(start.trim());
 			const endLeeftijd = parseInt(end.trim());
 
@@ -56,7 +56,7 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 				leeftijden.push(i);
 			}
 		} else {
-			const leeftijdArray = value.split(',').map(leeftijd => parseInt(leeftijd.trim()));
+			const leeftijdArray = value.split(",").map(leeftijd => parseInt(leeftijd.trim()));
 			leeftijden = leeftijdArray.filter(leeftijd => !isNaN(leeftijd));
 		}
 
