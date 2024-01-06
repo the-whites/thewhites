@@ -9,6 +9,7 @@ import OverOns from "./pages/OverOns/OverOns";
 import Contact from "./pages/Contact/Contact";
 import ProfielPaginas from "./pages/ProfielPaginas/ProfielPaginas";
 import ProfielPagina from "./pages/ProfielPaginas/Profielpagina/ProfielPagina";
+import Profielinformatie from "./pages/ProfielPaginas/Profielinformatie/Profielinformatie";
 import BeheerderPortal from "./pages/BeheerderPortal/BeheerderPortal";
 import ErvaringsdeskundigeBHP from "./pages/BeheerderPortal/Ervaringsdeskundige/Ervaringsdeskundige";
 import Onderzoeken from "./pages/BeheerderPortal/Onderzoeken/Onderzoeken";
@@ -47,6 +48,7 @@ function App() {
 
 						<Route path="/profielpaginas" element={<ProfielPaginas />}>
 							<Route path="profielpagina" element={<ProfielPagina />} />
+							<Route path="profielinformatie" element={<Profielinformatie />} />
 						</Route>
 						
 

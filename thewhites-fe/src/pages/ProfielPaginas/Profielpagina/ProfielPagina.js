@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ProfielPagina.css";
+import { useNavigate } from "react-router-dom";
 
 const ProfielPagina = () => {
 	const [voornaam, setVoornaam] = useState("");
@@ -15,9 +16,15 @@ const ProfielPagina = () => {
 		console.log({ voornaam, achternaam, postcode, email, telefoonnummer, beperkingstype });
 	};
 
+	const navigate = useNavigate();
+
+	const handleForward = () => {
+		navigate("/profielpaginas/profielinformatie");
+	};
+
 	return (
 		<div className="profile-page">
-			<h1>Profielformulier</h1>
+			<h1>Profielformulier 1/2</h1>
 			<form onSubmit={handleSubmit}>
 				{/* Voornaam */}
 				<div className="form-group">
@@ -97,7 +104,7 @@ const ProfielPagina = () => {
 					</select>
 				</div>
 
-				<button type="submit">Volgende</button>
+				<button type="submit" onClick={handleForward}>Volgende</button>
 			</form>
 		</div>
 	);

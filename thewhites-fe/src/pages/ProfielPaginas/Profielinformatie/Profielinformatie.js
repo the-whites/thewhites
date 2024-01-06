@@ -1,85 +1,108 @@
 import React, { useState } from "react";
 import "./Profielinformatie.css";
+import { useNavigate } from "react-router-dom";
 
 const Profielinformatie = () => {
-	const [Telefoon, setTelefoon] = useState("");
-	const [Beperkingstype, setBeperkingstype] = useState();
-	const [Hulpmiddelen, setHulpmiddelen] = useState("");
-	const [Aandoening, setAandoening] = useState("");
+	const [aandoening, setAandoening] = useState("");
+	const [hulpmiddelen, setHulpmiddelen] = useState("");
+	const [onderzoekType, setOnderzoekType] = useState("");
+	const [benaderingsvoorkeur, setBenaderingsvoorkeur] = useState("");
+	const [beschikbaarheid, setBeschikbaarheid] = useState(""); // Je zou hier een date-time picker kunnen integreren
+	const [toestemmingCommercieel, setToestemmingCommercieel] = useState(false);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		// Process the entered data here
-		console.log({ Telefoon, Beperkingstype, Hulpmiddelen, Aandoening });
+		console.log({ aandoening, hulpmiddelen, onderzoekType, benaderingsvoorkeur, beschikbaarheid, toestemmingCommercieel });
 	};
 
+	const navigate = useNavigate();
+
+	const handleBack = () => {
+		navigate("/profielpaginas/profielpagina");
+	};
+	
+
 	return (
-		<div className="profile-page">
-			<h1>Profielpagina</h1>
-			<h3>Profielformulier 2/2</h3>
+		<div className="profile-info-page">
+			<h1>Profielinformatie 2/2</h1>
 			<form onSubmit={handleSubmit}>
+				{/* Aandoening/Ziekte */}
 				<div className="form-group">
-					<label htmlFor="Telefoon">Telefoonnummer *</label>
-					<p>Vul u telefoonnummer in de volgende format in: 0612345678</p>
+					<label htmlFor="aandoening">Aandoening/Ziekte *</label>
 					<input 
 						type="Algemeen" 
-						id="phone" 
-						value={Telefoon}
-						onChange={(e) => setTelefoon(e.target.value)}
-						placeholder="0612345678"
-						required 
-					/>
-				</div>
-        
-				<div className="form-group">
-					<label htmlFor="Beperkingstype">Type beperking *</label>
-					<p>Selecteer u type beperking: </p>
-					<select 
-						type= "Algemeen"
-						id="Beperkingstype" 
-						value={Beperkingstype}
-						onChange={(e) => setBeperkingstype(e.target.value)}
-						placeholder="Selecteer beperkingen"
-						required
-					>
-						<option value="">Selecteer beperkingen</option>
-						<option value="motor">Motorische beperking</option>
-						<option value="visual">Visuele beperkingen</option>
-						<option value="intellectual">Verstandelijke beperking</option>
-						<option value="hearing">Gehoorverlies</option>
-					</select>
-				</div>
-
-				<div className="form-group">
-					<label htmlFor="Hulpmiddelen">Hulpmiddelen</label>
-					<p>Vul u hulpmiddelen in die u gebruikt in dien van toepassing: </p>
-					<input 
-						type= "Algemeen"
-						id="Hulpmiddelen" 
-						value={Hulpmiddelen}
-						onChange={(e) => setHulpmiddelen(e.target.value)}
-						placeholder="Rolstoel, gehoorapparaat"
-						required 
-					/>
-				</div>
-
-				<div className="form-group">
-					<label htmlFor="Aandoening">Aandoening/ziekte *</label>
-					<p>Vul u aandoening in bijvoorbeeld: dyslexie</p>
-					<input 
-						type="Algemeen" 
-						id="Aandoening" 
-						value={Aandoening}
+						id="aandoening" 
+						value={aandoening}
 						onChange={(e) => setAandoening(e.target.value)}
-						placeholder="dyslexie, gehoorverlies"
 						required 
 					/>
 				</div>
 
-				<button type="submit">Volgende</button>
+				{/* Gebruikte hulpmiddelen */}
+				<div className="form-group">
+					<label htmlFor="hulpmiddelen">Gebruikte Hulpmiddelen</label>
+					<input 
+						type="Algemeen" 
+						id="hulpmiddelen" 
+						value={hulpmiddelen}
+						onChange={(e) => setHulpmiddelen(e.target.value)}
+					/>
+				</div>
+
+				{/* Type onderzoek */}
+				<div className="form-group">
+					<label htmlFor="onderzoekType">Type onderzoek *</label>
+					<input 
+						type="Algemeen" 
+						id="onderzoekType" 
+						value={onderzoekType}
+						onChange={(e) => setOnderzoekType(e.target.value)}
+						required 
+					/>
+				</div>
+
+				{/* Voorkeur voor benaderingswijze */}
+				<div className="form-group">
+					<label htmlFor="benaderingsvoorkeur">Voorkeur voor benaderingswijze *</label>
+					<input 
+						type="Algemeen" 
+						id="benaderingsvoorkeur" 
+						value={benaderingsvoorkeur}
+						onChange={(e) => setBenaderingsvoorkeur(e.target.value)}
+						required 
+					/>
+				</div>
+
+				{/* Beschikbaarheid gedurende de week */}
+				<div className="form-group">
+					<label htmlFor="beschikbaarheid">Beschikbaarheid *</label>
+					<input 
+						type="Algemeen" // Hier zou je een date-time picker component kunnen integreren
+						id="beschikbaarheid" 
+						value={beschikbaarheid}
+						onChange={(e) => setBeschikbaarheid(e.target.value)}
+						required 
+					/>
+				</div>
+
+				{/* Toestemming voor benadering door commerciële partijen */}
+				<div className="form-group">
+					<label htmlFor="toestemmingCommercieel">Mogen commerciële partijen u benaderen? *</label>
+					<input 
+						type="Algemeen" 
+						id="toestemmingCommercieel" 
+						checked={toestemmingCommercieel}
+						onChange={(e) => setToestemmingCommercieel(e.target.checked)}
+					/>
+				</div>
+
+				<button type="submit">Opslaan</button>
+				<button type="submit" onClick={handleBack}>Terug</button>
 			</form>
 		</div>
 	);
 };
 
 export default Profielinformatie;
+
