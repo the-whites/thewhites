@@ -1,6 +1,6 @@
 using AspTest.Models;
 
-namespace AspTest
+namespace AspTest.Repository
 {
     public interface IBedrijfRepository
     {

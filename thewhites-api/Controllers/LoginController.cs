@@ -13,6 +13,7 @@ using AspTest.Models;
 using AspTest.Services;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
+using AspTest.Repository;
 
 namespace AspTest.Controllers
 {
@@ -22,11 +23,26 @@ namespace AspTest.Controllers
     {
         private readonly IGebruikerRepository _gebruikerRepository;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IOnderzoekTypeRepository _onderzoekTypeRepository;
+        private readonly IErvaringsdeskundigeRepository _ervaringsdeskundigeRepository;
+        private readonly IBeperkingRepository _beperkingRepository;
+        private readonly AspDbContext _context;
 
-        public LoginController(IGebruikerRepository gebruikerRepository, IRefreshTokenRepository refreshTokenRepository)
+        public LoginController(
+            AspDbContext context, 
+            IGebruikerRepository gebruikerRepository, 
+            IRefreshTokenRepository refreshTokenRepository, 
+            IOnderzoekTypeRepository onderzoekTypeRepository, 
+            IErvaringsdeskundigeRepository ervaringsdeskundigeRepository,
+            IBeperkingRepository beperkingRepository
+        )
         {
+            _context = context;
             _gebruikerRepository = gebruikerRepository;
             _refreshTokenRepository = refreshTokenRepository;
+            _onderzoekTypeRepository = onderzoekTypeRepository;
+            _ervaringsdeskundigeRepository = ervaringsdeskundigeRepository;
+            _beperkingRepository = beperkingRepository;
         }
 
         // Hier kan een gebruiker m.b.v. de credentials vanuit de frontend (GoogleLogin component) deze route aanroepen, om een sessie-token te verkrijgen.
@@ -51,6 +67,12 @@ namespace AspTest.Controllers
             {
                 // Maak gebruiker
                 gebruiker = await _gebruikerRepository.CreateGebruiker(payload.GivenName, payload.FamilyName, payload.Subject, payload.Email);
+
+                // TEMPORARY: maak test data alvast (omdat we nog geen register informatie kunnen verkrijgen)
+                var result = await CreateTestDataVoorRegistratie(gebruiker);
+
+                if (result != null)
+                    return result;
             }
 
             // Maak een token
@@ -69,13 +91,6 @@ namespace AspTest.Controllers
                 SameSite = SameSiteMode.Strict,
                 Secure = true
             });
-
-            /*Response.Cookies.Append("ac_token", token, new CookieOptions {
-                HttpOnly = true,
-                Expires = DateTime.Now.AddHours(1),
-                SameSite = SameSiteMode.Strict,
-                Secure = true
-            });*/
 
             // Return de gemaakte token
             return Ok(new {token = token});
@@ -137,19 +152,6 @@ namespace AspTest.Controllers
                 //await _refreshTokenRepository.DeleteRefreshToken(foundRefreshToken);
 
                 string newJwtToken = IdentityService.GenerateJwtToken(gebruiker.GoogleId, gebruiker);
-                
-                /*var newRefreshToken = await _refreshTokenRepository.CreateRefreshToken(
-                    Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                    gebruiker,
-                    DateTime.Now.AddDays(1)
-                );*/
-
-                /*Response.Cookies.Append("refresh_token", newRefreshToken.Token, new CookieOptions {
-                    HttpOnly = true,
-                    Expires = newRefreshToken.Expires,
-                    SameSite = SameSiteMode.Strict,
-                    //Secure = true
-                });*/
 
                 return Ok(new {token = newJwtToken});
             }
@@ -157,6 +159,43 @@ namespace AspTest.Controllers
             {
                 return BadRequest("Something went wrong while parsing the user id.");
             }
+        }
+
+        public async Task<IActionResult?> CreateTestDataVoorRegistratie(Gebruiker gebruiker)
+        {
+            await _ervaringsdeskundigeRepository.CreateErvaringsdeskundigeVoorGebruiker(
+                    gebruiker,
+                    "1234AB",
+                    "0612345678",
+                    "test",
+                    new DateTime(2024, 1, 6),
+                    "knuppel",
+                    "hoofdpijn van die mannetjes",
+                    false
+                );
+
+            Console.WriteLine("CREATING TEST DATA");
+            // Maak alvast ervaringsdeskundige, omdat we dit nodig hebben bij de volgende twee queries.
+            await _context.SaveChangesAsync();
+
+            await _gebruikerRepository.AddBenaderingVoorkeurGebruiker(gebruiker, true, false, true, false);
+
+            OnderzoekType? onderzoekType = _onderzoekTypeRepository.GetOnderzoekTypeById(2);
+
+            if (onderzoekType == null)
+                return StatusCode(500, "Could not create temporary register info. Check LoginController. onderzoekType not found.");
+            
+            Beperking? beperking = _beperkingRepository.GetBeperkingById(2);
+        
+            if (beperking == null)
+                return StatusCode(500, "Could not create temporary register info. Check LoginController. beperking not found.");
+
+            await _gebruikerRepository.AddVoorkeurOnderzoekTypeGebruiker(gebruiker, onderzoekType, false);
+            await _beperkingRepository.AddBeperkingBijGebruiker(gebruiker, beperking, false);
+
+            await _context.SaveChangesAsync();
+
+            return null;
         }
 
         // Met deze route kun je checken of je ingelogd ben en verkrijg je jouw lokale id en google id.

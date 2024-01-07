@@ -24,6 +24,8 @@ namespace AspTest
         public DbSet<OnderzoekBeperkingCriteria> OnderzoekBeperkingCriteria { get; set; }
         public DbSet<OnderzoekType> OnderzoekType { get; set; }
         public DbSet<OnderzoekCategories> OnderzoekCategories { get; set; }
+        public DbSet<ErvaringsdeskundigeBenaderingVoorkeur> ErvaringsdeskundigeBenaderingVoorkeuren { get; set; }
+        public DbSet<ErvaringsdeskundigeOnderzoekType> ErvaringsdeskundigeVoorkeurOnderzoekTypes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -91,6 +93,32 @@ namespace AspTest
                 .HasOne(pc => pc.Type)
                 .WithMany(o => o.OnderzoekCategories)
                 .HasForeignKey(pc => pc.TypeId);
+
+            // ErvaringsdeskundigeBenaderingVoorkeur (one-to-one)
+            modelBuilder.Entity<ErvaringsdeskundigeBenaderingVoorkeur>()
+                .HasOne(o => o.Ervaringsdeskundige)
+                .WithOne(o => o.ErvaringsdeskundigeVoorkeur);
+            /////////////////////////////////////////////////////
+
+            // ErvaringsdeskundigeOnderzoekType (many-to-many)
+            modelBuilder.Entity<ErvaringsdeskundigeOnderzoekType>()
+                .HasKey(ot => new { ot.OnderzoekTypeId, ot.ErvaringsdeskundigeId });
+
+            modelBuilder.Entity<ErvaringsdeskundigeOnderzoekType>()
+                .HasOne(ot => ot.Ervaringsdeskundige)
+                .WithMany(e => e.ErvaringsdeskundigeOnderzoekTypes)
+                .HasForeignKey(f => f.ErvaringsdeskundigeId);
+
+            modelBuilder.Entity<ErvaringsdeskundigeOnderzoekType>()
+                .HasOne(ot => ot.VoorkeurOnderzoekType)
+                .WithMany(e => e.ErvaringsdeskundigeOnderzoekTypes)
+                .HasForeignKey(f => f.OnderzoekTypeId);
+            
+            // Dit moet er zijn, omdat er geen unieke Id is die elke row uniek maakt (Primary Key)
+            modelBuilder.Entity<ErvaringsdeskundigeOnderzoekType>()
+                .HasIndex(ot => new { ot.OnderzoekTypeId, ot.ErvaringsdeskundigeId })
+                .IsUnique();
+            ///////////////////////////////////////////////////
         }
     }
 }
