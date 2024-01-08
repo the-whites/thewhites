@@ -232,7 +232,7 @@ const ProfielErvaringsdeskundige = () => {
 
 					<InputBar required={true} inputRef={beschikbaarheidRef} label="Beschikbaarheid"/>
 
-					<Button type="submit">Bevestigen</Button>
+					<Button type="submit">Opslaan</Button>
 				</Form>
 			</div>
 		</>
