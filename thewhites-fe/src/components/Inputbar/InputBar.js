@@ -7,7 +7,7 @@ import { OverlayTrigger, Tooltip, InputGroup } from "react-bootstrap";
 import "../MainStyles.css";
 import "./InputBar.css";
 
-const InputBar = ({ type = "text", placeholder = "", label = "", handleChange = () => {}, infoText = "", required = false, isInvalid = false, errorMessage = `${label} is verplicht om ingevuld te worden`, inputRef}) => {
+const InputBar = ({ type = "text", placeholder = "", label = "", handleChange = () => {}, infoText = "", required = false, min = null, isInvalid = false, errorMessage = `${label} is verplicht om ingevuld te worden`, inputRef}) => {
 
 	return (
 		<>
@@ -21,6 +21,7 @@ const InputBar = ({ type = "text", placeholder = "", label = "", handleChange = 
 							ref={inputRef}
 							type={type}
 							placeholder={placeholder}
+							minLength={min}
 							onChange={(e) => handleChange(e.target.value)}
 							required={required}
 							className="input-bar"

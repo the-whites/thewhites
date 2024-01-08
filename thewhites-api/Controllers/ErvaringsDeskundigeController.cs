@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using AspTest.Repository;
 using AspTest.Config;
+using AspTest.Util;
 
 namespace AspTest.Controllers
 {
@@ -93,6 +94,9 @@ namespace AspTest.Controllers
             // TODO: optional en required velden validatie
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (!GeneralUtils.IsNumeric(model.telefoonnummer))
+                return BadRequest("Telefoonnummer input is invalid. Check telefoonnummer input.");
 
             Claim? UserIdClaim = User.FindFirst("user_id");
             int.TryParse(UserIdClaim!.Value, out int userId);
