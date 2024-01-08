@@ -6,5 +6,17 @@ namespace AspTest.Repository
     {
         ICollection<OnderzoekType> GetOnderzoekTypes();
         OnderzoekType? GetOnderzoekTypeById(int onderzoekTypeId);
+        Task ClearOnderzoekTypesGebruiker(Ervaringsdeskundige ervaringsdeskundige, bool withSaveChange = true);
+        Task<ErvaringsdeskundigeOnderzoekType> AddVoorkeurOnderzoekTypeGebruiker(
+            Ervaringsdeskundige ervaringsdeskundige, 
+            OnderzoekType onderzoekType,
+            bool withSaveChange = true
+        );
+
+        Task AddMultipleVoorkeurOnderzoekTypeGebruiker(
+            Ervaringsdeskundige ervaringsdeskundige, 
+            ICollection<int> onderzoekTypeIds, 
+            bool withSaveChange = true
+        );
     }
 }
