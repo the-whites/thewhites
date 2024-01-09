@@ -20,5 +20,28 @@ namespace AspTest.Repository
         {
             return _context.Beperkingen.ToList().Find(p => p.Id == beperkingId);
         }
+
+        public async Task<ErvaringsdeskundigeBeperking> AddBeperkingBijGebruiker(Gebruiker gbrErvaringsdeskundige, Beperking beperking, bool withSaveChange = true)
+        {
+            var ervaringsdeskundige = gbrErvaringsdeskundige.Ervaringsdeskundige;
+
+            if (ervaringsdeskundige == null)
+                throw new Exception("Could not create ErvaringsdeskundigeOnderzoekType. Gebruiker does not have an Ervaringsdeskundige.");
+            
+            if (_context.Beperkingen.ToList().Find(bp => bp == beperking) == null)
+                throw new Exception("Could not create ErvaringsdeskundigeBeperking. Gebruiker gave an invalid Beperking.");
+
+            var ervBeperking = new ErvaringsdeskundigeBeperking();
+
+            ervBeperking.Ervaringsdeskundige = ervaringsdeskundige;
+            ervBeperking.Beperking = beperking;
+  
+            _context.ErvaringsdeskundigeBeperkingen.Add(ervBeperking);
+
+            if (withSaveChange)
+                await _context.SaveChangesAsync();
+
+            return ervBeperking;
+        }
     }
 }

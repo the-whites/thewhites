@@ -1,4 +1,5 @@
 using AspTest.Models;
+using Microsoft.Data.SqlClient;
 
 namespace AspTest.Repository
 {
@@ -19,6 +20,13 @@ namespace AspTest.Repository
         public OnderzoekType? GetOnderzoekTypeById (int onderzoekTypeId)
         {
             return _context.OnderzoekType.ToList().Find(p => p.Id == onderzoekTypeId);
+        }
+    }
+
+    internal class ErvaringsdeskundigeVoorkeurOnderzoekTypes
+    {
+        public ErvaringsdeskundigeVoorkeurOnderzoekTypes()
+        {
         }
     }
 }

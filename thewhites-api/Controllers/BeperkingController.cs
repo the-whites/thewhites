@@ -1,4 +1,5 @@
 using AspTest.Models;
+using AspTest.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspTest.Controllers

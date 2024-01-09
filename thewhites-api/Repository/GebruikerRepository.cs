@@ -28,6 +28,62 @@ namespace AspTest.Repository
             return gbr;
         }
 
+        public async Task<ErvaringsdeskundigeOnderzoekType> AddVoorkeurOnderzoekTypeGebruiker(
+            Gebruiker gbrErvaringsdeskundige, 
+            OnderzoekType onderzoekType,
+            bool withSaveChange = true
+        )
+        {
+            var ervaringsdeskundige = gbrErvaringsdeskundige.Ervaringsdeskundige;
+
+            if (ervaringsdeskundige == null)
+                throw new Exception("Could not create ErvaringsdeskundigeOnderzoekType. Gebruiker does not have an Ervaringsdeskundige.");
+            
+            if (_context.OnderzoekType.ToList().Find(ot => ot == onderzoekType) == null)
+                throw new Exception("Could not create ErvaringsdeskundigeOnderzoekType. Gebruiker gave an invalid OnderzoekType.");
+
+            var ervOnderzoekType = new ErvaringsdeskundigeOnderzoekType();
+
+            ervOnderzoekType.Ervaringsdeskundige = ervaringsdeskundige;
+            ervOnderzoekType.VoorkeurOnderzoekType = onderzoekType;
+  
+            _context.ErvaringsdeskundigeVoorkeurOnderzoekTypes.Add(ervOnderzoekType);
+
+            if (withSaveChange)
+                await _context.SaveChangesAsync();
+
+            return ervOnderzoekType;
+        }
+
+        public async Task<ErvaringsdeskundigeBenaderingVoorkeur> AddBenaderingVoorkeurGebruiker(
+            Gebruiker gbrErvaringsdeskundige, 
+            bool telefonisch, 
+            bool portaal, 
+            bool toestemmingUitnodigingen,
+            bool withSaveChange = true
+        )
+        {
+            var ervaringsdeskundige = gbrErvaringsdeskundige.Ervaringsdeskundige;
+
+            if (ervaringsdeskundige == null)
+                throw new Exception("Could not create ErvaringsdeskundigeOnderzoekType. Gebruiker does not have an Ervaringsdeskundige.");
+            
+
+            var ervBenaderingVoorkeur = new ErvaringsdeskundigeBenaderingVoorkeur();
+
+            ervBenaderingVoorkeur.Ervaringsdeskundige = ervaringsdeskundige;
+            ervBenaderingVoorkeur.Telefonisch = telefonisch;
+            ervBenaderingVoorkeur.Portaal = portaal;
+            ervBenaderingVoorkeur.ToestemmingUitnodigingen = toestemmingUitnodigingen;
+  
+            _context.ErvaringsdeskundigeBenaderingVoorkeuren.Add(ervBenaderingVoorkeur);
+
+            if (withSaveChange)
+                await _context.SaveChangesAsync();
+
+            return ervBenaderingVoorkeur;
+        }
+
         public Gebruiker? GetGebruikerById(int gebruikerId)
         {
             return _context.Gebruikers.ToList().Find(p => p.Id == gebruikerId);
