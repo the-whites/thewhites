@@ -34,6 +34,26 @@ namespace AspTest.Controllers
             return Ok(onderzoekLijst);
         }
 
+
+        [Authorize]
+        [HttpGet("onderzoeken/{gebruikerId}")]
+        public IActionResult GetOnderzoekFromGebruikerId(int gebruikerId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState); 
+
+            Bedrijf? bedrijf = bedrijfRepository.GetBedrijfByUserId(gebruikerId);
+
+            if(bedrijf == null)
+            {
+                return Unauthorized("Gebruiker heeft geen bedrijf");
+            }
+
+            ICollection<Onderzoek> onderzoekLijst = onderzoekRepository.GetOnderzoekenByBedrijf(bedrijf); 
+
+            return Ok(onderzoekLijst);
+        }
+
         [Authorize]
         [HttpPost("create-onderzoek")]
         public async Task<IActionResult> CreateOnderzoek([FromBody] OnderzoekBodyModel onderzoek)
@@ -59,8 +79,6 @@ namespace AspTest.Controllers
             ICollection<OnderzoekPostcodeCriteria> onderzoekPostcodeCriteriaList = MapCriteriaList(onderzoek.postcodeCriteriaList, postcode => new OnderzoekPostcodeCriteria { Postcode = postcode });
             ICollection<OnderzoekLeeftijdCriteria> onderzoekLeeftijdCriteriaList = MapCriteriaList(onderzoek.leeftijdCriteriaList, leeftijd => new OnderzoekLeeftijdCriteria { Leeftijd = leeftijd });
             ICollection<OnderzoekBeperkingCriteria> onderzoekBeperkingCriteriaList = MapCriteriaList(onderzoek.beperkingCriteriaList, beperking => new OnderzoekBeperkingCriteria { Beperking = beperkingRepository.GetBeperkingById(beperking) });
-
-
 
             if (onderzoekCategoriesList.Any(oc => oc.Type == null))
             {

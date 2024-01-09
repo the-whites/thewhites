@@ -174,6 +174,7 @@ namespace AspTest.Controllers
                 return Unauthorized("No user found.");
 
             var profile = new {
+                id = gebruiker.Id,
                 voornaam = gebruiker.Voornaam,
                 achternaam = gebruiker.Achternaam,
                 email = gebruiker.Emailadres,

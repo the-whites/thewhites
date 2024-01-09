@@ -34,5 +34,26 @@ namespace AspTest.Repository
                 .Include(o => o.PostcodeCriteria)
                 .ToList();
         }
+
+        public ICollection<Onderzoek> GetOnderzoekenByBedrijf(Bedrijf bedrijf)
+        {
+            return _context.Onderzoeken
+                .Include(o => o.Bedrijf)
+                .Include(o => o.OnderzoekCategories)
+                    .ThenInclude(oc => oc.Type)
+                .Include(o => o.BeperkingCriteria)
+                    .ThenInclude(bc => bc.Beperking)
+                .Include(o => o.LeeftijdCriteria)
+                .Include(o => o.PostcodeCriteria)
+                .Where(o => o.BedrijfId == bedrijf.Id)
+                .ToList();
+        }
+
+        public int GetTotalOnderzoekDeelnemers(Onderzoek onderzoek)
+        {
+            return _context.OnderzoekDeelnemers
+                .Where(od => od.OnderzoekId == onderzoek.Id)
+                .Count();
+        }
     }
 }

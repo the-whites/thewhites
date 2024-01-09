@@ -5,8 +5,6 @@ namespace AspTest.Models
     public class OnderzoekPostcodeCriteria
     {
         [JsonIgnore]
-        public int Id { get; set; }
-        [JsonIgnore]
         public int OnderzoekId { get; set; }
         [JsonIgnore]
         public Onderzoek Onderzoek { get; set; }

@@ -32,6 +32,7 @@ import { ROLES } from "./constants/roles";
 import NieuwOpdracht from "./pages/BedrijvenPortal/Opdrachten/NieuwOpdracht/NieuwOpdracht";
 import DefaultOpdrachtenTab from "./pages/BedrijvenPortal/Opdrachten/DefaultOpdrachtenTab/DefaultOpdrachtenTab";
 import Layout from "./pages/Layout";
+import LopendeOpdrachten from "./pages/BedrijvenPortal/Opdrachten/LopendeOpdrachten/LopendeOpdrachten";
 function App() {
 
 	return (
@@ -59,6 +60,7 @@ function App() {
 								<Route path="opdrachten" element={<Opdrachten />}>
 									<Route index element={<DefaultOpdrachtenTab />} />
 									<Route path="nieuw" element={<NieuwOpdracht />} />
+									<Route path="lopende-opdrachten" element={<LopendeOpdrachten />} />
 								</Route>
 								<Route path="profiel" element={<Profiel />} />
 							</Route>
