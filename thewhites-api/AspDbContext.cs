@@ -26,6 +26,7 @@ namespace AspTest
         public DbSet<OnderzoekCategories> OnderzoekCategories { get; set; }
         public DbSet<ErvaringsdeskundigeBenaderingVoorkeur> ErvaringsdeskundigeBenaderingVoorkeuren { get; set; }
         public DbSet<ErvaringsdeskundigeOnderzoekType> ErvaringsdeskundigeVoorkeurOnderzoekTypes { get; set; }
+        public DbSet<OnderzoekDeelname> OnderzoekDeelnames { get; set;}
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -93,6 +94,21 @@ namespace AspTest
                 .HasOne(pc => pc.Type)
                 .WithMany(o => o.OnderzoekCategories)
                 .HasForeignKey(pc => pc.TypeId);
+
+            modelBuilder.Entity<OnderzoekDeelname>()
+                .HasKey(pc => new { pc.OnderzoekId, pc.ErvaringsdeskundigeId });
+
+            modelBuilder.Entity<OnderzoekDeelname>()
+                .HasOne(pc => pc.Onderzoek)
+                .WithMany(o => o.OnderzoekDeelname)
+                .HasForeignKey(pc => pc.OnderzoekId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<OnderzoekDeelname>()
+                .HasOne(pc => pc.Ervaringsdeskundige)
+                .WithMany(o => o.OnderzoekDeelname)
+                .HasForeignKey(pc => pc.ErvaringsdeskundigeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // ErvaringsdeskundigeBenaderingVoorkeur (one-to-one)
             modelBuilder.Entity<ErvaringsdeskundigeBenaderingVoorkeur>()

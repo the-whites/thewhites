@@ -27,6 +27,7 @@ namespace AspTest.Models
         public ErvaringsdeskundigeBenaderingVoorkeur ErvaringsdeskundigeVoorkeur {get; set;}
         [JsonIgnore]
         public ICollection<ErvaringsdeskundigeOnderzoekType> ErvaringsdeskundigeOnderzoekTypes {get; set;}
-
+        [JsonIgnore]
+        public ICollection<OnderzoekDeelname> OnderzoekDeelname {get; set;}
     }
 }
