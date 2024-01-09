@@ -1,3 +1,5 @@
+using AspTest.Models;
+
 namespace AspTest.Repository
 {
     public class OnderzoekDeelnameRepository : IOnderzoekDeelnameRepository
@@ -7,6 +9,13 @@ namespace AspTest.Repository
         public OnderzoekDeelnameRepository(AspDbContext context)
         {
             _context = context;
+        }
+
+        public int GetTotalOnderzoekDeelnemers(Onderzoek onderzoek)
+        {
+            return _context.OnderzoekDeelnames
+                .Where(od => od.OnderzoekId == onderzoek.Id)
+                .Count();
         }
     }
 }

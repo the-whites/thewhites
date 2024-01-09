@@ -48,12 +48,5 @@ namespace AspTest.Repository
                 .Where(o => o.BedrijfId == bedrijf.Id)
                 .ToList();
         }
-
-        public int GetTotalOnderzoekDeelnemers(Onderzoek onderzoek)
-        {
-            return _context.OnderzoekDeelnemers
-                .Where(od => od.OnderzoekId == onderzoek.Id)
-                .Count();
-        }
     }
 }
