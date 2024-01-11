@@ -7,20 +7,43 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import "../MainStyles.css";
 import "./MultiSelectionBar.css";
 
-const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", items, required = false, handleSelection = () => {}, isInvalid = false }) => {
-	const [selectedItems, setSelectedItems] = useState([]); 
+const MultiSelectionBar = ({ 
+	label = "Maak een keuze", 
+	buttonText = "Kies", 
+	items, 
+	initialSelectedItems = [],
+	required = false, 
+	handleSelection = () => {}, 
+	getKey = (option) => items.indexOf(option), 
+	getValue = (option) => option,
+	isInvalid = false
+}) => {
+	const [selectedItems, setSelectedItems] = useState(() => initialSelectedItems);
 
-	const selectItem = (option) => { 
-		if (selectedItems.includes(option)) { 
-			removeItem(option);
+	// calledFromJSX = true wanneer je bijvoorbeeld onClick(() => selectItem()) doet. 
+	// Dit is er om initialSelectedItems niet meteen weer leeg te halen als de component 2 keer achter elkaar rendert.
+	const selectItem = (key, calledFromJSX = false) => { 
+		if (selectedItems.find((x) => getKey(x) == key)) {
+			if (calledFromJSX) 
+				removeItem(key);
 		} else { 
-			setSelectedItems([...selectedItems, option]); 
+			var item = items.find(x => getKey(x) == key);
+			
+			if (!item)
+				return console.log("couldn't select item with key " + key);
+
+			console.log("setting");
+
+			setSelectedItems([...selectedItems, item]); 
 		} 
 	};
 
-	const removeItem = (option) => { 
-		setSelectedItems(selectedItems.filter((item) => item !== option)); 
-	};
+	const removeItem = (key) => setSelectedItems(selectedItems.filter((item) => getKey(item) != key));
+
+	useEffect(() => {
+		console.log("test' : " + JSON.stringify(initialSelectedItems));
+		setSelectedItems(initialSelectedItems);
+	}, []);
 
 	useEffect(() => {
 		handleSelection(selectedItems);
@@ -32,10 +55,10 @@ const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", item
 				<Col xs={2}></Col>
 				<Col xs={4} className="col-align-left">
 					{selectedItems ? (
-						selectedItems.map((option, index) => (
-							<Badge key={index} bg="grey" className="selection-badge text-dark d-flex justify-content-between">
-								{option}
-								<CloseButton onClick={() => removeItem(option)}/>
+						selectedItems.map((option) => (
+							<Badge key={getKey(option)} bg="grey" className="selection-badge text-dark d-flex justify-content-between">
+								{getValue(option)}
+								<CloseButton onClick={() => removeItem(getKey(option))}/>
 							</Badge>
 						))
 					) : (
@@ -53,14 +76,14 @@ const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", item
 							{buttonText}
 						</Dropdown.Toggle>
 						<Dropdown.Menu className="dropdown-menu">
-							{items.map((option, index) => (
+							{items && items.map((option, index) => (
 								<Dropdown.Item
-									key={index}
-									onClick={() => selectItem(option)}
+									key={getKey(option)}
+									onClick={() => selectItem(getKey(option), true)}
 									className={`d-flex justify-content-between dropdown-item ${index % 2 === 0 ? "" : "bg-grey"}`} 
 								>
-									{option}
-									{selectedItems.includes(option) ? 
+									{getValue(option)}
+									{selectedItems.find((item) => getKey(option) == getKey(item)) ? 
 										(<span className="ms-auto">
 											<IoIosCheckmarkCircle className="checkmark"/>
 										</span>)

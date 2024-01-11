@@ -14,5 +14,13 @@ namespace AspTest.Repository
             string ziekte,
             bool withSaveChange = true
         );
+
+        Task<ErvaringsdeskundigeBenaderingVoorkeur> AddBenaderingVoorkeurGebruiker(
+            Ervaringsdeskundige ervaringsdeskundige, 
+            bool telefonisch, 
+            bool portaal, 
+            bool toestemmingUitnodigingen,
+            bool withSaveChange = true
+        );
     }
 }

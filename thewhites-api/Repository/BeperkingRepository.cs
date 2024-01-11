@@ -1,3 +1,4 @@
+using AspTest.Config;
 using AspTest.Models;
 
 namespace AspTest.Repository
@@ -21,13 +22,8 @@ namespace AspTest.Repository
             return _context.Beperkingen.ToList().Find(p => p.Id == beperkingId);
         }
 
-        public async Task<ErvaringsdeskundigeBeperking> AddBeperkingBijGebruiker(Gebruiker gbrErvaringsdeskundige, Beperking beperking, bool withSaveChange = true)
+        public async Task<ErvaringsdeskundigeBeperking> AddBeperkingBijGebruiker(Ervaringsdeskundige ervaringsdeskundige, Beperking beperking, bool withSaveChange = true)
         {
-            var ervaringsdeskundige = gbrErvaringsdeskundige.Ervaringsdeskundige;
-
-            if (ervaringsdeskundige == null)
-                throw new Exception("Could not create ErvaringsdeskundigeOnderzoekType. Gebruiker does not have an Ervaringsdeskundige.");
-            
             if (_context.Beperkingen.ToList().Find(bp => bp == beperking) == null)
                 throw new Exception("Could not create ErvaringsdeskundigeBeperking. Gebruiker gave an invalid Beperking.");
 
@@ -42,6 +38,32 @@ namespace AspTest.Repository
                 await _context.SaveChangesAsync();
 
             return ervBeperking;
+        }
+
+        public async Task AddMultipleBeperkingTypeGebruiker(
+            Ervaringsdeskundige ervaringsdeskundige, 
+            ICollection<int> beperkingTypeIds, 
+            bool withSaveChange = true
+        )
+        {
+            foreach (var beperkingTypeId in beperkingTypeIds)
+            {
+                Beperking? ot = GetBeperkingById(beperkingTypeId);
+
+                if (ot == null)
+                    throw new InvalidBeperkingTypesGivenException("beperkingTypeIds contains an invalid value.");
+
+                await AddBeperkingBijGebruiker(ervaringsdeskundige, ot, withSaveChange);
+            }
+        }
+
+        public async Task ClearBeperkingenGebruiker(Ervaringsdeskundige ervaringsdeskundige, bool withSaveChange = true)
+        {
+            var itemsToRemove = _context.ErvaringsdeskundigeBeperkingen.Where(item => item.ErvaringsdeskundigeId == ervaringsdeskundige.Id).ToList();
+            _context.ErvaringsdeskundigeBeperkingen.RemoveRange(itemsToRemove);
+
+            if (withSaveChange)
+                await _context.SaveChangesAsync();
         }
     }
 }
