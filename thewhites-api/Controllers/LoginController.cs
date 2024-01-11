@@ -162,6 +162,7 @@ namespace AspTest.Controllers
             }
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult?> CreateTestDataVoorRegistratie(Gebruiker gebruiker)
         {
             await _ervaringsdeskundigeRepository.CreateErvaringsdeskundigeVoorGebruiker(
@@ -179,7 +180,7 @@ namespace AspTest.Controllers
             // Maak alvast ervaringsdeskundige, omdat we dit nodig hebben bij de volgende twee queries.
             await _context.SaveChangesAsync();
 
-            await _gebruikerRepository.AddBenaderingVoorkeurGebruiker(gebruiker, true, false, true, false);
+            await _ervaringsdeskundigeRepository.AddBenaderingVoorkeurGebruiker(gebruiker.Ervaringsdeskundige!, true, false, true, false);
 
             OnderzoekType? onderzoekType = _onderzoekTypeRepository.GetOnderzoekTypeById(2);
 
@@ -191,8 +192,8 @@ namespace AspTest.Controllers
             if (beperking == null)
                 return StatusCode(500, "Could not create temporary register info. Check LoginController. beperking not found.");
 
-            await _gebruikerRepository.AddVoorkeurOnderzoekTypeGebruiker(gebruiker, onderzoekType, false);
-            await _beperkingRepository.AddBeperkingBijGebruiker(gebruiker, beperking, false);
+            await _onderzoekTypeRepository.AddVoorkeurOnderzoekTypeGebruiker(gebruiker.Ervaringsdeskundige!, onderzoekType, false);
+            await _beperkingRepository.AddBeperkingBijGebruiker(gebruiker.Ervaringsdeskundige!, beperking, false);
 
             await _context.SaveChangesAsync();
 

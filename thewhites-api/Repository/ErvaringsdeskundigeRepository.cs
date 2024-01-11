@@ -41,5 +41,28 @@ namespace AspTest.Repository
 
             return erv;
         }
+
+        public async Task<ErvaringsdeskundigeBenaderingVoorkeur> AddBenaderingVoorkeurGebruiker(
+            Ervaringsdeskundige ervaringsdeskundige, 
+            bool telefonisch, 
+            bool portaal, 
+            bool toestemmingUitnodigingen,
+            bool withSaveChange = true
+        )
+        {
+            var ervBenaderingVoorkeur = new ErvaringsdeskundigeBenaderingVoorkeur();
+
+            ervBenaderingVoorkeur.Ervaringsdeskundige = ervaringsdeskundige;
+            ervBenaderingVoorkeur.Telefonisch = telefonisch;
+            ervBenaderingVoorkeur.Portaal = portaal;
+            ervBenaderingVoorkeur.ToestemmingUitnodigingen = toestemmingUitnodigingen;
+  
+            _context.ErvaringsdeskundigeBenaderingVoorkeuren.Add(ervBenaderingVoorkeur);
+
+            if (withSaveChange)
+                await _context.SaveChangesAsync();
+
+            return ervBenaderingVoorkeur;
+        }
     }
 }

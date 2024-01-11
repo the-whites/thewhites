@@ -6,6 +6,12 @@ namespace AspTest.Repository
     {
         ICollection<Beperking> GetBeperkingen();
         Beperking? GetBeperkingById(int beperkingId);
-        Task<ErvaringsdeskundigeBeperking> AddBeperkingBijGebruiker(Gebruiker gbrErvaringsdeskundige, Beperking beperking, bool withSaveChange = true);
+        Task<ErvaringsdeskundigeBeperking> AddBeperkingBijGebruiker(Ervaringsdeskundige ervaringsdeskundige, Beperking beperking, bool withSaveChange = true);
+        Task ClearBeperkingenGebruiker(Ervaringsdeskundige ervaringsdeskundige, bool withSaveChange = true);
+        Task AddMultipleBeperkingTypeGebruiker(
+            Ervaringsdeskundige ervaringsdeskundige, 
+            ICollection<int> beperkingTypeIds, 
+            bool withSaveChange = true
+        );
     }
 }
