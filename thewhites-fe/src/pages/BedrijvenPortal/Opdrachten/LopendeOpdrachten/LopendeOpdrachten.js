@@ -15,7 +15,7 @@ const LopendeOpdrachten = () => {
 
 	const fetchOnderzoeken = async () => {
 		try {
-			const response = await fetchApi({route: `api/onderzoek/onderzoeken/${userId}`});
+			const response = await fetchApi({route: "api/bedrijf/mijn-onderzoeken"});
 			
 			if (response.status === 200) {
 				const currentDate = new Date();

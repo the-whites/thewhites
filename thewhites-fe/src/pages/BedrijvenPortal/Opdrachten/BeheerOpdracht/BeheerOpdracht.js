@@ -11,7 +11,7 @@ const BeheerOpdracht = () => {
 
 	const fetchOnderzoek = async () => {
 		try {
-			const response = await fetchApi({route: `api/onderzoek/${id}`});
+			const response = await fetchApi({route: `api/bedrijf/mijn-onderzoeken/${id}`});
 			
 			if (response.status === 200) {
 				setOnderzoek({
