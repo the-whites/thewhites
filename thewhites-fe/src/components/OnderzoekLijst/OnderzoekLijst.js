@@ -7,17 +7,6 @@ import InputBar from "../Inputbar/InputBar";
 
 import "./OnderzoekLijst.css";
 
-const sortByProperty = (property, isAscending) => (a, b) => {
-	const valueA = a[property];
-	const valueB = b[property];
-
-	if (typeof valueA === "string" && typeof valueB === "string") {
-		return isAscending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
-	}
-
-	return isAscending ? valueA - valueB : valueB - valueA;
-};
-
 const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 	const [onderzoeken, setOnderzoeken] = useState(onderzoekLijst);
 	const [onderzoekenShown, setOnderzoekenShown] = useState(onderzoeken);
@@ -29,31 +18,41 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 		{ title: "Eind datum", sorted: false },
 	]);
 	
-	const sortOnderzoeken = (property, isAscending) => {
-		setOnderzoeken((prevOnderzoeken) => [
-			...prevOnderzoeken.sort(sortByProperty(property, isAscending)),
-		]);
-	};
-	
-	const toggleSort = (index) => {
-		setTitleSort((prevTitleSort) =>
-			prevTitleSort.map((titleSort, i) => ({
+	const toggleSort = (info) => {
+		setTitleSort((prevtitleSort) =>
+			prevtitleSort.map((titleSort) => ({
 				...titleSort,
-				sorted: index === i ? !titleSort.sorted : false,
+				sorted: info === titleSort ? !titleSort.sorted : false,
 			}))
 		);
 	};
 	
+	const sortData = (property, sortOrder) => {
+		setOnderzoeken((prevOnderzoeken) =>
+			sortOrder
+				? prevOnderzoeken.sort((a, b) => (a[property] > b[property] ? 1 : -1))
+				: prevOnderzoeken.sort((a, b) => (b[property] > a[property] ? 1 : -1))
+		);
+	};
+
+	const sortTitel = () => {
+		setOnderzoeken((prevOnderzoeken) => 
+			titleSort[0].sorted
+				? prevOnderzoeken.sort((a, b) => a.titel.localeCompare(b.titel))
+				: prevOnderzoeken.sort((a, b) => b.titel.localeCompare(a.titel))
+		);
+	};
+
 	useEffect(() => {
-		sortOnderzoeken("titel", titleSort[0].sorted);
+		sortTitel();
 	}, [titleSort[0].sorted]);
  
 	useEffect(() => {
-		sortOnderzoeken("startDatum", titleSort[1].sorted);
+		sortData("startDatum", titleSort[1].sorted);
 	}, [titleSort[1].sorted]);
 	
 	useEffect(() => {
-		sortOnderzoeken("eindDatum", titleSort[2].sorted);
+		sortData("eindDatum", titleSort[2].sorted);
 	}, [titleSort[2].sorted]);
  
 
