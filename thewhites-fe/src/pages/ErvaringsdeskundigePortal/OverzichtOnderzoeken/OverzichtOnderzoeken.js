@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/PortalWelcomeMessage";
-import { Button, Card, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, InputGroup, Pagination, Row } from "react-bootstrap";
 import { fetchApi } from "../../../hooks/useApi";
+
+
 
 const OverzichtOnderzoeken = () => {
 	const [query, setQuery] = useState("");
 	const [results, setResults] = useState([]);
 	const [geselecteerdeOnderzoek, setGeselecteerdeOnderzoek] = useState(null);
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 3;
   
 	const handleSearch = async () => {
 		const response = await fetchApi({route: "api/Onderzoek/onderzoeken"});
@@ -56,6 +60,10 @@ const OverzichtOnderzoeken = () => {
 		const lastItemId = postcodeCriteria.length - 1;
 		return postcodeCriteria.map((item, index) => (<span key={index}>{item.postcode}{index == lastItemId ? "" : ","}</span>));
 	};
+
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const currentItems = results.slice(startIndex, endIndex);
 
 	return (<>
 		<br />
@@ -134,9 +142,25 @@ const OverzichtOnderzoeken = () => {
 				</Button>
 			</InputGroup>
 
+			
+
 			<Container>
 				<Row className="justify-content-md-center">
-					{results.map((item) => (
+					<Col md={12}>
+						<Pagination className="justify-content-md-center">
+							{[...Array(Math.ceil(results.length / itemsPerPage))].map((_, index) => (
+								<Pagination.Item
+									key={index + 1}
+									active={index + 1 === currentPage}
+									onClick={() => setCurrentPage(index + 1)}
+								>
+									{index + 1}
+								</Pagination.Item>
+							))}
+						</Pagination>
+					</Col>
+
+					{currentItems.map((item) => (
 						<Col className="onderzoeken-search-item" key={item.id} md={7}>
 							<Card className="text-center">
 								<Card.Header>van {item.bedrijf.naam}</Card.Header>
@@ -153,7 +177,6 @@ const OverzichtOnderzoeken = () => {
 					))}
 				</Row>
 			</Container>
-
 	
 		</Container>
 	</>);
