@@ -7,6 +7,7 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import "../MainStyles.css";
 import "./MultiSelectionBar.css";
 
+// alreadySelectedItems kan nog veranderd worden naar een array met objecten met een selected boolean en name string, maar kan voor nu gewoon zo
 const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", items, required = false, handleSelection = () => {}, isInvalid = false }) => {
 	const [selectedItems, setSelectedItems] = useState([]); 
 
@@ -25,7 +26,7 @@ const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", item
 	useEffect(() => {
 		handleSelection(selectedItems);
 	}, [selectedItems]); 
-  
+
 	return (
 		<Container fluid className={`justify-content-start ${isInvalid ? "is-invalid" : ""}`}>
 			<Row>
@@ -39,7 +40,7 @@ const MultiSelectionBar = ({ label = "Maak een keuze", buttonText = "Kies", item
 							</Badge>
 						))
 					) : (
-						"none"
+						""
 					)}
 				</Col>
 			</Row>

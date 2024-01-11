@@ -6,13 +6,16 @@ import MultiSelectionBar from "../MultiSelectionBar/MultiSelectionBar";
 import { postcodeValidator } from "postcode-validator";
 import { useNavigate } from "react-router-dom";
 import { OPDRACHT_DATA, initialOpdrachtState } from "../../constants/opdrachtData";
+import { fetchApi } from "../../hooks/useApi";
 
-const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperkingen }) => {
+const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
 	const [localOpdrachtData, setLocalOpdrachtData] = useState(initialOpdrachtState);
+	const [typeOpdrachten, setTypeOpdrachten] = useState([]);
+	const [beperkingen, setBeperkingen] = useState([]);
 
 	// Dit zijn de verplichte velden die ingevuld moeten worden
 	const [isInvalidFields, setIsInvalidFields] = useState({
-		[OPDRACHT_DATA.OPRACHT_NAAM]: false,
+		[OPDRACHT_DATA.OPDRACHT_NAAM]: false,
 		[OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: false,
 		[OPDRACHT_DATA.LOCATIE]: false,
 		[OPDRACHT_DATA.TYPE_OPDRACHT]: false,
@@ -34,14 +37,18 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 	};
 	
 	const handleTypeSelection = (items) => {
-		// Pak alleen de nummer uit de string oftewel de ID
-		const ids = items.map(naam => getIdByNaam(naam, typeOpdrachten));
-		setLocalOpdrachtData((prevData) => ({ ...prevData, typeOpdracht: ids }));
+		if(items) {
+			// Pak alleen de nummer uit de string oftewel de ID
+			const ids = items.map(naam => getIdByNaam(naam, typeOpdrachten));
+			setLocalOpdrachtData((prevData) => ({ ...prevData, typeOpdracht: ids }));
+		}
 	};
-	
+   
 	const handleBeperkingChange = (items) => {
-		const ids = items.map(naam => getIdByNaam(naam, beperkingen));
-		setLocalOpdrachtData((prevData) => ({ ...prevData, beperking: ids }));
+		if(items) {
+			const ids = items.map(naam => getIdByNaam(naam, beperkingen));
+			setLocalOpdrachtData((prevData) => ({ ...prevData, beperking: ids }));
+		}
 	};
 	
 	const handleLeeftijdChange = (value) => {
@@ -133,7 +140,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		setInvalidPostcodes(tempInvalidPostcodes);
 	};
 	
-	const mapItemsToStrings = items => items.map(item => `${item.naam}`);
+	const mapItemsToStrings = items => items.map(item => item.naam);
+
 
 	const postcodeErrorText = `De volgende postcodes zijn ongeldig: ${invalidPostcodes.join(", ")}`;
 
@@ -141,31 +149,74 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, typeOpdrachten, beperking
 		navigate(-1);
 	};
 
+	const fetchData = async (route, formatItem) => {
+		try {
+			const response = await fetchApi({ route });
+	
+			if (response.status === 200) {
+				const items = response.data.map(item => formatItem(item));
+				return items;
+			} else {
+				console.error(`Error fetching data. Status: ${response.status}`);
+				return [];
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+			return [];
+		}
+	};
+
 	useEffect(() => {
 		const hasInvalidPostcodes = invalidPostcodes.length !== 0 && !invalidPostcodes.includes("");
 		setIsInvalidFields(prevState => ({ ...prevState, postcode: hasInvalidPostcodes }));
 	}, [invalidPostcodes]);
 
+	useEffect(() => {
+		const fetchDataAndSetState = async () => {
+			try {
+				const typeOpdrachtenItems = await fetchData("api/OnderzoekType/onderzoek-types", item => ({
+					id: item?.id,
+					naam: item?.type
+				}));
+				setTypeOpdrachten(typeOpdrachtenItems);
+
+				const beperkingenItems = await fetchData("api/Beperking/beperkingen", item => ({
+					id: item?.id,
+					naam: item?.naam
+				}));
+				setBeperkingen(beperkingenItems);
+
+			} catch (error) {
+				console.error("Error fetching and setting data:", error);
+			}
+		};
+
+		fetchDataAndSetState();
+	}, []);
+
 	return (
 		<Form>
 			<Container className="center-container">
-				<h1 className="title">nieuwe opdracht aanmaken</h1>
 				<Row className="justify-content-center">
 					<Col md={{ span: 12, offset: 3 }}>
 						
 						<h1 className="text-center mb-4 header">Algemeen</h1>
 						<div className="mb-3">
-							<InputBar textPosition="left" label="Opdracht naam" type="text" placeholder="bijv. The Whites Website Accessibility" required={true} isInvalid={isInvalidFields.opdrachtNaam} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.OPRACHT_NAAM])}/>
+							<InputBar textPosition="left" label="Opdracht naam" type="text" placeholder="bijv. The Whites Website Accessibility" required={true} isInvalid={isInvalidFields.opdrachtNaam} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.OPDRACHT_NAAM])}/>
 							<InputBar textPosition="left" label="Opdracht omschrijving" type="textarea" placeholder="Dit dat" required={true} isInvalid={isInvalidFields.opdrachtOmschrijving} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.OPRACHT_OMSCHRIJVING])} />
 							<InputBar textPosition="left" label="Locatie van opdracht" type="text" placeholder="Hoofdkantoor The Whites" required={true} isInvalid={isInvalidFields.locatie} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.LOCATIE])} />
 							<InputBar textPosition="left" label="Beloning" type="text" placeholder="5 doezoe" handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.BELONING])} />
 						</div>
 						<div className="mb-3">
+							{typeOpdrachten &&
 							<MultiSelectionBar label="Type opdracht" buttonText="Selecteer type" items={mapItemsToStrings(typeOpdrachten)} isInvalid={isInvalidFields.typeOpdrachten} required={true} handleSelection={handleTypeSelection} />
+							}
 						</div>
 						<h1 className="text-center mb-3 header">Criteria</h1>
 						<div className="mb-3" >
+							{beperkingen &&
 							<MultiSelectionBar label="Uitstellen op beperking" buttonText="Selecteer beperking" items={mapItemsToStrings(beperkingen)} handleSelection={handleBeperkingChange} />
+							}
 						</div>
 						<div className="mb-3" >
 							<InputBar textPosition="left" label="Uitstellen op leeftijd" type="text" placeholder="bijv. 18" infoText="Je kan meerdere leeftijden invullen doormiddel van kommas zoals: 18, 20, 26 of 13-20 (dit is dan 13 tot en met 20)" handleChange={handleLeeftijdChange} />

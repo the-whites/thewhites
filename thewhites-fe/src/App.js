@@ -33,6 +33,7 @@ import NieuwOpdracht from "./pages/BedrijvenPortal/Opdrachten/NieuwOpdracht/Nieu
 import DefaultOpdrachtenTab from "./pages/BedrijvenPortal/Opdrachten/DefaultOpdrachtenTab/DefaultOpdrachtenTab";
 import Layout from "./pages/Layout";
 import LopendeOpdrachten from "./pages/BedrijvenPortal/Opdrachten/LopendeOpdrachten/LopendeOpdrachten";
+import BeheerOpdracht from "./pages/BedrijvenPortal/Opdrachten/BeheerOpdracht/BeheerOpdracht";
 function App() {
 
 	return (
@@ -61,6 +62,7 @@ function App() {
 									<Route index element={<DefaultOpdrachtenTab />} />
 									<Route path="nieuw" element={<NieuwOpdracht />} />
 									<Route path="lopende-opdrachten" element={<LopendeOpdrachten />} />
+									<Route path=":id" element={<BeheerOpdracht />} />
 								</Route>
 								<Route path="profiel" element={<Profiel />} />
 							</Route>

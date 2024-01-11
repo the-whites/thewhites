@@ -38,10 +38,6 @@ const InputBar = ({ type = "text", placeholder = "", label = "", handleChange = 
 				</Col>
 			</Form.Group>
 		</>
-
-
-
-
 	);
 };
 

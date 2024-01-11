@@ -37,23 +37,6 @@ const NieuwOpdracht = () => {
 		createOnderzoek();
 	};
 
-	const fetchData = async (route, formatItem) => {
-		try {
-			const response = await fetchApi({ route });
-	
-			if (response.status === 200) {
-				const items = response.data.map(item => formatItem(item)).filter(Boolean);
-				return items;
-			} else {
-				console.error(`Error fetching data. Status: ${response.status}`);
-				return [];
-			}
-		} catch (error) {
-			console.error("Error fetching data:", error);
-			return [];
-		}
-	};
-
 	const createOnderzoek = async () => {
 		const onderzoekDataObject = {
 			titel: opdrachtData.opdrachtNaam,
@@ -89,28 +72,7 @@ const NieuwOpdracht = () => {
 		handleCloseModal();
 		navigate(-1);
 	};
-	
-	useEffect(() => {
-		const fetchDataAndSetState = async () => {
-			try {
-				const typeOpdrachtenItems = await fetchData("api/OnderzoekType/onderzoek-types", item => ({
-					id: item?.id,
-					naam: item?.type
-				}));
-				setTypeOpdrachten(typeOpdrachtenItems);
 
-				const beperkingenItems = await fetchData("api/Beperking/beperkingen", item => ({
-					id: item?.id,
-					naam: item?.naam
-				}));
-				setBeperkingen(beperkingenItems);
-			} catch (error) {
-				console.error("Error fetching and setting data:", error);
-			}
-		};
-	
-		fetchDataAndSetState();
-	}, []);
 	const StyledOpdrachtData = 
 	`
 	<div style={{ padding: "20px", border: "1px solid #ddd", borderRadius: "5px" }}>
@@ -134,10 +96,7 @@ const NieuwOpdracht = () => {
 
 	return (
 		<>
-			<NieuwOpdrachtForm handleOpdrachtDataChange={handleOpdrachtDataChange}
-				typeOpdrachten={typeOpdrachten}
-				beperkingen={beperkingen}
-			/>
+			<NieuwOpdrachtForm handleOpdrachtDataChange={handleOpdrachtDataChange}/>
 			<ConfirmationModal show={showModal} handleClose={handleCloseModal} handleConfirm={handleConfirm} title="Weet u het zeker?" htmlMessage={StyledOpdrachtData} />
 		</>
 	);

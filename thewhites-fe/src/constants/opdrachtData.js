@@ -1,5 +1,5 @@
 export const OPDRACHT_DATA = {
-	OPRACHT_NAAM: "opdrachtNaam",
+	OPDRACHT_NAAM: "opdrachtNaam",
 	OPRACHT_OMSCHRIJVING: "opdrachtOmschrijving",
 	TYPE_OPDRACHT: "typeOpdracht",
 	BEPERKING: "beperking",
@@ -12,7 +12,7 @@ export const OPDRACHT_DATA = {
 };
 
 export const initialOpdrachtState = {
-	[OPDRACHT_DATA.OPRACHT_NAAM]: "",
+	[OPDRACHT_DATA.OPDRACHT_NAAM]: "",
 	[OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: "",
 	[OPDRACHT_DATA.TYPE_OPDRACHT]: [],
 	[OPDRACHT_DATA.BEPERKING]: [],
