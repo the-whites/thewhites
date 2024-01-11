@@ -6,11 +6,12 @@ import OnderzoekLijst from "../../../../components/OnderzoekLijst/OnderzoekLijst
 import "./LopendeOpdrachten.css";
 import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
 
 const LopendeOpdrachten = () => {
 	const [onderzoeken, setOnderzoeken] = useState([]);
 	const { userId } = useContext(UserContext);
+
+	const navigate = useNavigate();
 
 	const fetchOnderzoeken = async () => {
 		try {

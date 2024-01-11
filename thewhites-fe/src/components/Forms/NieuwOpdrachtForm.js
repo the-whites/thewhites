@@ -9,11 +9,6 @@ import { OPDRACHT_DATA, initialOpdrachtState } from "../../constants/opdrachtDat
 
 const mapItemsToStrings = items => items.map(item => item.naam);
 
-const navigate = useNavigate();
-
-const [invalidPostcodes, setInvalidPostcodes] = useState([]);
-const postcodeErrorText = `De volgende postcodes zijn ongeldig: ${invalidPostcodes.join(", ")}`;
-
 const getIdByNaam = (naam, data) => {
 	const foundItem = data.find(item => item.naam === naam);
 	return foundItem ? foundItem.id : null;
@@ -21,6 +16,7 @@ const getIdByNaam = (naam, data) => {
 
 const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdrachten }) => {
 	const [localOpdrachtData, setLocalOpdrachtData] = useState(initialOpdrachtState);
+	const [invalidPostcodes, setInvalidPostcodes] = useState([]);
 
 	// Dit zijn de verplichte velden die ingevuld moeten worden
 	const [isInvalidFields, setIsInvalidFields] = useState({
@@ -31,6 +27,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 		[OPDRACHT_DATA.START_DATUM]: false,
 		[OPDRACHT_DATA.EIND_DATUM]: false,
 	});
+
+	const navigate = useNavigate();
 
 	const handleTypeSelection = (items) => {
 		if(items) {
@@ -138,6 +136,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 		const hasInvalidPostcodes = invalidPostcodes.length !== 0 && !invalidPostcodes.includes("");
 		setIsInvalidFields(prevState => ({ ...prevState, postcode: hasInvalidPostcodes }));
 	}, [invalidPostcodes]);
+
+	const postcodeErrorText = `De volgende postcodes zijn ongeldig: ${invalidPostcodes.join(", ")}`;
 
 	return (
 		<Form>

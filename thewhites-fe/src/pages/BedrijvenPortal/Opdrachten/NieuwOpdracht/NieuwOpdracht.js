@@ -11,8 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./NieuwOpdracht.css";
 import NieuwOpdrachtForm from "../../../../components/Forms/NieuwOpdrachtForm";
 
-const navigate = useNavigate();
-
 const getTypeNaamById = (id, data) => {
 	const foundItem = data.find(item => item.id === id);
 	return foundItem ? foundItem.naam : null;
@@ -24,6 +22,8 @@ const NieuwOpdracht = () => {
 	const [showModal, setShowModal] = useState(false);
 
 	const [opdrachtData, setOpdrachtData] = useState(initialOpdrachtState);
+
+	const navigate = useNavigate();
 
 	const handleOpdrachtDataChange = (newOpdrachtData) => {
 		setOpdrachtData(newOpdrachtData);
