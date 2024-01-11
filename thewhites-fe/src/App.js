@@ -28,6 +28,7 @@ import WijzigOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/BeheerOnderzoek
 import NieuwOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/NieuwOnderzoek/NieuwOnderzoek";
 import DefaultOnderzoekenTab from "./pages/BedrijvenPortal/Onderzoeken/DefaultOnderzoekenTab/DefaultOnderzoekenTab";
 import BedrijfOnderzoeken from "./pages/BedrijvenPortal/Onderzoeken/Onderzoeken";
+import ProfielPagina from "./pages/ProfielPaginas/ProfielPagina"; 
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -83,9 +84,10 @@ function App() {
 									<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
 								</Route>
 							</Route>
+						<Route path="/profielPagina" element={<ProfielPagina />} />
 						</Routes>
-					</div>
-					<Footer/>
+						</div>
+						<Footer/>
 				</UserProvider>
 			</div>
 		</GoogleOAuthProvider>
