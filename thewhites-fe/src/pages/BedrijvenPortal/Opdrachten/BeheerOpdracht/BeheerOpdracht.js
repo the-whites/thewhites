@@ -33,7 +33,7 @@ const BeheerOpdracht = () => {
 
 	const fetchDeelnemerCount = async () => {
 		try {
-			const response = await fetchApi({route: `api/OnderzoekDeelname/deelnemers/${id}`});
+			const response = await fetchApi({route: `api/Onderzoek/${id}/deelnemers`});
 			if (response.status === 200) {
 				setDeelnemers(response.data.filter(deelname => deelname.status === true).length);
 			} else {

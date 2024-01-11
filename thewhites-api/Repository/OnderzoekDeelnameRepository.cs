@@ -1,4 +1,5 @@
 using AspTest.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspTest.Repository
 {
@@ -13,7 +14,10 @@ namespace AspTest.Repository
 
         public ICollection<OnderzoekDeelname> GetOnderzoekDeelnemers(Onderzoek onderzoek)
         {
-            return _context.OnderzoekDeelnames.ToList().FindAll(p => p.Onderzoek == onderzoek);
+            return _context.OnderzoekDeelnames
+                .Include(od => od.Ervaringsdeskundige)
+                .Where(p => p.Onderzoek == onderzoek)
+                .ToList();
         }
     }
 }

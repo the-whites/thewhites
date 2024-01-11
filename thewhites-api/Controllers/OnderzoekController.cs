@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AspTest.Models;
 using AspTest.Repository;
+using AspTest.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +16,15 @@ namespace AspTest.Controllers
         private readonly IBedrijfRepository bedrijfRepository;
         private readonly IBeperkingRepository beperkingRepository;
         private readonly IOnderzoekTypeRepository onderzoekTypeRepository;
+        private readonly IOnderzoekDeelnameRepository onderzoekDeelnameRepository;
 
-        public OnderzoekController(IOnderzoekRepository onderzoekRepository, IBedrijfRepository bedrijfRepository, IBeperkingRepository beperkingRepository, IOnderzoekTypeRepository onderzoekTypeRepository)
+        public OnderzoekController(IOnderzoekRepository onderzoekRepository, IBedrijfRepository bedrijfRepository, IBeperkingRepository beperkingRepository, IOnderzoekTypeRepository onderzoekTypeRepository, IOnderzoekDeelnameRepository onderzoekDeelnameRepository)
         {
             this.onderzoekRepository = onderzoekRepository;
             this.bedrijfRepository = bedrijfRepository;
             this.beperkingRepository = beperkingRepository;
             this.onderzoekTypeRepository = onderzoekTypeRepository;
+            this.onderzoekDeelnameRepository = onderzoekDeelnameRepository;
         }
 
         [HttpGet("onderzoeken")]
@@ -56,10 +59,10 @@ namespace AspTest.Controllers
                 return Unauthorized("Gebruiker heeft geen bedrijf");
             }
 
-            ICollection<OnderzoekCategories> onderzoekCategoriesList = MapCriteriaList(onderzoek.categoriesList, categorieId => new OnderzoekCategories { Type = onderzoekTypeRepository.GetOnderzoekTypeById(categorieId) });
-            ICollection<OnderzoekPostcodeCriteria> onderzoekPostcodeCriteriaList = MapCriteriaList(onderzoek.postcodeCriteriaList, postcode => new OnderzoekPostcodeCriteria { Postcode = postcode });
-            ICollection<OnderzoekLeeftijdCriteria> onderzoekLeeftijdCriteriaList = MapCriteriaList(onderzoek.leeftijdCriteriaList, leeftijd => new OnderzoekLeeftijdCriteria { Leeftijd = leeftijd });
-            ICollection<OnderzoekBeperkingCriteria> onderzoekBeperkingCriteriaList = MapCriteriaList(onderzoek.beperkingCriteriaList, beperking => new OnderzoekBeperkingCriteria { Beperking = beperkingRepository.GetBeperkingById(beperking) });
+            ICollection<OnderzoekCategories> onderzoekCategoriesList = CriteriaListMapper.MapCriteriaList(onderzoek.categoriesList, categorieId => new OnderzoekCategories { Type = onderzoekTypeRepository.GetOnderzoekTypeById(categorieId) });
+            ICollection<OnderzoekPostcodeCriteria> onderzoekPostcodeCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.postcodeCriteriaList, postcode => new OnderzoekPostcodeCriteria { Postcode = postcode });
+            ICollection<OnderzoekLeeftijdCriteria> onderzoekLeeftijdCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.leeftijdCriteriaList, leeftijd => new OnderzoekLeeftijdCriteria { Leeftijd = leeftijd });
+            ICollection<OnderzoekBeperkingCriteria> onderzoekBeperkingCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.beperkingCriteriaList, beperking => new OnderzoekBeperkingCriteria { Beperking = beperkingRepository.GetBeperkingById(beperking) });
 
             if (onderzoekCategoriesList.Any(oc => oc.Type == null))
             {
@@ -90,10 +93,41 @@ namespace AspTest.Controllers
             return Ok();
         }
 
-        private List<T> MapCriteriaList<T, U>(List<U> sourceList, Func<U, T> mappingFunction)
+        [Authorize]
+        [HttpGet("{onderzoekId}/deelnemers")]
+        public async Task<IActionResult> GetOnderzoekDeelnemers(int onderzoekId)
         {
-            return sourceList?.Select(mappingFunction).ToList() ?? new List<T>();
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            Claim? UserIdClaim = User.FindFirst("user_id");
+
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Bedrijf? bedrijf = bedrijfRepository.GetBedrijfByUserId(userId);
+
+            if(bedrijf == null)
+            {
+                return Unauthorized("Gebruiker heeft geen bedrijf");
+            }
+
+            Onderzoek onderzoek = onderzoekRepository.GetOnderzoekByOnderzoekId(onderzoekId);
+
+            if(onderzoek == null || onderzoek.Bedrijf != bedrijf)
+            {
+                return Unauthorized("Gebruiker heeft geen toegang naar dit onderzoek");
+            }
+
+            var deelnemers = onderzoekDeelnameRepository.GetOnderzoekDeelnemers(onderzoek);
+
+            if(deelnemers == null)
+            {
+                return NotFound("Geen deelnemers gevonden");
+            }
+
+            return Ok(deelnemers);
+        }
     }
 }
