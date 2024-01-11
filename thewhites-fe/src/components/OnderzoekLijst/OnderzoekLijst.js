@@ -19,50 +19,44 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 	]);
 
 	// TODO: REFACTOR SHIT CODE
-	const toggleSort = (info) => {
-		setTitleSort((prevtitleSort) =>
-			prevtitleSort.map((titleSort) => ({
+	const sortByProperty = (property, isAscending) => (a, b) => {
+		const valueA = a[property];
+		const valueB = b[property];
+ 
+		if (typeof valueA === "string" && typeof valueB === "string") {
+			return isAscending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+		}
+	
+		return isAscending ? valueA - valueB : valueB - valueA;
+	};
+	
+	const sortOnderzoeken = (property, isAscending) => {
+		setOnderzoeken((prevOnderzoeken) => [
+			...prevOnderzoeken.sort(sortByProperty(property, isAscending)),
+		]);
+	};
+	
+	const toggleSort = (index) => {
+		setTitleSort((prevTitleSort) =>
+			prevTitleSort.map((titleSort, i) => ({
 				...titleSort,
-				sorted: info === titleSort ? !titleSort.sorted : false,
+				sorted: index === i ? !titleSort.sorted : false,
 			}))
 		);
 	};
-
-	const sortEindDatum = () => {
-		setOnderzoeken((prevOnderzoeken) => 
-			titleSort[2].sorted
-				? prevOnderzoeken.sort((a, b) => a.eindDatum.getTime()- b.eindDatum.getTime())
-				: prevOnderzoeken.sort((a, b) => b.eindDatum.getTime()- a.eindDatum.getTime())
-		);
-	};
-
-	const sortStartDatum = () => {
-		setOnderzoeken((prevOnderzoeken) => 
-			titleSort[1].sorted
-				? prevOnderzoeken.sort((a, b) => a.startDatum.getTime()- b.startDatum.getTime())
-				: prevOnderzoeken.sort((a, b) => b.startDatum.getTime()- a.startDatum.getTime())
-		);
-	};
-
-	const sortTitel = () => {
-		setOnderzoeken((prevOnderzoeken) => 
-			titleSort[0].sorted
-				? prevOnderzoeken.sort((a, b) => a.titel.localeCompare(b.titel))
-				: prevOnderzoeken.sort((a, b) => b.titel.localeCompare(a.titel))
-		);
-	};
-
+	
 	useEffect(() => {
-		sortTitel();
+		sortOnderzoeken("titel", titleSort[0].sorted);
 	}, [titleSort[0].sorted]);
-
+ 
 	useEffect(() => {
-		sortStartDatum();
+		sortOnderzoeken("startDatum", titleSort[1].sorted);
 	}, [titleSort[1].sorted]);
-
+	
 	useEffect(() => {
-		sortEindDatum();
+		sortOnderzoeken("eindDatum", titleSort[2].sorted);
 	}, [titleSort[2].sorted]);
+ 
 
 	const handleButton= (id) => {
 		handleClickButton(id);
