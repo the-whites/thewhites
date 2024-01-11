@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
+import "./ProfielPagina.css";
 
 const BewerkProfielForm = ({ setProfielData = (items) => {}, handleSubmitForm = () => {}, beperkingItems, onderzoekTypeItems }) => {
 	const [profielData, setInternalProfielData] = useState({
@@ -13,6 +14,12 @@ const BewerkProfielForm = ({ setProfielData = (items) => {}, handleSubmitForm = 
 		beperkingTypes: [],
 	});
 
+	const beperkingItemss = [
+		{ id: "blind", naam: "Blind" },
+		{ id: "doof", naam: "Doof" },
+	];
+
+
 	useEffect(() => {
 		const savedData = localStorage.getItem("profielData");
 		if (savedData) {
@@ -23,6 +30,7 @@ const BewerkProfielForm = ({ setProfielData = (items) => {}, handleSubmitForm = 
 	useEffect(() => {
 		localStorage.setItem("profielData", JSON.stringify(profielData));
 	}, [profielData]);
+
 
 	// This function is used to update both the internal state and the parent state, if necessary
 	const updateProfielData = (name, value) => {
@@ -68,7 +76,7 @@ const BewerkProfielForm = ({ setProfielData = (items) => {}, handleSubmitForm = 
 					/>
 					<MultiSelectionBar 
 						label="Type beperkingen" 
-						items={beperkingItems}
+						items={beperkingItemss}
 						handleSelection={(selectedItems) => updateProfielData("beperkingTypes", selectedItems)}
 						initialSelectedItems={profielData.beperkingTypes} 
 						getKey={(option) => option.id} 
