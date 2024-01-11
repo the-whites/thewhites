@@ -69,11 +69,10 @@ namespace AspTest.Controllers
                 gebruiker = await _gebruikerRepository.CreateGebruiker(payload.GivenName, payload.FamilyName, payload.Subject, payload.Email);
 
                 // TEMPORARY: maak test data alvast (omdat we nog geen register informatie kunnen verkrijgen)
-                return null;
-                // var result = await CreateTestDataVoorRegistratie(gebruiker);
+                var result = await CreateTestDataVoorRegistratie(gebruiker);
 
-                // if (result != null)
-                //     return result;
+                if (result != null)
+                    return result;
             }
 
             // Maak een token
