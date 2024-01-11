@@ -11,6 +11,9 @@ const mapItemsToStrings = items => items.map(item => item.naam);
 
 const navigate = useNavigate();
 
+const [invalidPostcodes, setInvalidPostcodes] = useState([]);
+const postcodeErrorText = `De volgende postcodes zijn ongeldig: ${invalidPostcodes.join(", ")}`;
+
 const getIdByNaam = (naam, data) => {
 	const foundItem = data.find(item => item.naam === naam);
 	return foundItem ? foundItem.id : null;
@@ -28,8 +31,6 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 		[OPDRACHT_DATA.START_DATUM]: false,
 		[OPDRACHT_DATA.EIND_DATUM]: false,
 	});
-
-	const [invalidPostcodes, setInvalidPostcodes] = useState([]);
 
 	const handleTypeSelection = (items) => {
 		if(items) {
@@ -83,7 +84,6 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 		event.preventDefault();
 		const valid = validateOpdrachtData();
 
-		console.log(valid);
 		if(valid)
 			handleOpdrachtDataChange(localOpdrachtData);
 	};
@@ -134,12 +134,6 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 		setInvalidPostcodes(tempInvalidPostcodes);
 	};
 
-	const postcodeErrorText = `De volgende postcodes zijn ongeldig: ${invalidPostcodes.join(", ")}`;
-
-	const handleAnnuleer = () => {
-		navigate(-1);
-	};
-
 	useEffect(() => {
 		const hasInvalidPostcodes = invalidPostcodes.length !== 0 && !invalidPostcodes.includes("");
 		setIsInvalidFields(prevState => ({ ...prevState, postcode: hasInvalidPostcodes }));
@@ -184,7 +178,7 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 
 				<Row className="justify-content-center mt-3">
 					<Col md={4} className="text-start">
-						<Button onClick={handleAnnuleer} variant="danger">Annuleren</Button>
+						<Button onClick={() => navigate(-1)} variant="danger">Annuleren</Button>
 					</Col>
 					<Col md={2} className="text-end">
 						<Button onClick={handleSubmit}>Maak opdracht aan</Button>
