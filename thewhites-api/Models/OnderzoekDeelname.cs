@@ -5,7 +5,7 @@ namespace AspTest.Models
     public class OnderzoekDeelname
     {
         public int ErvaringsdeskundigeId { get; set; }
-        public Ervaringsdeskundige Ervaringsdeskundige { get; set; } // evaringsdeskundige wordt niet correct gezet, id wel
+        public Ervaringsdeskundige Ervaringsdeskundige { get; set; }
 
         [JsonIgnore]
         public int OnderzoekId { get; set; }
