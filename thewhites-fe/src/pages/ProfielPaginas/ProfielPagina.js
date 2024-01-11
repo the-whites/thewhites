@@ -11,16 +11,7 @@ const BewerkProfielForm = ({ setProfielData = (items) => {}, handleSubmitForm = 
 		postcode: "",
 		emailadres: "",
 		telefoonnummer: "",
-		beperkingTypes: ["blind", "doof"],
-		hulpmiddel: "",
-		ziekte: "",
-		onderzoekTypes: [],
-		beschikbaarheid: new Date(), // assuming the use of a date-time picker
-		benaderingVoorkeur: {
-			toestemmingUitnodigingen: false,
-			portaal: false,
-			telefonisch: false
-		}
+		beperkingTypes: [""],
 	});
 
   
@@ -62,29 +53,5 @@ const BewerkProfielForm = ({ setProfielData = (items) => {}, handleSubmitForm = 
 		</Form>
 	);
 };
-  
-// Usage of BewerkProfielForm in a parent component
-const ParentComponent = () => {
-	const [profielData, setProfielData] = useState({}); // Parent component's state
-  
-	const handleSubmitForm = (event, profielData) => {
-		event.preventDefault();
-		// Handle the form submission with profielData
-	};
-  
-	// Dummy arrays for items, replace with actual data
-	const beperkingItems = []; // Populate with actual items
-	const onderzoekTypeItems = []; // Populate with actual items
-  
-	return (
-		<BewerkProfielForm
-			setProfielData={setProfielData}
-			handleSubmitForm={handleSubmitForm}
-			beperkingItems={beperkingItems}
-			onderzoekTypeItems={onderzoekTypeItems}
-		/>
-	);
-};
-
 export default BewerkProfielForm;
   
