@@ -42,7 +42,9 @@ const BewerkProfielForm = ({ setProfielData = (items) => {}, handleSubmitForm = 
 	return (
 		<Form validated={true} onSubmit={(event) => handleSubmitForm(event, profielData)}>
 			<Container>
-				<Row className="justify-content-md-center">
+				<h2>Profiel pagina</h2>
+				<p>Vul hieronder u persoonlijke gegevens in</p>
+				<Row className="Pro">
 					<InputBar 
 						label="Voornaam" 
 						required 
@@ -83,7 +85,7 @@ const BewerkProfielForm = ({ setProfielData = (items) => {}, handleSubmitForm = 
 						getValue={(option) => option.naam}
 					/>
 
-					<Button type="submit">Opslaan</Button>
+					<Button type="next">Volgende</Button>
 				</Row>
 			</Container>
 		</Form>
