@@ -37,7 +37,7 @@ namespace AspTest.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            ICollection<Onderzoek> onderzoekLijst = onderzoekRepository.GetOnderzoeken(); 
+            ICollection<Onderzoek> onderzoekLijst = onderzoekRepository.GetOnderzoekenByBedrijf(bedrijf); 
 
             return Ok(onderzoekLijst);
         }
