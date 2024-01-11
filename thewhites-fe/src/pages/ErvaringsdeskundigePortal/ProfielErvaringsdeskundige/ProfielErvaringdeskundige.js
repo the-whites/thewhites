@@ -3,7 +3,7 @@ import InputBar from "../../../components/Inputbar/InputBar";
 import "./style.css";
 
 import { fetchApi, postApi } from "../../../hooks/useApi";
-import { Alert, Button } from "react-bootstrap";
+import { Alert, Button, Container, Row } from "react-bootstrap";
 import { BewerkProfielPreview } from "./BewerkProfielPreview";
 import { BewerkProfielForm } from "./BewerkProfielForm";
 
@@ -105,8 +105,8 @@ const ProfielErvaringsdeskundige = () => {
 				<Button onClick={() => setIsConfirming(false)}>Terug</Button>
 			</>}
 
-
 			<div hidden={isConfirming || isLoading ? "hidden" : ""}>
+
 				<br />
 				{!isLoading && <BewerkProfielForm 
 					profielData={profielData} 
@@ -116,6 +116,7 @@ const ProfielErvaringsdeskundige = () => {
 					beperkingItems={beperkingItems}
 					onderzoekTypeItems={onderzoekTypeItems}
 				/> }
+
 			</div>
 		</>
 	);
