@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchApi } from "../../../../hooks/useApi";
-import NieuwOpdrachtForm from "../../../../components/Forms/NieuwOpdrachtForm";
 import { OPDRACHT_DATA } from "../../../../constants/opdrachtData";
 import OnderzoekData from "../../../../components/OnderzoekData/OnderzoekData";
 

@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const ConfirmationModal = ({ show, handleClose, handleConfirm, title, htmlMessage }) => {
+const ConfirmationModal = ({ show, handleClose, handleConfirm, title, children }) => {
 	return (
 		<Modal show={show} onHide={handleClose}>
 			<Modal.Header closeButton>
 				<Modal.Title>{title}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div dangerouslySetInnerHTML={{ __html: htmlMessage }} />
+				{children}
 			</Modal.Body>
 			<Modal.Footer>
 				<Button variant="secondary" onClick={handleClose}>

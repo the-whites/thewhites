@@ -6,12 +6,18 @@ import MultiSelectionBar from "../MultiSelectionBar/MultiSelectionBar";
 import { postcodeValidator } from "postcode-validator";
 import { useNavigate } from "react-router-dom";
 import { OPDRACHT_DATA, initialOpdrachtState } from "../../constants/opdrachtData";
-import { fetchApi } from "../../hooks/useApi";
 
-const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
+const mapItemsToStrings = items => items.map(item => item.naam);
+
+const navigate = useNavigate();
+
+const getIdByNaam = (naam, data) => {
+	const foundItem = data.find(item => item.naam === naam);
+	return foundItem ? foundItem.id : null;
+};
+
+const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdrachten }) => {
 	const [localOpdrachtData, setLocalOpdrachtData] = useState(initialOpdrachtState);
-	const [typeOpdrachten, setTypeOpdrachten] = useState([]);
-	const [beperkingen, setBeperkingen] = useState([]);
 
 	// Dit zijn de verplichte velden die ingevuld moeten worden
 	const [isInvalidFields, setIsInvalidFields] = useState({
@@ -25,17 +31,6 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
 
 	const [invalidPostcodes, setInvalidPostcodes] = useState([]);
 
-	const navigate = useNavigate();
-
-	const getIdByNaam = (naam, data) => {
-		const foundItem = data.find(item => item.naam === naam);
-		return foundItem ? foundItem.id : null;
-	};
-
-	const handleOpdrachtDataItemChange = (value, item) => {
-		setLocalOpdrachtData((prevData) => ({ ...prevData, [item]: value }));
-	};
-	
 	const handleTypeSelection = (items) => {
 		if(items) {
 			// Pak alleen de nummer uit de string oftewel de ID
@@ -88,6 +83,7 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
 		event.preventDefault();
 		const valid = validateOpdrachtData();
 
+		console.log(valid);
 		if(valid)
 			handleOpdrachtDataChange(localOpdrachtData);
 	};
@@ -137,9 +133,6 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
 
 		setInvalidPostcodes(tempInvalidPostcodes);
 	};
-	
-	const mapItemsToStrings = items => items.map(item => item.naam);
-
 
 	const postcodeErrorText = `De volgende postcodes zijn ongeldig: ${invalidPostcodes.join(", ")}`;
 
@@ -147,50 +140,10 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
 		navigate(-1);
 	};
 
-	const fetchData = async (route, formatItem) => {
-		try {
-			const response = await fetchApi({ route });
-	
-			if (response.status === 200) {
-				const items = response.data.map(item => formatItem(item));
-				return items;
-			} else {
-				console.error(`Error fetching data. Status: ${response.status}`);
-				return [];
-			}
-		} catch (error) {
-			console.error("Error fetching data:", error);
-			return [];
-		}
-	};
-
 	useEffect(() => {
 		const hasInvalidPostcodes = invalidPostcodes.length !== 0 && !invalidPostcodes.includes("");
 		setIsInvalidFields(prevState => ({ ...prevState, postcode: hasInvalidPostcodes }));
 	}, [invalidPostcodes]);
-
-	useEffect(() => {
-		const fetchDataAndSetState = async () => {
-			try {
-				const typeOpdrachtenItems = await fetchData("api/OnderzoekType/onderzoek-types", item => ({
-					id: item?.id,
-					naam: item?.type
-				}));
-				setTypeOpdrachten(typeOpdrachtenItems);
-
-				const beperkingenItems = await fetchData("api/Beperking/beperkingen", item => ({
-					id: item?.id,
-					naam: item?.naam
-				}));
-				setBeperkingen(beperkingenItems);
-
-			} catch (error) {
-				console.error("Error fetching and setting data:", error);
-			}
-		};
-
-		fetchDataAndSetState();
-	}, []);
 
 	return (
 		<Form>
@@ -200,10 +153,10 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
 						
 						<h1 className="text-center mb-4 header">Algemeen</h1>
 						<div className="mb-3">
-							<InputBar textPosition="left" label="Opdracht naam" type="text" placeholder="bijv. The Whites Website Accessibility" required={true} isInvalid={isInvalidFields.opdrachtNaam} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.OPDRACHT_NAAM])}/>
-							<InputBar textPosition="left" label="Opdracht omschrijving" type="textarea" placeholder="Dit dat" required={true} isInvalid={isInvalidFields.opdrachtOmschrijving} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.OPRACHT_OMSCHRIJVING])} />
-							<InputBar textPosition="left" label="Locatie van opdracht" type="text" placeholder="Hoofdkantoor The Whites" required={true} isInvalid={isInvalidFields.locatie} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.LOCATIE])} />
-							<InputBar textPosition="left" label="Beloning" type="text" placeholder="5 doezoe" handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.BELONING])} />
+							<InputBar textPosition="left" label="Opdracht naam" type="text" placeholder="bijv. The Whites Website Accessibility" required={true} isInvalid={isInvalidFields.opdrachtNaam} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.OPDRACHT_NAAM]: value }))} />
+							<InputBar textPosition="left" label="Opdracht omschrijving" type="textarea" placeholder="Dit dat" required={true} isInvalid={isInvalidFields.opdrachtOmschrijving} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: value }))} />
+							<InputBar textPosition="left" label="Locatie van opdracht" type="text" placeholder="Hoofdkantoor The Whites" required={true} isInvalid={isInvalidFields.locatie} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.LOCATIE]: value }))} />
+							<InputBar textPosition="left" label="Beloning" type="text" placeholder="5 doezoe" handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.BELONING]: value }))} />
 						</div>
 						<div className="mb-3">
 							{typeOpdrachten &&
@@ -221,9 +174,9 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
 							<InputBar textPosition="left" label="Postcode" type="text" placeholder="bijv. 1234AB" infoText="Je kan meerdere postcodes invullen doormiddel van een scheiding met een komma: 2554GW, 2551AB" errorMessage={postcodeErrorText} isInvalid={isInvalidFields.postcode} handleChange={handlePostcodeChange} />
 						</div>
 						<h1 className="text-center mb-3 header ">Datum</h1>
-						<CustomDatePicker label="Start datum" required={true} isInvalid={isInvalidFields.startDatum} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.START_DATUM])} />
+						<CustomDatePicker label="Start datum" required={true} isInvalid={isInvalidFields.startDatum} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.START_DATUM]: value }))} />
 						<div className="mb-3" />
-						<CustomDatePicker label="Eind datum" required={true} isInvalid={isInvalidFields.eindDatum} handleChange={(value) => handleOpdrachtDataItemChange(value, [OPDRACHT_DATA.EIND_DATUM])}/>
+						<CustomDatePicker label="Eind datum" required={true} isInvalid={isInvalidFields.eindDatum} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.EIND_DATUM]: value }))}/>
 					</Col>
 				</Row>
 

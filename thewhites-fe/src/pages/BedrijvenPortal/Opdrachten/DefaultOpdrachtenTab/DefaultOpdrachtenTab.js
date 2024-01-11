@@ -24,7 +24,7 @@ const DefaultOpdrachtenTab = () => {
 					<NavigationCard
 						title="Oude opdrachten inzien"
 						content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt tincidunt velit, quis condimentum ligula euismod in."
-						linkTo="./profiel"
+						linkTo="./oude-opdrachten"
 					/>
 				</Row>
 			</Container>

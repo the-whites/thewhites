@@ -7,6 +7,17 @@ import InputBar from "../Inputbar/InputBar";
 
 import "./OnderzoekLijst.css";
 
+const sortByProperty = (property, isAscending) => (a, b) => {
+	const valueA = a[property];
+	const valueB = b[property];
+
+	if (typeof valueA === "string" && typeof valueB === "string") {
+		return isAscending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+	}
+
+	return isAscending ? valueA - valueB : valueB - valueA;
+};
+
 const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 	const [onderzoeken, setOnderzoeken] = useState(onderzoekLijst);
 	const [onderzoekenShown, setOnderzoekenShown] = useState(onderzoeken);
@@ -17,17 +28,6 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 		{ title: "Start datum", sorted: false },
 		{ title: "Eind datum", sorted: false },
 	]);
-
-	const sortByProperty = (property, isAscending) => (a, b) => {
-		const valueA = a[property];
-		const valueB = b[property];
- 
-		if (typeof valueA === "string" && typeof valueB === "string") {
-			return isAscending ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
-		}
-	
-		return isAscending ? valueA - valueB : valueB - valueA;
-	};
 	
 	const sortOnderzoeken = (property, isAscending) => {
 		setOnderzoeken((prevOnderzoeken) => [

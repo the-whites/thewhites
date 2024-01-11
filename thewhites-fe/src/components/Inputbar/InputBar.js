@@ -20,7 +20,7 @@ const InputBar = ({ type = "text", placeholder = "", label = "", value = "", han
 						<Form.Control
 							ref={inputRef}
 							type={type}
-							value={value}
+							value={value ? value : undefined}
 							placeholder={placeholder}
 							minLength={min}
 							onChange={(e) => handleChange(e.target.value)}
