@@ -14,6 +14,7 @@ export const AuthContext = createContext("");
 export const UserProvider = ({ children }) => {
 	const [username, setUsername] = useState("");
 	const [role, setRole] = useState("");
+	const [userId, setUserId] = useState();
 	const [googleCredentials, setGoogleCredentials] = useState("");
 	const loggedIn = useSelector((state) => state.login_status.isLoggedIn);
 	const dispatch = useDispatch();
@@ -42,8 +43,10 @@ export const UserProvider = ({ children }) => {
 				const response = await fetchApi({route: "api/Login/profileInfo"});
 		
 				if (response.status == 200) {
-					setUsername(response.data.voornaam); // Dit moet uiteindelijk de gebruikersnaam worden
+					setUsername(response.data.voornaam + " " + response.data.achternaam); // Dit moet uiteindelijk de gebruikersnaam worden
 					setRole(response.data.rol);
+					setUserId(response.data.id);
+					console.log(response.data);
 				}
 			};
 			getGebruikerInfo();	
@@ -63,7 +66,7 @@ export const UserProvider = ({ children }) => {
 
 	return (
 		<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
-			<UserContext.Provider value={{ username, setUsername, role, setRole: setValidRole }}>
+			<UserContext.Provider value={{ username, setUsername, role, setRole: setValidRole, userId, setUserId}}>
 				{children}
 			</UserContext.Provider>
 		</CustomLoginContext.Provider>

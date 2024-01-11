@@ -48,7 +48,7 @@ const MultiSelectionBar = ({
 	useEffect(() => {
 		handleSelection(selectedItems);
 	}, [selectedItems]); 
-  
+
 	return (
 		<Container fluid className={`justify-content-start ${isInvalid ? "is-invalid" : ""}`}>
 			<Row>
@@ -62,7 +62,7 @@ const MultiSelectionBar = ({
 							</Badge>
 						))
 					) : (
-						"none"
+						""
 					)}
 				</Col>
 			</Row>

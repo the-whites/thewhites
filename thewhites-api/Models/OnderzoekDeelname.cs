@@ -4,7 +4,6 @@ namespace AspTest.Models
 {
     public class OnderzoekDeelname
     {
-        [JsonIgnore]
         public int ErvaringsdeskundigeId { get; set; }
         public Ervaringsdeskundige Ervaringsdeskundige { get; set; }
 

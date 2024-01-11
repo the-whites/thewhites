@@ -1,3 +1,6 @@
+using AspTest.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace AspTest.Repository
 {
     public class OnderzoekDeelnameRepository : IOnderzoekDeelnameRepository
@@ -7,6 +10,14 @@ namespace AspTest.Repository
         public OnderzoekDeelnameRepository(AspDbContext context)
         {
             _context = context;
+        }
+
+        public ICollection<OnderzoekDeelname> GetOnderzoekDeelnemers(Onderzoek onderzoek)
+        {
+            return _context.OnderzoekDeelnames
+                .Include(od => od.Ervaringsdeskundige)
+                .Where(p => p.Onderzoek == onderzoek)
+                .ToList();
         }
     }
 }

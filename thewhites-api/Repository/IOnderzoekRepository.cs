@@ -7,5 +7,7 @@ namespace AspTest.Repository
         Task CreateOnderzoek(Onderzoek onderzoek);
         
         ICollection<Onderzoek> GetOnderzoeken();
+        ICollection<Onderzoek> GetOnderzoekenByBedrijf(Bedrijf bedrijf);
+        Onderzoek? GetOnderzoekByOnderzoekId(int onderzoekId);
     }
 }

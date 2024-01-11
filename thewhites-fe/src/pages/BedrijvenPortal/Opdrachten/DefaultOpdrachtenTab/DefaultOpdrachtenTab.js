@@ -19,12 +19,12 @@ const DefaultOpdrachtenTab = () => {
 					<NavigationCard
 						title="Lopende opdrachten"
 						content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt tincidunt velit, quis condimentum ligula euismod in."
-						linkTo="./profiel"
+						linkTo="./lopende-opdrachten"
 					/>
 					<NavigationCard
 						title="Oude opdrachten inzien"
 						content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt tincidunt velit, quis condimentum ligula euismod in."
-						linkTo="./profiel"
+						linkTo="./oude-opdrachten"
 					/>
 				</Row>
 			</Container>
