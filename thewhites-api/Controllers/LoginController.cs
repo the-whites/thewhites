@@ -162,7 +162,7 @@ namespace AspTest.Controllers
             }
         }
 
-        /**public async Task<IActionResult?> CreateTestDataVoorRegistratie(Gebruiker gebruiker)
+        public async Task<IActionResult?> CreateTestDataVoorRegistratie(Gebruiker gebruiker)
         {
             await _ervaringsdeskundigeRepository.CreateErvaringsdeskundigeVoorGebruiker(
                     gebruiker,
@@ -197,7 +197,7 @@ namespace AspTest.Controllers
             await _context.SaveChangesAsync();
 
             return null;
-        }**/
+        }
 
         // Met deze route kun je checken of je ingelogd ben en verkrijg je jouw lokale id en google id.
         [Authorize]

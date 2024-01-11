@@ -86,10 +86,8 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange }) => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(isInvalidFields);
 		const valid = validateOpdrachtData();
 
-		console.log("is het valid?? ", valid);
 		if(valid)
 			handleOpdrachtDataChange(localOpdrachtData);
 	};

@@ -50,12 +50,6 @@ const BeheerOpdracht = () => {
 		fetchDeelnemerCount();
 	}, []);
 
-	useEffect(() => {
-		if(onderzoek)
-			console.log("onderzoek" , onderzoek.typeOpdracht);
-	}, [onderzoek]);
-
-
 	return (
 		<>
 			<OnderzoekData onderzoek={onderzoek} aantalDeelnemers={deelnemers}/>

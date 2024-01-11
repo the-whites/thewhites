@@ -12,7 +12,6 @@ const LopendeOpdrachten = () => {
 	const navigate = useNavigate();
 
 	const fetchOnderzoeken = async () => {
-		console.log(userId);
 		try {
 			const response = await fetchApi({route: `api/onderzoek/onderzoeken/${userId}`});
 			
@@ -23,7 +22,7 @@ const LopendeOpdrachten = () => {
 						titel, 
 						startDatum: new Date(startDatum), 
 						eindDatum: new Date(eindDatum)}));
-						
+
 				setOnderzoeken(onderzoekenData.filter(onderzoek => onderzoek.eindDatum > currentDate));
 			} else {
 				console.error(`Error fetching data. Status: ${response.status}`);
