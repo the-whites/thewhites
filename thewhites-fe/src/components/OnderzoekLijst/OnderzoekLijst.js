@@ -18,7 +18,6 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 		{ title: "Eind datum", sorted: false },
 	]);
 
-	// TODO: REFACTOR SHIT CODE
 	const sortByProperty = (property, isAscending) => (a, b) => {
 		const valueA = a[property];
 		const valueB = b[property];
