@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import OnderzoekPreviewButton from "../OnderzoekPreviewButton/OnderzoekPreviewButton";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import MultiSelectionBar from "../MultiSelectionBar/MultiSelectionBar";
 import InputBar from "../Inputbar/InputBar";
 
 import "./OnderzoekLijst.css";
@@ -54,11 +53,7 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 	useEffect(() => {
 		sortData("eindDatum", titleSort[2].sorted);
 	}, [titleSort[2].sorted]);
- 
 
-	const handleButton= (id) => {
-		handleClickButton(id);
-	};
 
 	const handleZoekButton = (zoekTerm) => {
 		setOnderzoekenShown(onderzoekLijst.filter(onderzoek => onderzoek.titel.toLowerCase().includes(zoekTerm.toLowerCase())));
@@ -84,7 +79,7 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 				: 
 				onderzoekenShown.map(onderzoek => (
 					<div className="m-4" key={onderzoek.id}>
-						<OnderzoekPreviewButton handleClickButton={handleButton} onderzoek={onderzoek} />
+						<OnderzoekPreviewButton handleClickButton={(id) => handleClickButton(id)} onderzoek={onderzoek} />
 					</div>
 				))}
 		</>

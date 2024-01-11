@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { renderToString } from "react-dom/server";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal";
 import { postApi } from "../../../../hooks/useApi";
 import { fetchApi } from "../../../../hooks/useApi";

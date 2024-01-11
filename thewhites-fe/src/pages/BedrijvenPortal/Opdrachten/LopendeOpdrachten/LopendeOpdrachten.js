@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchApi } from "../../../../hooks/useApi";
-import { UserContext } from "../../../../contexts/UserProvider";
 import OnderzoekLijst from "../../../../components/OnderzoekLijst/OnderzoekLijst";
 
 import "./LopendeOpdrachten.css";
@@ -9,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 const LopendeOpdrachten = () => {
 	const [onderzoeken, setOnderzoeken] = useState([]);
-	const { userId } = useContext(UserContext);
 
 	const navigate = useNavigate();
 
@@ -34,10 +32,6 @@ const LopendeOpdrachten = () => {
 		}
 	};
 
-	const handleButton = (id) => {
-		navigate(`/bedrijf/opdrachten/${id}`);
-	};
-
 	useEffect(() => {
 		fetchOnderzoeken();
 	}, []);
@@ -49,7 +43,7 @@ const LopendeOpdrachten = () => {
 			) : (
 				<>
 					<h1>Lopende opdrachten</h1>
-					<OnderzoekLijst handleClickButton={handleButton} onderzoekLijst={onderzoeken} />
+					<OnderzoekLijst handleClickButton={(id) => navigate(`/bedrijf/opdrachten/${id}`)} onderzoekLijst={onderzoeken} />
 				</>
 			)}
 		</>

@@ -42,7 +42,7 @@ const BeheerOpdracht = () => {
 		} catch (error) {
 			console.error(`Error trying to fetch the data: ${error}`);
 		}
-	}
+	};
 
 	useEffect(() => {
 		fetchOnderzoek();
