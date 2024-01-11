@@ -1,5 +1,6 @@
 using AspTest.Models;
 using AspTest.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspTest.Controllers
@@ -9,21 +10,34 @@ namespace AspTest.Controllers
     public class OnderzoekDeelname : Controller
     {
         private readonly IOnderzoekDeelnameRepository onderzoekDeelnameRepository;
+        private readonly IOnderzoekRepository onderzoekRepository;
 
-        public OnderzoekDeelname(OnderzoekDeelnameRepository onderzoekDeelnameRepository)
+        public OnderzoekDeelname(IOnderzoekDeelnameRepository onderzoekDeelnameRepository, IOnderzoekRepository onderzoekRepository)
         {
             this.onderzoekDeelnameRepository = onderzoekDeelnameRepository;
+            this.onderzoekRepository = onderzoekRepository;
         }
 
-        [HttpGet("onderzoek-types")]
-        public IActionResult GetTotalOnderzoekDeelnemers([FromBody] int onderzoekId)
+        [HttpGet("deelnemers/{onderzoekId}")]
+        public IActionResult GetOnderzoekDeelnemers(int onderzoekId)
         {
-            ICollection<OnderzoekType> onderzoekTypeLijst = null;//onderzoekTypeRepository.GetOnderzoekTypes(); 
-            
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(onderzoekTypeLijst);
+            Onderzoek? onderzoek = onderzoekRepository.GetOnderzoekByOnderzoekId(onderzoekId);
+
+            if(onderzoek == null)
+            {
+                return NotFound("Onderzoek niet gevonden");
+            }
+
+            var onderzoekDeelnemers = onderzoekDeelnameRepository.GetOnderzoekDeelnemers(onderzoek);
+
+            if(onderzoekDeelnemers == null)
+            {
+                return NotFound("Geen deelnemers gevonden");
+            }
+            return Ok(onderzoekDeelnemers);
         }
     }
 }

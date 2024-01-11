@@ -11,11 +11,9 @@ namespace AspTest.Repository
             _context = context;
         }
 
-        public int GetTotalOnderzoekDeelnemers(Onderzoek onderzoek)
+        public ICollection<OnderzoekDeelname> GetOnderzoekDeelnemers(Onderzoek onderzoek)
         {
-            return _context.OnderzoekDeelnames
-                .Where(od => od.OnderzoekId == onderzoek.Id)
-                .Count();
+            return _context.OnderzoekDeelnames.ToList().FindAll(p => p.Onderzoek == onderzoek);
         }
     }
 }

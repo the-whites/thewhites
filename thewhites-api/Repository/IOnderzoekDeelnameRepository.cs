@@ -4,6 +4,6 @@ namespace AspTest.Repository
 {
     public interface IOnderzoekDeelnameRepository
     {
-        int GetTotalOnderzoekDeelnemers(Onderzoek onderzoek);
+        ICollection<OnderzoekDeelname>? GetOnderzoekDeelnemers(Onderzoek onderzoek);
     }
 }

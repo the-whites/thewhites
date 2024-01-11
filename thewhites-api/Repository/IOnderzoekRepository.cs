@@ -8,5 +8,6 @@ namespace AspTest.Repository
         
         ICollection<Onderzoek> GetOnderzoeken();
         ICollection<Onderzoek> GetOnderzoekenByBedrijf(Bedrijf bedrijf);
+        Onderzoek? GetOnderzoekByOnderzoekId(int onderzoekId);
     }
 }

@@ -56,6 +56,35 @@ namespace AspTest.Controllers
         }
 
         [Authorize]
+        [HttpGet("{onderzoekId}")]
+        public IActionResult GetOnderzoekFromOnderzoekId(int onderzoekId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState); 
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Bedrijf? bedrijf = bedrijfRepository.GetBedrijfByUserId(userId);
+
+            if(bedrijf == null)
+            {
+                return Unauthorized("Gebruiker heeft geen bedrijf");
+            }
+
+            Onderzoek? onderzoek = onderzoekRepository.GetOnderzoekByOnderzoekId(onderzoekId);
+
+            if(onderzoek == null || onderzoek.Bedrijf != bedrijf)
+            {
+                return Unauthorized("Gebruiker heeft geen toegang naar dit onderzoek");
+            }
+            
+            return Ok(onderzoek);
+        }
+
+
+        [Authorize]
         [HttpPost("create-onderzoek")]
         public async Task<IActionResult> CreateOnderzoek([FromBody] OnderzoekBodyModel onderzoek)
         {
