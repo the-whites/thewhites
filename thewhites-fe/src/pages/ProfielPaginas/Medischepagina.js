@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
-import { useNavigate } from "react-router-dom"; // Import useHistory
 
-const ProfielPagina = ({ handleSubmitForm }) => {
+const medischepagina = ({ handleSubmitForm }) => {
 	const [profielData, setProfielData] = useState({
 		voornaam: "",
 		achternaam: "",
@@ -14,7 +13,6 @@ const ProfielPagina = ({ handleSubmitForm }) => {
 		beperkingTypes: [],
 	});
 
-	const navigate = useNavigate();
 	const beperkingItemss = [
 		{ id: "blind", naam: "Blind" },
 		{ id: "doof", naam: "Doof" },
@@ -38,15 +36,11 @@ const ProfielPagina = ({ handleSubmitForm }) => {
 		}));
 	};
 
-	const handleButtonClick = (event) => {
-		navigate("/medischePagina"); // Navigate to the next page, replace '/next-page' with your actual path
-	};
-
 	return (
-		<Form validated={true} onSubmit={handleButtonClick}>
+		<Form validated={true} onSubmit={(event) => handleSubmitForm(event, profielData)}>
 			<Container>
 				<h2>Profiel pagina</h2>
-				<p>Vul hieronder uw persoonlijke gegevens in</p>
+				<p>Vul hieronder u persoonlijke gegevens in</p>
 				<Row className="persoonlijkegegevens">
 					<InputBar 
 						label="Voornaam" 
@@ -71,7 +65,7 @@ const ProfielPagina = ({ handleSubmitForm }) => {
 						label="E-mailadres" 
 						required 
 						value={profielData?.emailadres || ""} 
-						handleChange={(value) => updateProfielData("emailadres", value)} 
+						handleChange={(value) => updateProfielData( "emailadres", value)} 
 					/>
 
 					<InputBar 
@@ -81,7 +75,7 @@ const ProfielPagina = ({ handleSubmitForm }) => {
 						handleChange={(value) => updateProfielData("telefoonnummer", value)} 
 						min={8}
 					/>
-
+	
 					<MultiSelectionBar 
 						label="Type beperkingen" 
 						items={beperkingItemss}
@@ -91,12 +85,12 @@ const ProfielPagina = ({ handleSubmitForm }) => {
 						getValue={(option) => option.naam}
 					/>
 
-					<Button type="button" onClick={handleButtonClick}>Volgende</Button>
+					<Button type="submit">Volgende</Button>
 				</Row>
 			</Container>
 		</Form>
 	);
 };
 
-export default ProfielPagina;
+export default medischepagina;
 
