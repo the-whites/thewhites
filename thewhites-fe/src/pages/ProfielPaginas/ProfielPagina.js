@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, Form, Row } from "react-bootstrap";
+import { Button, Container, Form, Row, Col } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
-import { useNavigate } from "react-router-dom"; // Import useHistory
+import "./ProfielPagina.css";
 
-const ProfielPagina = ({ handleSubmitForm }) => {
-	const [profielData, setProfielData] = useState({
+const ProfielPagina = ({ setProfielData = ( ) => {}, handleSubmitForm = ( ) => {}}) => {
+	const [profielData, setInternalProfielData] = useState({
 		voornaam: "",
 		achternaam: "",
 		postcode: "",
@@ -14,16 +14,16 @@ const ProfielPagina = ({ handleSubmitForm }) => {
 		beperkingTypes: [],
 	});
 
-	const navigate = useNavigate();
-	const beperkingItemss = [
+	const beperkingItems = [
 		{ id: "blind", naam: "Blind" },
 		{ id: "doof", naam: "Doof" },
+		{ id: "autisme", naam: "Autisme" },
 	];
 
 	useEffect(() => {
 		const savedData = localStorage.getItem("profielData");
 		if (savedData) {
-			setProfielData(JSON.parse(savedData));
+			setInternalProfielData(JSON.parse(savedData));
 		}
 	}, []);
 
@@ -32,71 +32,68 @@ const ProfielPagina = ({ handleSubmitForm }) => {
 	}, [profielData]);
 
 	const updateProfielData = (name, value) => {
-		setProfielData((prevData) => ({
-			...prevData,
-			[name]: value,
-		}));
-	};
-
-	const handleButtonClick = (event) => {
-		navigate("/medischePagina"); // Navigate to the next page, replace '/next-page' with your actual path
-	};
+		const newProfielData = { ...profielData, [name]: value };
+		setInternalProfielData(newProfielData);
+		setProfielData(newProfielData);
+	};	
 
 	return (
-		<Form validated={true} onSubmit={handleButtonClick}>
+		<Form validated={true} onSubmit={(event) => handleSubmitForm(event, profielData)}>
 			<Container>
 				<h2>Profiel pagina</h2>
-				<p>Vul hieronder uw persoonlijke gegevens in</p>
+				<p>Vul hieronder u persoonlijke gegevens in</p>
 				<Row className="persoonlijkegegevens">
-					<InputBar 
-						label="Voornaam" 
-						required 
-						value={profielData.voornaam || ""} 
-						handleChange={(value) => updateProfielData("voornaam", value)} 
-					/>
-					<InputBar 
-						label="Achternaam" 
-						required 
-						value={profielData.achternaam || ""} 
-						handleChange={(value) => updateProfielData("achternaam", value)} 
-					/>
+					<Col md={10} className = "inputvelden"> {}
+						<InputBar 
+							label="Voornaam" 
+							required 
+							value={profielData.voornaam || ""} 
+							handleChange={(value) => updateProfielData("voornaam", value)} 
+						/>
+					
+						<InputBar 
+							label="Achternaam" 
+							required 
+							value={profielData.achternaam || ""} 
+							handleChange={(value) => updateProfielData("achternaam", value)} 
+						/>
 
-					<InputBar 
-						label="Postcode" 
-						required 
-						value={profielData?.postcode || ""} 
-						handleChange={(value) => updateProfielData("postcode", value)} 
-					/>
-					<InputBar 
-						label="E-mailadres" 
-						required 
-						value={profielData?.emailadres || ""} 
-						handleChange={(value) => updateProfielData("emailadres", value)} 
-					/>
+						<InputBar 
+							label="Postcode" 
+							required 
+							value={profielData?.postcode || ""} 
+							handleChange={(value) => updateProfielData("postcode", value)} 
+						/>
+						<InputBar 
+							label="E-mailadres" 
+							required 
+							value={profielData?.emailadres || ""} 
+							handleChange={(value) => updateProfielData( "emailadres", value)} 
+						/>
 
-					<InputBar 
-						label="Telefoonnummer"
-						required 
-						value={profielData?.telefoonnummer || ""} 
-						handleChange={(value) => updateProfielData("telefoonnummer", value)} 
-						min={8}
-					/>
+						<InputBar 
+							label="Telefoonnummer"
+							required 
+							value={profielData?.telefoonnummer || ""} 
+							handleChange={(value) => updateProfielData("telefoonnummer", value)} 
+							min={8}
+						/>
 
-					<MultiSelectionBar 
-						label="Type beperkingen" 
-						items={beperkingItemss}
-						handleSelection={(selectedItems) => updateProfielData("beperkingTypes", selectedItems)}
-						initialSelectedItems={profielData.beperkingTypes} 
-						getKey={(option) => option.id} 
-						getValue={(option) => option.naam}
-					/>
-
-					<Button type="button" onClick={handleButtonClick}>Volgende</Button>
+                    
+						<MultiSelectionBar 
+							label="Type beperkingen" 
+							items={beperkingItems}
+							handleSelection={(selectedItems) => updateProfielData("beperkingTypes", selectedItems)}
+							initialSelectedItems={profielData.beperkingTypes} 
+							getKey={(option) => option.id} 
+							getValue={(option) => option.naam}
+						/>
+					</Col>
 				</Row>
+				<Button type="next">Volgende</Button>
 			</Container>
 		</Form>
 	);
 };
 
 export default ProfielPagina;
-
