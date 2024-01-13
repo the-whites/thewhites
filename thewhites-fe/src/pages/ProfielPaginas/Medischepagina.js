@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
+import { useNavigate, useLocation } from "react-router-dom";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
 
 const medischepagina = ({ handleSubmitForm }) => {
+	const location = useLocation();
+	const navigate = useNavigate();
 	const [profielData, setProfielData] = useState({
-		voornaam: "",
-		achternaam: "",
-		postcode: "",
-		emailadres: "",
-		telefoonnummer: "",
-		beperkingTypes: [],
+		Aandoening: "",
+		Hulpmiddelen: "",
+		onderzoeken: "",
+		portaalbenadering: "",
+		beschikbaar: "",
+		telefonisch_benadering: "",
 	});
 
+
+
+	const navigateBack = () => {
+		const savedData = localStorage.getItem("profielData");
+		if (savedData) {
+			setProfielData(JSON.parse(savedData));
+		}
+		navigate("/profielPagina");
+	};
 	const onderzoekItems = [
 		{ id: "interview", naam: "Interview" },
 		{ id: "groepsgesprekken", naam: "Groepsgesprekken" },
@@ -28,21 +40,25 @@ const medischepagina = ({ handleSubmitForm }) => {
 	}, []);
 
 	useEffect(() => {
-		localStorage.setItem("profielData", JSON.stringify(profielData));
-	}, [profielData]);
+		if (location.state && location.state.profielData) {
+			// Gebruik de doorgestuurde profielData
+			setProfielData(location.state.profielData);
+		}
+	}, [location.state]);
 
 	const updateProfielData = (name, value) => {
-		setProfielData((prevData) => ({
-			...prevData,
-			[name]: value,
-		}));
+		setProfielData(prevState => {
+			const updatedState = { ...prevState, [name]: value };
+			localStorage.setItem("profielData", JSON.stringify(updatedState));
+			return updatedState;
+		});
 	};
 
 	return (
 		<Form validated={true} onSubmit={(event) => handleSubmitForm(event, profielData)}>
 			<Container>
 				<h2>Profiel pagina</h2>
-				<p>Vul hieronder u persoonlijke gegevens in</p>
+				<p>Vul hieronder u medische gegevens in</p>
 				<Row className="persoonlijkegegevens">
 					<InputBar 
 						label="Aandoening/ziekte" 
@@ -105,6 +121,7 @@ const medischepagina = ({ handleSubmitForm }) => {
 						/>
 					</div>					
 				</Row>
+				<Button variant="secondary" type="button" onClick={navigateBack}>Terug</Button>
 				<Button type="submit">Volgende</Button>
 			</Container>
 		</Form>

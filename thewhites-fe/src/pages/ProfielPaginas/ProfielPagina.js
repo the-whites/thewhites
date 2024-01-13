@@ -6,13 +6,17 @@ import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelection
 import "./ProfielPagina.css";
 
 const ProfielPagina = () => {
-	const [profielData, setProfielData] = useState({
-		voornaam: "",
-		achternaam: "",
-		postcode: "",
-		emailadres: "",
-		telefoonnummer: "",
-		beperkingTypes: [],
+	// Initialiseer de state met data uit localStorage indien beschikbaar
+	const [profielData, setProfielData] = useState(() => {
+		const savedData = localStorage.getItem("profielData");
+		return savedData ? JSON.parse(savedData) : {
+			voornaam: "",
+			achternaam: "",
+			postcode: "",
+			emailadres: "",
+			telefoonnummer: "",
+			beperkingTypes: [],
+		};
 	});
 
 	const navigate = useNavigate();
@@ -24,16 +28,23 @@ const ProfielPagina = () => {
 	];
 
 	useEffect(() => {
-		const savedData = localStorage.getItem("profielData");
-		if (savedData) {
-			setProfielData(JSON.parse(savedData));
+		function handlePopState() {
+			const savedData = localStorage.getItem("profielData");
+			if (savedData) {
+				setProfielData(JSON.parse(savedData));
+			}
 		}
+
+		// Voeg de event listener toe wanneer de component wordt gemount
+		window.addEventListener("popstate", handlePopState);
+  
+		// Verwijder de event listener wanneer de component wordt ontmanteld
+		return () => {
+			window.removeEventListener("popstate", handlePopState);
+		};
 	}, []);
-
-	useEffect(() => {
-		localStorage.setItem("profielData", JSON.stringify(profielData));
-	}, [profielData]);
-
+  
+	
 	const updateProfielData = (name, value) => {
 		setProfielData(prevState => ({
 			...prevState,
@@ -68,7 +79,7 @@ const ProfielPagina = () => {
 			// Je kunt hier een foutmelding tonen of de state bijwerken om de gebruiker te informeren welke velden niet correct zijn ingevuld.
 			alert("Sommige velden zijn niet correct ingevuld. Controleer alstublieft uw invoer.");
 		} else {
-			navigate("/medischePagina");
+			navigate("/medischePagina", { state: { profielData } });
 		}
 	};
 	
