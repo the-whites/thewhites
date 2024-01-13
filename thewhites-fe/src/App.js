@@ -85,15 +85,12 @@ function App() {
 									<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
 								</Route>
 							</Route>
-						<Route path="/profielPagina" element={<ProfielPagina />} />
-<<<<<<< HEAD
+							<Route path="/medischePagina" component={<MedischePagina/>} />
+							<Route path="profielPagina" element={<ProfielPagina />} />
+							<Route path="medischePagina" element={<MedischePagina/>} />
 						</Routes>
-						</div>
-						<Footer/>
-=======
-						<Route path="/medischePagina" component={<MedischePagina/>} />
-					</Routes>
->>>>>>> 51906b3 ( medische pagina)
+					</div>
+					<Footer />
 				</UserProvider>
 			</div>
 		</GoogleOAuthProvider>
