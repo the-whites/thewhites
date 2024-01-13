@@ -26,13 +26,21 @@ const ProfielPagina = () => {
 		{ id: "doof", naam: "Doof" },
 		{ id: "autisme", naam: "Autisme" },
 	];
+
+	useEffect(() => {
+		const savedData = localStorage.getItem("profielData");
+		if (savedData) {
+			setProfielData(JSON.parse(savedData));
+		}
+	}, []);
   
 	
 	const updateProfielData = (name, value) => {
-		setProfielData(prevState => ({
-			...prevState,
-			[name]: value
-		}));
+		setProfielData(prevState => {
+			const updatedState = { ...prevState, [name]: value };
+			localStorage.setItem("profielData", JSON.stringify(updatedState));
+			return updatedState;
+		});
 	};
 
 	const handleSubmitForm = (event) => {
