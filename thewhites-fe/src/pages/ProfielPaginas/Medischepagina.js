@@ -13,9 +13,10 @@ const medischepagina = ({ handleSubmitForm }) => {
 			Aandoening: "",
 			Hulpmiddelen: "",
 			onderzoeken: "",
-			portaalbenadering: "",
+			portaalbenadering: false,
 			beschikbaar: "",
-			telefonisch_benadering: "",
+			telefonisch_benadering: false,
+			toestemmingUitnodigingen: false,
 		};
 	});
 
@@ -89,8 +90,8 @@ const medischepagina = ({ handleSubmitForm }) => {
 							type="checkbox" 
 							id="portaal-benadering" 
 							name="portaal-benadering-voorkeur"
-							checked={profielMedData?.benaderingVoorkeur?.portaal || false} 
-							onChange={(event) => setProfielMedData({...profielMedData, benaderingVoorkeur: {...profielMedData.benaderingVoorkeur, portaal: event.target.checked}})} 
+							checked={profielMedData.portaalbenadering || false} 
+							onChange={(event) => updateProfielData("portaalbenadering", event.target.checked)}
 						/>
 					</div>
 
@@ -100,8 +101,8 @@ const medischepagina = ({ handleSubmitForm }) => {
 							type="checkbox" 
 							id="telefonisch-benadering" 
 							name="telefonisch-benadering-voorkeur"
-							checked={profielMedData?.benaderingVoorkeur?.telefonisch || false} 
-							onChange={(event) => setProfielMedData({...profielMedData, benaderingVoorkeur: {...profielMedData.benaderingVoorkeur, telefonisch: event.target.checked}})} 
+							checked={profielMedData.telefonisch_benadering || false} 
+							onChange={(event) => updateProfielData("telefonisch_benadering", event.target.checked)}
 						/>
 					</div>
 
@@ -118,8 +119,8 @@ const medischepagina = ({ handleSubmitForm }) => {
 							type="checkbox" 
 							id="com-benadering" 
 							name="com-benadering-voorkeur" 
-							checked={profielMedData?.benaderingVoorkeur?.toestemmingUitnodigingen || false} 
-							onChange={(event) => setProfielMedData({...profielMedData, benaderingVoorkeur: {...profielMedData.benaderingVoorkeur, toestemmingUitnodigingen: event.target.checked}})} 
+							checked={profielMedData.toestemmingUitnodigingen || false}  
+							onChange={(event) => updateProfielData("toestemmingUitnodigingen", event.target.checked)}
 						/>
 					</div>					
 				</Row>
