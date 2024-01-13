@@ -13,9 +13,11 @@ const medischepagina = ({ handleSubmitForm }) => {
 		beperkingTypes: [],
 	});
 
-	const beperkingItemss = [
-		{ id: "blind", naam: "Blind" },
-		{ id: "doof", naam: "Doof" },
+	const onderzoekItems = [
+		{ id: "interview", naam: "Interview" },
+		{ id: "groepsgesprekken", naam: "Groepsgesprekken" },
+		{ id: "online", naam: "Online onderzoeken" },
+		{ id: "engels", naam: "Engelstalige onderzoeken" }
 	];
 
 	useEffect(() => {
@@ -43,50 +45,67 @@ const medischepagina = ({ handleSubmitForm }) => {
 				<p>Vul hieronder u persoonlijke gegevens in</p>
 				<Row className="persoonlijkegegevens">
 					<InputBar 
-						label="Voornaam" 
+						label="Aandoening/ziekte" 
 						required 
-						value={profielData.voornaam || ""} 
-						handleChange={(value) => updateProfielData("voornaam", value)} 
+						value={profielData.Aandoening || ""} 
+						handleChange={(value) => updateProfielData("aandoening/ziekte", value)} 
 					/>
 					<InputBar 
-						label="Achternaam" 
+						label="Hulpmiddelen" 
 						required 
-						value={profielData.achternaam || ""} 
-						handleChange={(value) => updateProfielData("achternaam", value)} 
+						value={profielData.Hulpmiddelen || ""} 
+						handleChange={(value) => updateProfielData("Hulpmiddelen", value)} 
 					/>
 
-					<InputBar 
-						label="Postcode" 
-						required 
-						value={profielData?.postcode || ""} 
-						handleChange={(value) => updateProfielData("postcode", value)} 
-					/>
-					<InputBar 
-						label="E-mailadres" 
-						required 
-						value={profielData?.emailadres || ""} 
-						handleChange={(value) => updateProfielData( "emailadres", value)} 
-					/>
-
-					<InputBar 
-						label="Telefoonnummer"
-						required 
-						value={profielData?.telefoonnummer || ""} 
-						handleChange={(value) => updateProfielData("telefoonnummer", value)} 
-						min={8}
-					/>
-	
 					<MultiSelectionBar 
-						label="Type beperkingen" 
-						items={beperkingItemss}
-						handleSelection={(selectedItems) => updateProfielData("beperkingTypes", selectedItems)}
-						initialSelectedItems={profielData.beperkingTypes} 
+						label="Type onderzoeken" 
+						items={onderzoekItems}
+						handleSelection={(selectedItems) => updateProfielData("onderzoekenTypes", selectedItems)}
+						initialSelectedItems={profielData.onderzoekenTypes} 
 						getKey={(option) => option.id} 
 						getValue={(option) => option.naam}
 					/>
+					<div className="bewerk-profiel-checkbox">
+						<label htmlFor="portaal-benadering">Portaal benaderen</label>
+						<input 
+							type="checkbox" 
+							id="portaal-benadering" 
+							name="portaal-benadering-voorkeur"
+							checked={profielData?.benaderingVoorkeur?.portaal || false} 
+							onChange={(event) => setProfielData({...profielData, benaderingVoorkeur: {...profielData.benaderingVoorkeur, portaal: event.target.checked}})} 
+						/>
+					</div>
 
-					<Button type="submit">Volgende</Button>
+					<div className="bewerk-profiel-checkbox">
+						<label htmlFor="telefonisch-benadering">Telefonisch benaderen</label>
+						<input  
+							type="checkbox" 
+							id="telefonisch-benadering" 
+							name="telefonisch-benadering-voorkeur"
+							checked={profielData?.benaderingVoorkeur?.telefonisch || false} 
+							onChange={(event) => setProfielData({...profielData, benaderingVoorkeur: {...profielData.benaderingVoorkeur, telefonisch: event.target.checked}})} 
+						/>
+					</div>
+
+					<InputBar 
+						label="Beschikbaar" 
+						required 
+						value={profielData.Beschikbaar || ""} 
+						handleChange={(value) => updateProfielData("Beschikbaar", value)} 
+					/>
+	
+					<div className="bewerk-profiel-checkbox">
+						<label htmlFor="com-benadering">Of commerciële partijen u mogen benaderen</label>
+						<input 
+							type="checkbox" 
+							id="com-benadering" 
+							name="com-benadering-voorkeur" 
+							checked={profielData?.benaderingVoorkeur?.toestemmingUitnodigingen || false} 
+							onChange={(event) => setProfielData({...profielData, benaderingVoorkeur: {...profielData.benaderingVoorkeur, toestemmingUitnodigingen: event.target.checked}})} 
+						/>
+					</div>					
 				</Row>
+				<Button type="submit">Volgende</Button>
 			</Container>
 		</Form>
 	);
