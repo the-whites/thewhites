@@ -34,6 +34,7 @@ import DefaultOpdrachtenTab from "./pages/BedrijvenPortal/Opdrachten/DefaultOpdr
 import Layout from "./pages/Layout";
 import LopendeOpdrachten from "./pages/BedrijvenPortal/Opdrachten/LopendeOpdrachten/LopendeOpdrachten";
 import BeheerOpdracht from "./pages/BedrijvenPortal/Opdrachten/BeheerOpdracht/BeheerOpdracht";
+import Footer from "./components/Footer/Footer";
 function App() {
 
 	return (
@@ -76,6 +77,7 @@ function App() {
 							</Route>
 						</Route>
 					</Routes>
+					<Footer/>
 				</UserProvider>
 			</div>
 		</GoogleOAuthProvider>

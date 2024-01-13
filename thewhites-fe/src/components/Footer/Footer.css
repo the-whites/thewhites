@@ -1,0 +1,38 @@
+.overOns {
+    color: white;
+    background-color: black;
+}
+
+.overOns:hover {
+    background-color: white;
+    color: black;
+    text-emphasis: none;
+}
+
+.privacyverklaring {
+    display: inline;
+    color: black;
+    text-decoration: underline;
+    margin: 15px;
+}
+
+.copyright {
+    display: inline;
+    color: black;
+    text-decoration: underline;
+    margin: 15px;
+}
+
+.cookies {
+    display: inline;
+    color: black;
+    text-decoration: underline;
+    margin: 15px;
+}
+
+.contact {
+    display: inline;
+    color: black;
+    text-decoration: underline;
+    margin: 15px;
+}
