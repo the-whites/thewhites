@@ -26,23 +26,6 @@ const ProfielPagina = () => {
 		{ id: "doof", naam: "Doof" },
 		{ id: "autisme", naam: "Autisme" },
 	];
-
-	useEffect(() => {
-		function handlePopState() {
-			const savedData = localStorage.getItem("profielData");
-			if (savedData) {
-				setProfielData(JSON.parse(savedData));
-			}
-		}
-
-		// Voeg de event listener toe wanneer de component wordt gemount
-		window.addEventListener("popstate", handlePopState);
-  
-		// Verwijder de event listener wanneer de component wordt ontmanteld
-		return () => {
-			window.removeEventListener("popstate", handlePopState);
-		};
-	}, []);
   
 	
 	const updateProfielData = (name, value) => {

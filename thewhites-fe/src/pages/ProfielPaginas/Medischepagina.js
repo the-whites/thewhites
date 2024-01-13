@@ -23,7 +23,7 @@ const medischepagina = ({ handleSubmitForm }) => {
 		if (savedData) {
 			setProfielData(JSON.parse(savedData));
 		}
-		navigate("/profielPagina");
+		navigate("/profielPagina", { state: { profielData } });
 	};
 	const onderzoekItems = [
 		{ id: "interview", naam: "Interview" },
