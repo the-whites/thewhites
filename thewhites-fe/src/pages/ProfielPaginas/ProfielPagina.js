@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form, Row, Col } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
 import "./ProfielPagina.css";
+import { ProfielContext } from "./ProfielContext";
 
 const ProfielPagina = () => {
-	// Initialiseer de state met data uit localStorage indien beschikbaar
-	const [profielData, setProfielData] = useState(() => {
-		const savedData = localStorage.getItem("profielData");
-		return savedData ? JSON.parse(savedData) : {
-			voornaam: "",
-			achternaam: "",
-			postcode: "",
-			emailadres: "",
-			telefoonnummer: "",
-			beperkingTypes: [],
-		};
-	});
-
+	const { profielData, setProfielData } = useContext(ProfielContext);
 	const navigate = useNavigate();
 
 	const beperkingItems = [
@@ -64,10 +53,9 @@ const ProfielPagina = () => {
 			isEmailValid &&
 			isPostcodeValid &&
 			isTelefoonValid &&
-			profielData.beperkingTypes.length > 0 ; // Indien beperkingTypes een vereist veld is
+			profielData.beperkingTypes.length > 0 ; 
 	
 		if (!isFormValid) {
-			// Je kunt hier een foutmelding tonen of de state bijwerken om de gebruiker te informeren welke velden niet correct zijn ingevuld.
 			alert("Sommige velden zijn niet correct ingevuld. Controleer alstublieft uw invoer.");
 		} else {
 			navigate("/medischePagina", { state: { profielData } });

@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { ProfielProvider } from "./pages/ProfielPaginas/ProfielContext";
 
 import Home from "./pages/Home/Home";
 import OverOns from "./pages/OverOns/OverOns";
@@ -50,6 +51,8 @@ function App() {
 				<UserProvider>
 					<NavigationBar /> 
 					<div className="main-body">
+				<ProfielProvider>
+						<NavigationBar /> 
 						<Routes>
 							<Route path="/" element={<Home />} />
 							<Route path="/over-ons" element={<OverOns />} />
@@ -73,6 +76,9 @@ function App() {
 										<Route path="oude-onderzoeken" element={<OudeOnderzoeken />} />
 										<Route path=":id" element={<BeheerOnderzoek />} />
 										<Route path="wijzig/:id" element={<WijzigOnderzoek />} />
+									<Route path="opdrachten" element={<Opdrachten />}>
+										<Route index element={<DefaultOpdrachtenTab />} />
+										<Route path="nieuw" element={<NieuwOpdracht />} />
 									</Route>
 									<Route path="profiel" element={<Profiel />} />
 								</Route>
@@ -89,8 +95,9 @@ function App() {
 							<Route path="profielPagina" element={<ProfielPagina />} />
 							<Route path="medischePagina" element={<MedischePagina/>} />
 						</Routes>
-					</div>
 					<Footer />
+					</ProfielProvider>
+					</div>
 				</UserProvider>
 			</div>
 		</GoogleOAuthProvider>

@@ -1,31 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
+import { ProfielContext } from "./ProfielContext";
 
-const medischepagina = ({ handleSubmitForm }) => {
-	const location = useLocation();
+const medischepagina = () => {
+	const { profielData, setProfielData } = useContext(ProfielContext);
 	const navigate = useNavigate();
-	const [profielMedData, setProfielMedData] = useState(() =>{
-		const savedData = localStorage.getItem("profielMedData");
-		return savedData ? JSON.parse(savedData) : {
-			Aandoening: "",
-			Hulpmiddelen: "",
-			onderzoeken: "",
-			portaalbenadering: false,
-			beschikbaar: "",
-			telefonisch_benadering: false,
-			toestemmingUitnodigingen: false,
-		};
-	});
 
 	const navigateBack = () => {
-		const savedData = localStorage.getItem("profielData");
-		if (savedData) {
-			setProfielMedData(JSON.parse(savedData));
-		}
-		navigate("/profielPagina", { state: { profielMedData } });
+		navigate("/profielPagina");
 	};
 	const onderzoekItems = [
 		{ id: "interview", naam: "Interview" },
@@ -34,31 +19,19 @@ const medischepagina = ({ handleSubmitForm }) => {
 		{ id: "engels", naam: "Engelstalige onderzoeken" }
 	];
 
-	useEffect(() => {
-		if (location.state && location.state.profielData) {
-			// Gebruik de doorgestuurde profielData
-			setProfielMedData(location.state.profielData);
-		}
-	}, [location.state]);
-
 	const updateProfielData = (name, value) => {
-		setProfielMedData(prevState => {
-			const updatedState = { ...prevState, [name]: value };
-			localStorage.setItem("profielMedData", JSON.stringify(updatedState));
-			return updatedState;
-		});
+		setProfielData(prevState => ({ ...prevState, [name]: value }));
 	};
 
-	useEffect(() => {
-		const savedData = localStorage.getItem("profielMedData");
-		if (savedData) {
-			setProfielMedData(JSON.parse(savedData));
-		}
-	}, []);
+	const handleSubmitForm = (event) => {
+		event.preventDefault();
+		// Voeg validatie en andere logica toe indien nodig
+		navigate("/volgendePagina"); // Pas dit aan naar de volgende pagina in uw flow
+	};
 	
 
 	return (
-		<Form validated={true} onSubmit={(event) => handleSubmitForm(event, profielMedData)}>
+		<Form validated={true} onSubmit={handleSubmitForm}>
 			<Container>
 				<h2>Profiel pagina</h2>
 				<p>Vul hieronder u medische gegevens in</p>
@@ -66,13 +39,13 @@ const medischepagina = ({ handleSubmitForm }) => {
 					<InputBar 
 						label="Aandoening/ziekte" 
 						required 
-						value={profielMedData.Aandoening || ""} 
+						value={profielData.Aandoening || ""} 
 						handleChange={(value) => updateProfielData("Aandoening", value)} 
 					/>
 					<InputBar 
 						label="Hulpmiddelen" 
 						required 
-						value={profielMedData.Hulpmiddelen || ""} 
+						value={profielData.Hulpmiddelen || ""} 
 						handleChange={(value) => updateProfielData("Hulpmiddelen", value)} 
 					/>
 
@@ -80,7 +53,7 @@ const medischepagina = ({ handleSubmitForm }) => {
 						label="Type onderzoeken" 
 						items={onderzoekItems}
 						handleSelection={(selectedItems) => updateProfielData("onderzoekenTypes", selectedItems)}
-						initialSelectedItems={profielMedData.onderzoekenTypes} 
+						initialSelectedItems={profielData.onderzoekenTypes} 
 						getKey={(option) => option.id} 
 						getValue={(option) => option.naam}
 					/>
@@ -90,7 +63,7 @@ const medischepagina = ({ handleSubmitForm }) => {
 							type="checkbox" 
 							id="portaal-benadering" 
 							name="portaal-benadering-voorkeur"
-							checked={profielMedData.portaalbenadering || false} 
+							checked={profielData.portaalbenadering || false} 
 							onChange={(event) => updateProfielData("portaalbenadering", event.target.checked)}
 						/>
 					</div>
@@ -101,7 +74,7 @@ const medischepagina = ({ handleSubmitForm }) => {
 							type="checkbox" 
 							id="telefonisch-benadering" 
 							name="telefonisch-benadering-voorkeur"
-							checked={profielMedData.telefonisch_benadering || false} 
+							checked={profielData.telefonisch_benadering || false} 
 							onChange={(event) => updateProfielData("telefonisch_benadering", event.target.checked)}
 						/>
 					</div>
@@ -109,7 +82,7 @@ const medischepagina = ({ handleSubmitForm }) => {
 					<InputBar 
 						label="Beschikbaar" 
 						required 
-						value={profielMedData.Beschikbaar || ""} 
+						value={profielData.Beschikbaar || ""} 
 						handleChange={(value) => updateProfielData("Beschikbaar", value)} 
 					/>
 	
@@ -119,7 +92,7 @@ const medischepagina = ({ handleSubmitForm }) => {
 							type="checkbox" 
 							id="com-benadering" 
 							name="com-benadering-voorkeur" 
-							checked={profielMedData.toestemmingUitnodigingen || false}  
+							checked={profielData.toestemmingUitnodigingen || false}  
 							onChange={(event) => updateProfielData("toestemmingUitnodigingen", event.target.checked)}
 						/>
 					</div>					
