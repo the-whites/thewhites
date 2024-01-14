@@ -24,7 +24,6 @@ const ProfielPagina = () => {
 	const updateProfielData = (name, value) => {
 		setProfielData(prevState => ({ ...prevState, [name]: value }));
 	};
-	
 
 	const handleSubmitForm = (event) => {
 		event.preventDefault();
