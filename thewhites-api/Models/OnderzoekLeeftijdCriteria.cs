@@ -8,6 +8,7 @@ namespace AspTest.Models
         public int OnderzoekId { get; set; }
         [JsonIgnore]
         public Onderzoek Onderzoek { get; set; }
-        public int Leeftijd { get; set; }
+        public int MinLeeftijd { get; set; }
+        public int MaxLeeftijd { get; set; }
     }
 }

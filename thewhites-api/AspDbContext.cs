@@ -66,7 +66,7 @@ namespace AspTest
                 .HasForeignKey(pc => pc.BeperkingId);
 
             modelBuilder.Entity<OnderzoekLeeftijdCriteria>()
-                .HasKey(pc => new { pc.OnderzoekId, pc.Leeftijd });
+                .HasKey(pc => new { pc.OnderzoekId, pc.MinLeeftijd, pc.MaxLeeftijd });
 
             modelBuilder.Entity<OnderzoekLeeftijdCriteria>()
                 .HasOne(pc => pc.Onderzoek)
