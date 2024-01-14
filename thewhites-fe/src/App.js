@@ -43,40 +43,42 @@ function App() {
 
 				<UserProvider>
 					<NavigationBar /> 
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/over-ons" element={<OverOns />} />
-						<Route path="/contact" element={<Contact />} />
-						<Route element={<RequireAuth allowedRoles={[ROLES.beheerder]} />}>
-							<Route path="/beheerder" element={<BeheerderPortal />}>
-								<Route index element={<DefaultBeheerderPage />} />
-								<Route path="ervaringsdeskundigBHP" element={<ErvaringsdeskundigeBHP />} />
-								<Route path="onderzoeken" element={<Onderzoeken />} />
-								<Route path="bedrijven" element={<Bedrijven />} />
-							</Route>
-						</Route>
-						<Route element={<RequireAuth allowedRoles={[ROLES.bedrijf]} />}>
-							<Route path="/bedrijf" element={<Layout><BedrijvenPortal /></Layout>} >
-								<Route index element={<DefaultBedrijvenPage />} />
-								<Route path="chat" element={<Chat />} />
-								<Route path="opdrachten" element={<Opdrachten />}>
-									<Route index element={<DefaultOpdrachtenTab />} />
-									<Route path="nieuw" element={<NieuwOpdracht />} />
-									<Route path="lopende-opdrachten" element={<LopendeOpdrachten />} />
-									<Route path=":id" element={<BeheerOpdracht />} />
+					<div className="main-body">
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/over-ons" element={<OverOns />} />
+							<Route path="/contact" element={<Contact />} />
+							<Route element={<RequireAuth allowedRoles={[ROLES.beheerder]} />}>
+								<Route path="/beheerder" element={<BeheerderPortal />}>
+									<Route index element={<DefaultBeheerderPage />} />
+									<Route path="ervaringsdeskundigBHP" element={<ErvaringsdeskundigeBHP />} />
+									<Route path="onderzoeken" element={<Onderzoeken />} />
+									<Route path="bedrijven" element={<Bedrijven />} />
 								</Route>
-								<Route path="profiel" element={<Profiel />} />
 							</Route>
-						</Route>
-						<Route element={<RequireAuth allowedRoles={[ROLES.ervaringsdeskundige]} />}>
-							<Route path="/ervaringsdeskundige" element={<ErvaringsdekundigePortal />} >
-								<Route index element={<DefaultErvaringsdeskundigePage />} />
-								<Route path="chat" element={<ChatErvaringsdeskundige />} />
-								<Route path="overzicht" element={<Overzichtonderzoeken />} />
-								<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
+							<Route element={<RequireAuth allowedRoles={[ROLES.bedrijf]} />}>
+								<Route path="/bedrijf" element={<Layout><BedrijvenPortal /></Layout>} >
+									<Route index element={<DefaultBedrijvenPage />} />
+									<Route path="chat" element={<Chat />} />
+									<Route path="opdrachten" element={<Opdrachten />}>
+										<Route index element={<DefaultOpdrachtenTab />} />
+										<Route path="nieuw" element={<NieuwOpdracht />} />
+										<Route path="lopende-opdrachten" element={<LopendeOpdrachten />} />
+										<Route path=":id" element={<BeheerOpdracht />} />
+									</Route>
+									<Route path="profiel" element={<Profiel />} />
+								</Route>
 							</Route>
-						</Route>
-					</Routes>
+							<Route element={<RequireAuth allowedRoles={[ROLES.ervaringsdeskundige]} />}>
+								<Route path="/ervaringsdeskundige" element={<ErvaringsdekundigePortal />} >
+									<Route index element={<DefaultErvaringsdeskundigePage />} />
+									<Route path="chat" element={<ChatErvaringsdeskundige />} />
+									<Route path="overzicht" element={<Overzichtonderzoeken />} />
+									<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
+								</Route>
+							</Route>
+						</Routes>
+					</div>
 					<Footer/>
 				</UserProvider>
 			</div>

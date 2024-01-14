@@ -1,38 +1,21 @@
-.overOns {
+.footer {
+    min-height: 100px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(33, 37, 41);
+    color: lightgray;
+    margin: 0;
+}
+
+.copyright:hover {
     color: white;
-    background-color: black;
 }
 
-.overOns:hover {
-    background-color: white;
-    color: black;
-    text-emphasis: none;
+.footer a {
+    color: lightgray;
+    text-decoration: none;
 }
 
-.privacyverklaring {
-    display: inline;
-    color: black;
-    text-decoration: underline;
-    margin: 15px;
-}
-
-.copyright {
-    display: inline;
-    color: black;
-    text-decoration: underline;
-    margin: 15px;
-}
-
-.cookies {
-    display: inline;
-    color: black;
-    text-decoration: underline;
-    margin: 15px;
-}
-
-.contact {
-    display: inline;
-    color: black;
-    text-decoration: underline;
-    margin: 15px;
+.footer a:hover {
+    color: white;
 }
