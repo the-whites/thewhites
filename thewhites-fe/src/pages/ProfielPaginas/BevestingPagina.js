@@ -1,9 +1,18 @@
 import React, { useContext } from "react";
 import { ProfielContext } from "./ProfielContext";
-import { Container, Table } from "react-bootstrap";
+import { Container, Table, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 
 const BevestigingsPagina = () => {
 	const { profielData } = useContext(ProfielContext);
+	const navigate = useNavigate();
+
+	const handleTerug = () => {
+		navigate("/medischepagina");
+	};
+
+	const handleBevestigen = () => {};
 
 	return (
 		<>
@@ -62,6 +71,8 @@ const BevestigingsPagina = () => {
 					</tbody>
 				</Table>
 			</Container>
+			<Button variant="secondary" onClick={handleTerug}>Terug</Button>
+			<Button variant="primary" onClick={handleBevestigen}>Bevestigen</Button>
 		</>
 	);
 };
