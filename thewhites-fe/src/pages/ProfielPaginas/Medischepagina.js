@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect,useCallback } from "react";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import { useNavigate } from "react-router-dom";
@@ -23,14 +23,15 @@ const medischepagina = () => {
 		sessionStorage.setItem("profielData", JSON.stringify(profielData));
 	}, [profielData]);
 
-	const updateProfielData = (name, value) => {
+	const updateProfielData = useCallback((name, value) => {
 		setProfielData(prevState => ({ ...prevState, [name]: value }));
-	};
+	}, [setProfielData]);
+
 
 	const handleSubmitForm = (event) => {
 		event.preventDefault();
-		// Voeg validatie en andere logica toe indien nodig
-		navigate("/bevestingsPagina"); // Pas dit aan naar de volgende pagina in uw flow
+		// Validatie nog toevoegen voor de velden
+		navigate("/bevestingsPagina"); 
 	};
 	
 

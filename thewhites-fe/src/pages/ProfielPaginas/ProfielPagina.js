@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form, Row, Col } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
@@ -19,15 +19,15 @@ const ProfielPagina = () => {
 	useEffect(() => {
 		sessionStorage.setItem("profielData", JSON.stringify(profielData));
 	}, [profielData]);
-  
-	
-	const updateProfielData = (name, value) => {
+
+	const updateProfielData = useCallback((name, value) => {
 		setProfielData(prevState => ({ ...prevState, [name]: value }));
-	};
+	}, [setProfielData]);
+
 
 	const handleSubmitForm = (event) => {
 		event.preventDefault();
-
+		//Aparte component van maken !
 		// Basisvalidatie voor e-mailadres
 		const emailRegex = /\S+@\S+\.\S+/;
 		const isEmailValid = emailRegex.test(profielData.emailadres);
@@ -51,7 +51,7 @@ const ProfielPagina = () => {
 		if (!isFormValid) {
 			alert("Sommige velden zijn niet correct ingevuld. Controleer alstublieft uw invoer.");
 		} else {
-			navigate("/medischePagina", { state: { profielData } });
+			navigate("/medischePagina");
 		}
 	};
 	

@@ -41,6 +41,11 @@ const BevestigingsPagina = () => {
 							<td>{profielData.telefoonnummer}</td>
 						</tr>
 						<tr>
+							<td>Type Beperkingen</td>
+							<td>{profielData.beperkingTypes?.map((beperking, index) => (<span key={index}>{beperking.naam}<br/></span>))}
+							</td>
+						</tr>
+						<tr>
 							<td>Aandoening/Ziekte</td>
 							<td>{profielData.Aandoening}</td>
 						</tr>

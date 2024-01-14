@@ -223,5 +223,13 @@ namespace AspTest.Controllers
 
             return Ok();
         }
+        /*
+        [Authorize]
+        [HttpPost("create-profiel-info")]
+        public async Task<IActionResult> CreateUserProfileInfo(EditErvaringsdeskundigeProfielModel model)
+        {
+
+        }
+        */
     }
 }
