@@ -223,13 +223,72 @@ namespace AspTest.Controllers
 
             return Ok();
         }
+        
         /*
         [Authorize]
         [HttpPost("create-profiel-info")]
-        public async Task<IActionResult> CreateUserProfileInfo(EditErvaringsdeskundigeProfielModel model)
+        public async Task<IActionResult> CreateUserProfileInfo([FromBody] CreateErvaringsdeskundigeProfielModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            Claim? UserIdClaim = User.FindFirst("user_id");
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Gebruiker? gebruiker = _gebruikerRepository
+                .GetGebruikersWithQueryable()
+                    .Include(g => g.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeBeperkingen)
+                            .ThenInclude(eb => eb.Beperking)
+
+                    .Include(g2 => g2.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeOnderzoekTypes)
+                            .ThenInclude(eo => eo.VoorkeurOnderzoekType)
+
+                    .Include(g3 => g3.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeVoorkeur)
+
+                    .FirstOrDefault(g4 => g4.Id == userId);
+
+            if (gebruiker == null)
+                return Unauthorized("No user found.");
+            
+            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
+
+            if (ervaringsdeskundigeInfo == null)
+                return Unauthorized("No ervaringsdeskundige info found.");
+
+                       
+            // set beperking types
+            try {
+                await _beperkingRepository.AddMultipleBeperkingTypeGebruiker(ervaringsdeskundigeInfo, model.beperkingTypes, false);
+                await _onderzoekTypeRepository.AddMultipleVoorkeurOnderzoekTypeGebruiker(ervaringsdeskundigeInfo, model.onderzoekTypes, false);
+            }
+            // Niet 500 internal server error als dit gebeurt, maar gewoon badrequest om meer error info te geven.
+            catch (InvalidOnderzoekTypesGivenException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+            catch (InvalidBeperkingTypesGivenException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+
+            // set overige info
+            ervaringsdeskundigeInfo.Telefoonnummer = model.Telefoonnummer;
+            ervaringsdeskundigeInfo.Beschikbaarheid = model.Beschikbaar;
+            ervaringsdeskundigeInfo.Hulpmiddel = model.Hulpmiddelen;
+            ervaringsdeskundigeInfo.Ziekte = model.Aandoening;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Telefonisch = model.TelefonischBenadering;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Portaal = model.PortaalBenadering;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.ToestemmingUitnodigingen = model.comBenadering;
+
+            
+            await _context.SaveChangesAsync();
+          
+            return Ok();
         }
-        */
+        }
     }
-}
