@@ -227,7 +227,7 @@ namespace AspTest.Controllers
         /*
         [Authorize]
         [HttpPost("create-profiel-info")]
-        public async Task<IActionResult> CreateUserProfileInfo([FromBody] CreateErvaringsdeskundigeProfielModel model)
+        public async Task<IActionResult> CreateUserProfileInfo([FromBody] CreateErvaringsdeskundigeProfielModel Profiel)
         {
             if (!ModelState.IsValid)
             {
@@ -263,8 +263,8 @@ namespace AspTest.Controllers
                        
             // set beperking types
             try {
-                await _beperkingRepository.AddMultipleBeperkingTypeGebruiker(ervaringsdeskundigeInfo, model.beperkingTypes, false);
-                await _onderzoekTypeRepository.AddMultipleVoorkeurOnderzoekTypeGebruiker(ervaringsdeskundigeInfo, model.onderzoekTypes, false);
+                await _beperkingRepository.AddMultipleBeperkingTypeGebruiker(ervaringsdeskundigeInfo, Profiel.beperkingTypes, false);
+                await _onderzoekTypeRepository.AddMultipleVoorkeurOnderzoekTypeGebruiker(ervaringsdeskundigeInfo, Profiel.onderzoekTypes, false);
             }
             // Niet 500 internal server error als dit gebeurt, maar gewoon badrequest om meer error info te geven.
             catch (InvalidOnderzoekTypesGivenException exception)
@@ -277,13 +277,13 @@ namespace AspTest.Controllers
             }
 
             // set overige info
-            ervaringsdeskundigeInfo.Telefoonnummer = model.Telefoonnummer;
-            ervaringsdeskundigeInfo.Beschikbaarheid = model.Beschikbaar;
-            ervaringsdeskundigeInfo.Hulpmiddel = model.Hulpmiddelen;
-            ervaringsdeskundigeInfo.Ziekte = model.Aandoening;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Telefonisch = model.TelefonischBenadering;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Portaal = model.PortaalBenadering;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.ToestemmingUitnodigingen = model.comBenadering;
+            ervaringsdeskundigeInfo.Telefoonnummer = Profiel.Telefoonnummer;
+            ervaringsdeskundigeInfo.Beschikbaarheid = Profiel.Beschikbaar;
+            ervaringsdeskundigeInfo.Hulpmiddel = Profiel.Hulpmiddelen;
+            ervaringsdeskundigeInfo.Ziekte = Profiel.Aandoening;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Telefonisch = Profiel.TelefonischBenadering;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Portaal = Profiel.PortaalBenadering;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.ToestemmingUitnodigingen = Profiel.comBenadering;
 
             
             await _context.SaveChangesAsync();
