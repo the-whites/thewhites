@@ -31,6 +31,7 @@ import DefaultOnderzoekenTab from "./pages/BedrijvenPortal/Onderzoeken/DefaultOn
 import BedrijfOnderzoeken from "./pages/BedrijvenPortal/Onderzoeken/Onderzoeken";
 import ProfielPagina from "./pages/ProfielPaginas/ProfielPagina"; 
 import MedischePagina from "./pages/ProfielPaginas/Medischepagina";
+import BevestigingsPagina from "./pages/ProfielPaginas/BevestingPagina";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -94,6 +95,7 @@ function App() {
 							<Route path="/medischePagina" component={<MedischePagina/>} />
 							<Route path="profielPagina" element={<ProfielPagina />} />
 							<Route path="medischePagina" element={<MedischePagina/>} />
+							<Route path="bevestingsPagina" element={<BevestigingsPagina/>} />
 						</Routes>
 					<Footer />
 					</ProfielProvider>

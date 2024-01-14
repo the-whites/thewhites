@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,10 @@ const medischepagina = () => {
 		{ id: "engels", naam: "Engelstalige onderzoeken" }
 	];
 
+	useEffect(() => {
+		sessionStorage.setItem("profielData", JSON.stringify(profielData));
+	}, [profielData]);
+
 	const updateProfielData = (name, value) => {
 		setProfielData(prevState => ({ ...prevState, [name]: value }));
 	};
@@ -26,7 +30,7 @@ const medischepagina = () => {
 	const handleSubmitForm = (event) => {
 		event.preventDefault();
 		// Voeg validatie en andere logica toe indien nodig
-		navigate("/volgendePagina"); // Pas dit aan naar de volgende pagina in uw flow
+		navigate("/bevestingsPagina"); // Pas dit aan naar de volgende pagina in uw flow
 	};
 	
 

@@ -17,7 +17,7 @@ const ProfielPagina = () => {
 	];
 
 	useEffect(() => {
-		localStorage.setItem("profielData", JSON.stringify(profielData));
+		sessionStorage.setItem("profielData", JSON.stringify(profielData));
 	}, [profielData]);
   
 	
