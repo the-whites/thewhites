@@ -17,20 +17,14 @@ const ProfielPagina = () => {
 	];
 
 	useEffect(() => {
-		const savedData = localStorage.getItem("profielData");
-		if (savedData) {
-			setProfielData(JSON.parse(savedData));
-		}
-	}, []);
+		localStorage.setItem("profielData", JSON.stringify(profielData));
+	}, [profielData]);
   
 	
 	const updateProfielData = (name, value) => {
-		setProfielData(prevState => {
-			const updatedState = { ...prevState, [name]: value };
-			localStorage.setItem("profielData", JSON.stringify(updatedState));
-			return updatedState;
-		});
+		setProfielData(prevState => ({ ...prevState, [name]: value }));
 	};
+	
 
 	const handleSubmitForm = (event) => {
 		event.preventDefault();
