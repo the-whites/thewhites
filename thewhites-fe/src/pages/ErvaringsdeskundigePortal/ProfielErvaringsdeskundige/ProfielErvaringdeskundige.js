@@ -101,8 +101,9 @@ const ProfielErvaringsdeskundige = () => {
 			{isConfirming && <>
 			
 				<BewerkProfielPreview profielData={profielData} />
-				<Button onClick={() => handlePostNewData()}>Bevestigen</Button>
-				<Button onClick={() => setIsConfirming(false)}>Terug</Button>
+				<Button variant="outline-secondary" onClick={() => setIsConfirming(false)}>Terug</Button>
+				<Button variant="success" onClick={() => handlePostNewData()}>Bevestigen</Button>
+
 			</>}
 
 			<div hidden={isConfirming || isLoading ? "hidden" : ""}>
