@@ -1,20 +1,27 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form, Row, Col } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
 import "./ProfielPagina.css";
 import { ProfielContext } from "./ProfielContext";
+import { fetchApi } from "../../hooks/useApi";
 
 const ProfielPagina = () => {
 	const { profielData, setProfielData } = useContext(ProfielContext);
 	const navigate = useNavigate();
+	const [beperkingTypes, setBeperkingItems] = useState([]);
 
-	const beperkingItems = [
-		{ id: "blind", naam: "Blind" },
-		{ id: "doof", naam: "Doof" },
-		{ id: "autisme", naam: "Autisme" },
-	];
+	useEffect(() => {
+		const fetch = async () => {
+			const beperkingTypesResponse = await fetchApi({route: "api/Beperking/beperkingen"});
+
+			setBeperkingItems(Object.values(beperkingTypesResponse.data).map(item => {
+				return {id: item.id, naam: item.naam};
+			}));
+		};
+		fetch();
+	}, []);
 
 	useEffect(() => {
 		sessionStorage.setItem("profielData", JSON.stringify(profielData));
@@ -94,7 +101,7 @@ const ProfielPagina = () => {
 						/>
 						<MultiSelectionBar
 							label="Type beperkingen"
-							items={beperkingItems}
+							items={beperkingTypes}
 							handleSelection={(selectedItems) => updateProfielData("beperkingTypes", selectedItems)}
 							initialSelectedItems={profielData.beperkingTypes}
 							getKey={(option) => option.id}

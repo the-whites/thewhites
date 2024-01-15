@@ -224,10 +224,10 @@ namespace AspTest.Controllers
             return Ok();
         }
         
-        /*
+        
         [Authorize]
         [HttpPost("create-profiel-info")]
-        public async Task<IActionResult> CreateUserProfileInfo([FromBody] CreateErvaringsdeskundigeProfielModel Profiel)
+        public async Task<IActionResult> CreateUserProfileInfo(CreateErvaringsdeskundigeProfielModel profiel)
         {
             if (!ModelState.IsValid)
             {
@@ -260,11 +260,15 @@ namespace AspTest.Controllers
             if (ervaringsdeskundigeInfo == null)
                 return Unauthorized("No ervaringsdeskundige info found.");
 
+            // maak beperking & onderzoek types voor de ervaringsdeskundige leeg
+            await _beperkingRepository.ClearBeperkingenGebruiker(ervaringsdeskundigeInfo, false);
+            await _onderzoekTypeRepository.ClearOnderzoekTypesGebruiker(ervaringsdeskundigeInfo, false);
                        
+            
             // set beperking types
             try {
-                await _beperkingRepository.AddMultipleBeperkingTypeGebruiker(ervaringsdeskundigeInfo, Profiel.beperkingTypes, false);
-                await _onderzoekTypeRepository.AddMultipleVoorkeurOnderzoekTypeGebruiker(ervaringsdeskundigeInfo, Profiel.onderzoekTypes, false);
+                await _beperkingRepository.AddMultipleBeperkingTypeGebruiker(ervaringsdeskundigeInfo, profiel.beperkingTypes, false);
+                await _onderzoekTypeRepository.AddMultipleVoorkeurOnderzoekTypeGebruiker(ervaringsdeskundigeInfo, profiel.onderzoekTypes, false);
             }
             // Niet 500 internal server error als dit gebeurt, maar gewoon badrequest om meer error info te geven.
             catch (InvalidOnderzoekTypesGivenException exception)
@@ -277,18 +281,23 @@ namespace AspTest.Controllers
             }
 
             // set overige info
-            ervaringsdeskundigeInfo.Telefoonnummer = Profiel.Telefoonnummer;
-            ervaringsdeskundigeInfo.Beschikbaarheid = Profiel.Beschikbaar;
-            ervaringsdeskundigeInfo.Hulpmiddel = Profiel.Hulpmiddelen;
-            ervaringsdeskundigeInfo.Ziekte = Profiel.Aandoening;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Telefonisch = Profiel.TelefonischBenadering;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Portaal = Profiel.PortaalBenadering;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.ToestemmingUitnodigingen = Profiel.comBenadering;
+            ervaringsdeskundigeInfo.Geboortedatum = profiel.geboortedatum;
+            ervaringsdeskundigeInfo.Telefoonnummer = profiel.telefoonnummer;
+            ervaringsdeskundigeInfo.Beschikbaarheid = profiel.beschikbaar;
+            ervaringsdeskundigeInfo.Hulpmiddel = profiel.hulpmiddelen;
+            ervaringsdeskundigeInfo.Ziekte = profiel.aandoening;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Telefonisch = profiel.telefonischBenadering;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Portaal = profiel.portaalBenadering;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.ToestemmingUitnodigingen = profiel.toestemmingUitnodigingen;
+            ervaringsdeskundigeInfo.Postcode = profiel.postcode;
+            gebruiker.Emailadres = profiel.emailadres;
+            gebruiker.Achternaam = profiel.achternaam;
+            gebruiker.Voornaam = profiel.voornaam;
 
             
             await _context.SaveChangesAsync();
           
             return Ok();
         }
-        }
     }
+}

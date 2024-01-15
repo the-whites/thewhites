@@ -9,13 +9,13 @@ const initiëleProfielData = {
 	beperkingTypes: [],
   
 	// Medische gegevens
-	Aandoening: "",
-	Hulpmiddelen: "",
-	Onderzoeken: [],
-	Portaalbenadering: false,
-	Beschikbaar: "",
-	TelefonischBenadering: false,
-	ToestemmingUitnodigingen: false
+	aandoening: "",
+	hulpmiddelen: "",
+	onderzoekTypes: [],
+	portaalbenadering: false,
+	beschikbaar: "",
+	telefonischBenadering: false,
+	toestemmingUitnodigingen: false
 };
   
 export const ProfielContext = createContext();

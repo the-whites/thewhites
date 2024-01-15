@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ProfielContext } from "./ProfielContext";
 import { Container, Table, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { postApi } from "../../hooks/useApi";
 
 
 const BevestigingsPagina = () => {
@@ -12,7 +13,16 @@ const BevestigingsPagina = () => {
 		navigate("/medischepagina");
 	};
 
-	const handleBevestigen = () => {};
+	const handleBevestigen = async () => {
+
+		const body = profielData;
+		body.onderzoekTypes = body.onderzoekTypes.map((type) => type.id) == null ? [] : body.onderzoekTypes.map((type) => type.id);
+		body.beperkingTypes = body.beperkingTypes.map((type) => type.id) == null ? [] : body.beperkingTypes.map((type) => type.id);
+		
+		const response = await postApi({route:"api/ErvaringsDeskundige/create-profiel-info", body: body})
+		console.log(response);
+
+	};
 
 	return (
 		<>
@@ -47,15 +57,15 @@ const BevestigingsPagina = () => {
 						</tr>
 						<tr>
 							<td>Aandoening/Ziekte</td>
-							<td>{profielData.Aandoening}</td>
+							<td>{profielData.aandoening}</td>
 						</tr>
 						<tr>
 							<td>Hulpmiddelen</td>
-							<td>{profielData.Hulpmiddelen}</td>
+							<td>{profielData.hulpmiddelen}</td>
 						</tr>
 						<tr>
 							<td>Type onderzoeken</td>
-							<td>{profielData.onderzoekenTypes?.map((item) => <span key={item.id}>{item.naam}<br/></span>)}</td>
+							<td>{profielData.onderzoekTypes?.map((item) => <span key={item.id}>{item.type}<br/></span>)}</td>
 						</tr>
 						<tr>
 							<td>Portaal benaderen</td>
@@ -67,11 +77,11 @@ const BevestigingsPagina = () => {
 						</tr>
 						<tr>
 							<td>Beschikbaar</td>
-							<td>{profielData.Beschikbaar}</td>
+							<td>{profielData.beschikbaar}</td>
 						</tr>
 						<tr>
 							<td>Toestemming voor Uitnodigingen</td>
-							<td>{profielData.ToestemmingUitnodigingen ? "Ja" : "Nee"}</td>
+							<td>{profielData.toestemmingUitnodigingen ? "Ja" : "Nee"}</td>
 						</tr>
 					</tbody>
 				</Table>
