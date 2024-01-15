@@ -1,6 +1,8 @@
 export const OPDRACHT_DATA = {
-	OPDRACHT_NAAM: "opdrachtNaam",
-	OPRACHT_OMSCHRIJVING: "opdrachtOmschrijving",
+	ID: "id",
+	NAAM: "naam",
+	OMSCHRIJVING: "omschrijving",
+	INHOUD: "inhoud",
 	TYPE_OPDRACHT: "typeOpdracht",
 	BEPERKING: "beperking",
 	LEEFTIJD: "leeftijd",
@@ -12,8 +14,9 @@ export const OPDRACHT_DATA = {
 };
 
 export const initialOpdrachtState = {
-	[OPDRACHT_DATA.OPDRACHT_NAAM]: "",
-	[OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: "",
+	[OPDRACHT_DATA.NAAM]: "",
+	[OPDRACHT_DATA.OMSCHRIJVING]: "",
+	[OPDRACHT_DATA.INHOUD]: "",
 	[OPDRACHT_DATA.TYPE_OPDRACHT]: [],
 	[OPDRACHT_DATA.BEPERKING]: [],
 	[OPDRACHT_DATA.LEEFTIJD]: [],

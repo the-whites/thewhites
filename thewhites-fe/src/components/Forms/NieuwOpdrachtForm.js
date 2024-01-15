@@ -14,14 +14,17 @@ const getIdByNaam = (naam, data) => {
 	return foundItem ? foundItem.id : null;
 };
 
-const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdrachten }) => {
+const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdrachten, opdracht, buttonConfirmText = "Maak opdracht aan"}) => {
 	const [localOpdrachtData, setLocalOpdrachtData] = useState(initialOpdrachtState);
+	const [leeftijden, setLeeftijden] = useState([]); // Leeftijd wordt ook gehandeld in localOpdrachtData, deze useState is alleen voor visualisatie
+
 	const [invalidPostcodes, setInvalidPostcodes] = useState([]);
 
 	// Dit zijn de verplichte velden die ingevuld moeten worden
 	const [isInvalidFields, setIsInvalidFields] = useState({
-		[OPDRACHT_DATA.OPDRACHT_NAAM]: false,
-		[OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: false,
+		[OPDRACHT_DATA.NAAM]: false,
+		[OPDRACHT_DATA.OMSCHRIJVING]: false,
+		[OPDRACHT_DATA.INHOUD]: false,
 		[OPDRACHT_DATA.LOCATIE]: false,
 		[OPDRACHT_DATA.TYPE_OPDRACHT]: false,
 		[OPDRACHT_DATA.START_DATUM]: false,
@@ -34,34 +37,36 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 		if(items) {
 			// Pak alleen de nummer uit de string oftewel de ID
 			const ids = items.map(naam => getIdByNaam(naam, typeOpdrachten));
-			setLocalOpdrachtData((prevData) => ({ ...prevData, typeOpdracht: ids }));
+			setLocalOpdrachtData(({...localOpdrachtData, typeOpdracht: ids }));
 		}
 	};
    
 	const handleBeperkingChange = (items) => {
 		if(items) {
 			const ids = items.map(naam => getIdByNaam(naam, beperkingen));
-			setLocalOpdrachtData((prevData) => ({ ...prevData, beperking: ids }));
+			setLocalOpdrachtData(({...localOpdrachtData, beperking: ids }));
 		}
 	};
 	
 	const handleLeeftijdChange = (value) => {
-		let leeftijden = [];
+		setLeeftijden([value]);
+		
+		let leeftijdenData = [];
+		const leeftijdParts = value.split(",").map(part => part.trim());
 
-		if (value.includes("-")) {
-			const [start, end] = value.split("-");
-			const startLeeftijd = parseInt(start.trim());
-			const endLeeftijd = parseInt(end.trim());
-
-			for (let i = startLeeftijd; i <= endLeeftijd; i++) {
-				leeftijden.push(i);
+		leeftijdParts.forEach(part => {
+			if (part.includes("-")) {
+				// Check voor ranges
+				const [start, end] = part.split("-");
+				const leeftijdCriteria = [parseInt(start.trim()), parseInt(end.trim())];
+				leeftijdenData.push(leeftijdCriteria);
+			} else {
+				// Check voor individuele leeftijden
+				const leeftijd = parseInt(part);
+				leeftijdenData.push([leeftijd, leeftijd]);
 			}
-		} else {
-			const leeftijdArray = value.split(",").map(leeftijd => parseInt(leeftijd.trim()));
-			leeftijden = leeftijdArray.filter(leeftijd => !isNaN(leeftijd));
-		}
-
-		setLocalOpdrachtData((prevData) => ({ ...prevData, leeftijd: leeftijden }));
+		});
+		setLocalOpdrachtData(({...localOpdrachtData,  leeftijd: leeftijdenData }));
 	};
 	
 	const handlePostcodeChange = (value) => {
@@ -75,7 +80,7 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 			}
 		}
 
-		setLocalOpdrachtData((prevData) => ({ ...prevData, postcode: postcoden }));
+		setLocalOpdrachtData(({...localOpdrachtData, postcode: postcoden }));
 	};
 
 	const handleSubmit = (event) => {
@@ -97,36 +102,36 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 			}
 		}
 
-		if(localOpdrachtData.typeOpdracht.length === 0) {
-			invalidFields.typeOpdrachten = true;
+		if(localOpdrachtData[OPDRACHT_DATA.TYPE_OPDRACHT].length === 0) {
+			invalidFields[OPDRACHT_DATA.TYPE_OPDRACHT] = true;
 		} else {
-			invalidFields.typeOpdrachten = false;
+			invalidFields[OPDRACHT_DATA.TYPE_OPDRACHT]= false;
 		}
 
-		if(localOpdrachtData.startDatum === null) {
-			invalidFields.startDatum = true;
+		if(localOpdrachtData[OPDRACHT_DATA.START_DATUM] === null) {
+			invalidFields[OPDRACHT_DATA.START_DATUM] = true;
 		} else {
-			invalidFields.startDatum = false;
+			invalidFields[OPDRACHT_DATA.START_DATUM] = false;
 		}
 
-		if(localOpdrachtData.startDatum > localOpdrachtData.eindDatum) {
-			invalidFields.startDatum = true;
-			invalidFields.eindDatum = true;
+		if(localOpdrachtData[OPDRACHT_DATA.START_DATUM] > localOpdrachtData[OPDRACHT_DATA.EIND_DATUM]) {
+			invalidFields[OPDRACHT_DATA.START_DATUM] = true;
+			invalidFields[OPDRACHT_DATA.EIND_DATUM] = true;
 		}
 
 		validatePostcodes();
 
 		if(invalidPostcodes.length !== 0 && !invalidPostcodes.includes("")) {
-			invalidFields.postcode = true;
+			invalidFields[OPDRACHT_DATA.POSTCODE] = true;
 		}
 
-		setIsInvalidFields(prevState => ({ ...prevState, ...invalidFields }));
+		setIsInvalidFields(({ ...isInvalidFields, ...invalidFields }));
 		return Object.values(invalidFields).every(value => value === false);
 	};
 
 	const validatePostcodes = () => {
-		const tempInvalidPostcodes = localOpdrachtData.postcode
-			.map(postcode => postcode.replace(/\s/g, ""))
+		const tempInvalidPostcodes = localOpdrachtData[OPDRACHT_DATA.POSTCODE]
+			.map(postcode => postcode.replace(" ", ""))
 			.filter(postcode => !postcodeValidator(postcode, "NL"));
 
 		setInvalidPostcodes(tempInvalidPostcodes);
@@ -134,8 +139,24 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 
 	useEffect(() => {
 		const hasInvalidPostcodes = invalidPostcodes.length !== 0 && !invalidPostcodes.includes("");
-		setIsInvalidFields(prevState => ({ ...prevState, postcode: hasInvalidPostcodes }));
+		setIsInvalidFields(({ ...isInvalidFields, postcode: hasInvalidPostcodes }));
 	}, [invalidPostcodes]);
+
+	useEffect(() => {
+		if(opdracht) {
+			setLocalOpdrachtData(opdracht);
+
+			if(opdracht[OPDRACHT_DATA.LEEFTIJD]) {
+				const leeftijdOpdracht = opdracht[OPDRACHT_DATA.LEEFTIJD].map(l => {l.minLeeftijd === l.maxLeeftijd ? l.minLeeftijd : `${l.minLeeftijd}-${l.maxLeeftijd}`;});
+				setLeeftijden(leeftijdOpdracht);
+			}
+
+			if(opdracht[OPDRACHT_DATA.POSTCODE]) {
+				setLocalOpdrachtData(({ ...opdracht, 
+					[OPDRACHT_DATA.POSTCODE]: opdracht[OPDRACHT_DATA.POSTCODE].map(postcode => postcode.postcode) }));
+			}
+		}
+	}, [opdracht]);
 
 	const postcodeErrorText = `De volgende postcodes zijn ongeldig: ${invalidPostcodes.join(", ")}`;
 
@@ -147,30 +168,93 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 						
 						<h1 className="text-center mb-4 header">Algemeen</h1>
 						<div className="mb-3">
-							<InputBar textPosition="left" label="Opdracht naam" type="text" placeholder="bijv. The Whites Website Accessibility" required={true} isInvalid={isInvalidFields.opdrachtNaam} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.OPDRACHT_NAAM]: value }))} />
-							<InputBar textPosition="left" label="Opdracht omschrijving" type="textarea" placeholder="Dit dat" required={true} isInvalid={isInvalidFields.opdrachtOmschrijving} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: value }))} />
-							<InputBar textPosition="left" label="Locatie van opdracht" type="text" placeholder="Hoofdkantoor The Whites" required={true} isInvalid={isInvalidFields.locatie} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.LOCATIE]: value }))} />
-							<InputBar textPosition="left" label="Beloning" type="text" placeholder="5 doezoe" handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.BELONING]: value }))} />
+							<InputBar 
+								label="Opdracht naam" 
+								placeholder="Naam van de opdracht" 
+								required={true} 
+								value={localOpdrachtData[OPDRACHT_DATA.NAAM]} 
+								isInvalid={isInvalidFields[OPDRACHT_DATA.NAAM]} 
+								handleChange={(value) => setLocalOpdrachtData(({ ...localOpdrachtData, [OPDRACHT_DATA.NAAM]: value }))} />
+							<InputBar 
+								label="Opdracht omschrijving" 
+								type="textarea" 
+								placeholder="Beschrijf kort wat het doel van de opdracht is" 
+								required={true} 
+								value={localOpdrachtData[OPDRACHT_DATA.OMSCHRIJVING]} 
+								isInvalid={isInvalidFields[OPDRACHT_DATA.OMSCHRIJVING]}
+								handleChange={(value) => setLocalOpdrachtData(({ ...localOpdrachtData, [OPDRACHT_DATA.OMSCHRIJVING]: value }))} />
+							<InputBar 
+								label="Opdracht inhoud" 
+								type="textarea" 
+								placeholder="Leg duidelijk uit wat de deelnemers moeten doen eventueel met een stappenplan" 
+								required={true} 
+								value={localOpdrachtData[OPDRACHT_DATA.INHOUD]} 
+								isInvalid={isInvalidFields[OPDRACHT_DATA.INHOUD]}
+								handleChange={(value) => setLocalOpdrachtData(({ ...localOpdrachtData, [OPDRACHT_DATA.INHOUD]: value }))} />
+							<InputBar 
+								label="Locatie van opdracht" 
+								placeholder="Vul hier de locatie in waar de opdracht uitgevoerd moet worden" 
+								required={true}
+								value={localOpdrachtData[OPDRACHT_DATA.LOCATIE]} 
+								isInvalid={isInvalidFields[OPDRACHT_DATA.LOCATIE]} 
+								handleChange={(value) => setLocalOpdrachtData(({ ...localOpdrachtData, [OPDRACHT_DATA.LOCATIE]: value }))} />
+							<InputBar 
+								label="Beloning" 
+								value={localOpdrachtData[OPDRACHT_DATA.BELONING]}
+								placeholder="Vul hier de beloning in die de deelnemers krijgen voor het uitvoeren van de opdracht" 
+								handleChange={(value) => setLocalOpdrachtData(({ ...localOpdrachtData, [OPDRACHT_DATA.BELONING]: value }))} />
 						</div>
 						<div className="mb-3">
-							{typeOpdrachten &&
-							<MultiSelectionBar label="Type opdracht" buttonText="Selecteer type" items={mapItemsToStrings(typeOpdrachten)} isInvalid={isInvalidFields.typeOpdrachten} required={true} handleSelection={handleTypeSelection} />
-							}
+							<MultiSelectionBar 
+								label="Type opdracht" 
+								buttonText="Selecteer type" 
+								items={typeOpdrachten ? mapItemsToStrings(typeOpdrachten) : []} 
+								initialSelectedItems={opdracht && mapItemsToStrings(opdracht[OPDRACHT_DATA.TYPE_OPDRACHT])}
+								getKey={(option) => option.toString()} 
+								isInvalid={isInvalidFields[OPDRACHT_DATA.TYPE_OPDRACHT]} 
+								required={true} 
+								handleSelection={handleTypeSelection} />
 						</div>
 						<h1 className="text-center mb-3 header">Criteria</h1>
 						<div className="mb-3" >
-							{beperkingen &&
-							<MultiSelectionBar label="Uitstellen op beperking" buttonText="Selecteer beperking" items={mapItemsToStrings(beperkingen)} handleSelection={handleBeperkingChange} />
-							}
+							<MultiSelectionBar 
+								label="Uitstellen op beperking" 
+								buttonText="Selecteer beperking" 
+								items={beperkingen ? mapItemsToStrings(beperkingen) : []} 
+								getKey={(option) => option.toString()} 
+								initialSelectedItems={opdracht && mapItemsToStrings(opdracht[OPDRACHT_DATA.BEPERKING])}
+								handleSelection={handleBeperkingChange} />
 						</div>
 						<div className="mb-3" >
-							<InputBar textPosition="left" label="Uitstellen op leeftijd" type="text" placeholder="bijv. 18" infoText="Je kan meerdere leeftijden invullen doormiddel van kommas zoals: 18, 20, 26 of 13-20 (dit is dan 13 tot en met 20)" handleChange={handleLeeftijdChange} />
-							<InputBar textPosition="left" label="Postcode" type="text" placeholder="bijv. 1234AB" infoText="Je kan meerdere postcodes invullen doormiddel van een scheiding met een komma: 2554GW, 2551AB" errorMessage={postcodeErrorText} isInvalid={isInvalidFields.postcode} handleChange={handlePostcodeChange} />
+							<InputBar 
+								label="Uitstellen op leeftijd" 
+								value={leeftijden}
+								placeholder="Vul hier de leeftijd(en) in die in aanmerking kunnen komen voor deze opdracht" 
+								infoText="Je kan meerdere leeftijden invullen doormiddel van kommas zoals: 18, 20, 26 of 13-20 (dit is dan 13 tot en met 20)" 
+								handleChange={handleLeeftijdChange} />
+							<InputBar 
+								label="Postcode"
+								value={localOpdrachtData[OPDRACHT_DATA.POSTCODE] ? localOpdrachtData[OPDRACHT_DATA.POSTCODE].map(postcode => postcode.toString()).join(", ") : ""}
+								placeholder="Vul hier de postcode(s) in die in aanmerking kunnen komen voor deze opdracht" 
+								infoText="Je kan meerdere postcodes invullen doormiddel van een scheiding met een komma: 2554GW, 2551AB" 
+								errorMessage={postcodeErrorText} 
+								isInvalid={isInvalidFields[OPDRACHT_DATA.POSTCODE]} 
+								handleChange={handlePostcodeChange} />
 						</div>
 						<h1 className="text-center mb-3 header ">Datum</h1>
-						<CustomDatePicker label="Start datum" required={true} isInvalid={isInvalidFields.startDatum} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.START_DATUM]: value }))} />
+						<CustomDatePicker 
+							label="Start datum" 
+							required={true} 
+							value={opdracht && opdracht[OPDRACHT_DATA.START_DATUM]}
+							isInvalid={isInvalidFields[OPDRACHT_DATA.START_DATUM]} 
+							handleChange={(value) => setLocalOpdrachtData(({ ...localOpdrachtData, [OPDRACHT_DATA.START_DATUM]: value }))} />
 						<div className="mb-3" />
-						<CustomDatePicker label="Eind datum" required={true} isInvalid={isInvalidFields.eindDatum} handleChange={(value) => setLocalOpdrachtData((prevData) => ({ ...prevData, [OPDRACHT_DATA.EIND_DATUM]: value }))}/>
+						<CustomDatePicker 
+							label="Eind datum" 
+							value={opdracht && opdracht[OPDRACHT_DATA.EIND_DATUM]}
+							required={true} 
+							isInvalid={isInvalidFields[OPDRACHT_DATA.EIND_DATUM]} 
+							handleChange={(value) => setLocalOpdrachtData(({ ...localOpdrachtData, [OPDRACHT_DATA.EIND_DATUM]: value }))}/>
 					</Col>
 				</Row>
 
@@ -181,7 +265,7 @@ const NieuwOpdrachtForm = ({ handleOpdrachtDataChange, beperkingen, typeOpdracht
 						<Button onClick={() => navigate(-1)} variant="danger">Annuleren</Button>
 					</Col>
 					<Col md={2} className="text-end">
-						<Button onClick={handleSubmit}>Maak opdracht aan</Button>
+						<Button onClick={handleSubmit}>{buttonConfirmText}</Button>
 					</Col>
 				</Row>
 				<div className="mb-4" />

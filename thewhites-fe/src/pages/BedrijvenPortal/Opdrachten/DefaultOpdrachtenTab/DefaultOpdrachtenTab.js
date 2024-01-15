@@ -13,17 +13,17 @@ const DefaultOpdrachtenTab = () => {
 				<Row className="justify-content-center">
 					<NavigationCard
 						title="Nieuwe opdracht plaatsen"
-						content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt tincidunt velit, quis condimentum ligula euismod in."
+						content="Hier kan je nieuwe opdrachten plaatsen voor ervaringsdeskundigen. Je kan hierbij aangeven wat voor soort opdracht het is en nog meer relevante details van de opdracht"
 						linkTo="./nieuw"
 					/>
 					<NavigationCard
 						title="Lopende opdrachten"
-						content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt tincidunt velit, quis condimentum ligula euismod in."
+						content="Hier kan je lopende opdrachten bekijken. Daarnaast kan je hier ook details zien van de opdracht en als het nodig is de opdracht zelf wijzigen als het nog niet gestart is."
 						linkTo="./lopende-opdrachten"
 					/>
 					<NavigationCard
 						title="Oude opdrachten inzien"
-						content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt tincidunt velit, quis condimentum ligula euismod in."
+						content="Bekijk hier oude opdrachten die al zijn afgerond. Je kan hierbij ook de details en de resultaten van de opdracht bekijken."
 						linkTo="./oude-opdrachten"
 					/>
 				</Row>

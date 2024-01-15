@@ -15,8 +15,9 @@ const BeheerOpdracht = () => {
 			
 			if (response.status === 200) {
 				setOnderzoek({
-					[OPDRACHT_DATA.OPDRACHT_NAAM]: response.data.titel,
-					[OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: response.data.beschrijving,
+					[OPDRACHT_DATA.ID]: id,
+					[OPDRACHT_DATA.NAAM]: response.data.titel,
+					[OPDRACHT_DATA.OMSCHRIJVING]: response.data.beschrijving,
 					[OPDRACHT_DATA.BELONING]: response.data.beloning,
 					[OPDRACHT_DATA.LOCATIE]: response.data.locatie,
 					[OPDRACHT_DATA.START_DATUM]: response.data.startDatum,

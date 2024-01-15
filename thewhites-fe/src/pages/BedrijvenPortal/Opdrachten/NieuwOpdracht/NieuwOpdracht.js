@@ -4,7 +4,7 @@ import ConfirmationModal from "../../../../components/ConfirmationModal/Confirma
 import { postApi } from "../../../../hooks/useApi";
 import { fetchApi } from "../../../../hooks/useApi";
 import {  toast } from "react-toastify";
-import { initialOpdrachtState } from "../../../../constants/opdrachtData";
+import { OPDRACHT_DATA, initialOpdrachtState } from "../../../../constants/opdrachtData";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./NieuwOpdracht.css";
@@ -40,16 +40,17 @@ const NieuwOpdracht = () => {
 
 	const createOnderzoek = async () => {
 		const onderzoekDataObject = {
-			titel: opdrachtData.opdrachtNaam,
-			beschrijving: opdrachtData.opdrachtOmschrijving,
-			startDatum: opdrachtData.startDatum,
-			eindDatum: opdrachtData.eindDatum,
-			beloning: opdrachtData.beloning,
-			locatie: opdrachtData.locatie,
-			postcodeCriteriaList: opdrachtData.postcode.map(postcode => postcode),
-			categoriesList: opdrachtData.typeOpdracht.map(typeId => typeId),
-			beperkingCriteriaList: opdrachtData.beperking.map(beperkingId => beperkingId),
-			leeftijdCriteriaList: opdrachtData.leeftijd.map(leeftijd => leeftijd)
+			titel: opdrachtData[OPDRACHT_DATA.NAAM],
+			beschrijving: opdrachtData[OPDRACHT_DATA.OMSCHRIJVING],
+			inhoud: opdrachtData[OPDRACHT_DATA.INHOUD],
+			startDatum: opdrachtData[OPDRACHT_DATA.START_DATUM],
+			eindDatum: opdrachtData[OPDRACHT_DATA.EIND_DATUM],
+			beloning: opdrachtData[OPDRACHT_DATA.BELONING],
+			locatie: opdrachtData[OPDRACHT_DATA.LOCATIE],
+			postcodeCriteriaList: opdrachtData[OPDRACHT_DATA.POSTCODE].map(postcode => postcode),
+			categoriesList: opdrachtData[OPDRACHT_DATA.TYPE_OPDRACHT].map(typeId => typeId),
+			beperkingCriteriaList: opdrachtData[OPDRACHT_DATA.BEPERKING].map(beperkingId => beperkingId),
+			leeftijdCriteriaList: opdrachtData[OPDRACHT_DATA.LEEFTIJD].map(leeftijd => leeftijd)
 		};
 
 		try {
@@ -123,38 +124,38 @@ const NieuwOpdracht = () => {
 					handleConfirm={handleConfirm}
 					title="Weet u het zeker?">
 					<div className="confirmation-border">
-						<h1>{opdrachtData.opdrachtNaam}</h1>
-						<p>{opdrachtData.opdrachtOmschrijving}</p>
+						<h1>{opdrachtData[OPDRACHT_DATA.NAAM]}</h1>
+						<p>{opdrachtData[OPDRACHT_DATA.OMSCHRIJVING]}</p>
 						<p>
 							<strong>Type Opdracht:</strong>{" "}
-							{opdrachtData.typeOpdracht.map((id) => getTypeNaamById(id, typeOpdrachten)).join(", ")}
+							{opdrachtData[OPDRACHT_DATA.TYPE_OPDRACHT].map((id) => getTypeNaamById(id, typeOpdrachten)).join(", ")}
 						</p>
 
-						{opdrachtData.beperking.length > 0 && (
+						{opdrachtData[OPDRACHT_DATA.BEPERKING].length > 0 && (
 							<p>
 								<strong>Beperking(en) in aanmerking:</strong>{" "}
-								{opdrachtData.beperking.map((id) => getTypeNaamById(id, beperkingen)).join(", ")}
+								{opdrachtData[OPDRACHT_DATA.BEPERKING].map((id) => getTypeNaamById(id, beperkingen)).join(", ")}
 							</p>
 						)}
 
-						{opdrachtData.leeftijd.length > 0 && (
+						{opdrachtData[OPDRACHT_DATA.LEEFTIJD].length > 0 && (
 							<p>
-								<strong>Leeftijd(en):</strong> {opdrachtData.leeftijd.map((l) => l).join(", ")}
+								<strong>Leeftijd(en):</strong> {opdrachtData[OPDRACHT_DATA.LEEFTIJD].map((l) => l).join(", ")}
 							</p>
 						)}
 
-						{opdrachtData.postcode.length > 0 && (
+						{opdrachtData[OPDRACHT_DATA.POSTCODE].length > 0 && (
 							<p>
-								<strong>Postcode(s):</strong> {opdrachtData.postcode}
+								<strong>Postcode(s):</strong> {opdrachtData[OPDRACHT_DATA.POSTCODE]}
 							</p>
 						)}
 
 						<p>
-							<strong>Opdracht start op:</strong> {opdrachtData.startDatum.toLocaleString()}
+							<strong>Opdracht start op:</strong> {opdrachtData[OPDRACHT_DATA.START_DATUM].toLocaleString()}
 						</p>
 
 						<p>
-							<strong>Opdracht eindigt op:</strong> {opdrachtData.eindDatum.toLocaleString()}
+							<strong>Opdracht eindigt op:</strong> {opdrachtData[OPDRACHT_DATA.EIND_DATUM].toLocaleString()}
 						</p>
 					</div>
 				</ConfirmationModal>
