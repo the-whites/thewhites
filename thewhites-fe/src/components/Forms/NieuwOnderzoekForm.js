@@ -27,6 +27,7 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 		[ONDERZOEK_DATA.INHOUD]: false,
 		[ONDERZOEK_DATA.LOCATIE]: false,
 		[ONDERZOEK_DATA.TYPE_ONDERZOEK]: false,
+		[ONDERZOEK_DATA.LEEFTIJD]: false,
 		[ONDERZOEK_DATA.START_DATUM]: false,
 		[ONDERZOEK_DATA.EIND_DATUM]: false,
 	});
@@ -121,6 +122,11 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 			invalidFields[ONDERZOEK_DATA.START_DATUM] = true;
 			invalidFields[ONDERZOEK_DATA.EIND_DATUM] = true;
 		}
+
+		localOnderzoekData[ONDERZOEK_DATA.LEEFTIJD].forEach(leeftijdMinMax => {
+			if(leeftijdMinMax[0] > leeftijdMinMax[1])
+				invalidFields[ONDERZOEK_DATA.LEEFTIJD] = true;
+		})
 
 		validatePostcodes();
 
@@ -234,6 +240,8 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 								value={leeftijden}
 								placeholder="Vul hier de leeftijd(en) in die in aanmerking kunnen komen voor deze onderzoek" 
 								infoText="Je kan meerdere leeftijden invullen doormiddel van kommas zoals: 18, 20, 26 of 13-20 (dit is dan 13 tot en met 20)" 
+								errorMessage="Er is een leeftijd criteria onjuist ingevuld"
+								isInvalid={isInvalidFields[ONDERZOEK_DATA.LEEFTIJD]}
 								handleChange={handleLeeftijdChange} />
 							<InputBar 
 								label="Postcode"

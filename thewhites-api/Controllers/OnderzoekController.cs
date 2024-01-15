@@ -75,6 +75,14 @@ namespace AspTest.Controllers
                 return NotFound("Een of meerdere beperkingen bestaan niet.");
             }
 
+            foreach(var leeftijdCriteria in onderzoekLeeftijdCriteriaList) 
+            {
+                if(leeftijdCriteria.MaxLeeftijd > leeftijdCriteria.MinLeeftijd)
+                {
+                    return BadRequest("Max leeftijd is groter dan min leeftijd");
+                }
+            }
+
             Onderzoek newOnderzoek = new Onderzoek
             {
                 Titel = onderzoek.titel,
