@@ -3,7 +3,7 @@ import { ProfielContext } from "./ProfielContext";
 import { Container, Table, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { postApi } from "../../hooks/useApi";
-
+import "./Medischepagina.css";
 
 const BevestigingsPagina = () => {
 	const { profielData } = useContext(ProfielContext);
@@ -19,9 +19,24 @@ const BevestigingsPagina = () => {
 		body.onderzoekTypes = body.onderzoekTypes.map((type) => type.id) == null ? [] : body.onderzoekTypes.map((type) => type.id);
 		body.beperkingTypes = body.beperkingTypes.map((type) => type.id) == null ? [] : body.beperkingTypes.map((type) => type.id);
 		
-		const response = await postApi({route:"api/ErvaringsDeskundige/create-profiel-info", body: body})
-		console.log(response);
-		navigate("/ervaringsdeskundige");
+		try {
+			const response = await postApi({
+				route: "api/ErvaringsDeskundige/create-profiel-info",
+				body: body
+			});
+	
+			// U kunt hier een check toevoegen om te verzekeren dat de response succesvol was indien nodig
+			if (response.status === 200) { // Of een andere logica om succes te verzekeren
+				navigate("/ervaringsdeskundige", { key: new Date().toString() });
+			} else {
+				// Handle the error, bijvoorbeeld toon een foutmelding
+				console.error("Er is iets misgegaan bij het opslaan van de gegevens");
+			}
+		} catch (error) {
+			// Handle de error, bijvoorbeeld toon een foutmelding
+			console.error("Er is een fout opgetreden bij het maken van de POST-aanvraag",
+				error);
+		}
 
 	};
 
@@ -87,7 +102,7 @@ const BevestigingsPagina = () => {
 					</tbody>
 				</Table>
 			</Container>
-			<Button variant="secondary" onClick={handleTerug}>Terug</Button>
+			<Button variant="secondary" onClick={handleTerug}className="button-spacing" >Terug</Button>
 			<Button variant="primary" onClick={handleBevestigen}>Bevestigen</Button>
 		</>
 	);

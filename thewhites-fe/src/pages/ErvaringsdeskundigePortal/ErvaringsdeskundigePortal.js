@@ -3,7 +3,9 @@ import { Outlet } from "react-router-dom";
 import NavbarPortal from "../../components/NavbarPortal/NavbarPortal";
 
 
+
 const Ervaringsdeskundigeportal = () => {
+	
 	return (
 		<>
 			<NavbarPortal 
