@@ -25,15 +25,13 @@ const BevestigingsPagina = () => {
 				body: body
 			});
 	
-			// U kunt hier een check toevoegen om te verzekeren dat de response succesvol was indien nodig
-			if (response.status === 200) { // Of een andere logica om succes te verzekeren
-				navigate("/ervaringsdeskundige", { key: new Date().toString() });
+			if (response.status === 200) {
+				navigate("/ervaringsdeskundige");
 			} else {
-				// Handle the error, bijvoorbeeld toon een foutmelding
 				console.error("Er is iets misgegaan bij het opslaan van de gegevens");
 			}
 		} catch (error) {
-			// Handle de error, bijvoorbeeld toon een foutmelding
+
 			console.error("Er is een fout opgetreden bij het maken van de POST-aanvraag",
 				error);
 		}
