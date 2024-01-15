@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { fetchApi } from "../../../../hooks/useApi";
 import OnderzoekLijst from "../../../../components/OnderzoekLijst/OnderzoekLijst";
 
-import "./LopendeOpdrachten.css";
+import "./LopendeOnderzoek.css";
 import { useNavigate } from "react-router-dom";
 
-
-const LopendeOpdrachten = () => {
+const LopendeOnderzoeken = () => {
 	const [onderzoeken, setOnderzoeken] = useState([]);
 
 	const navigate = useNavigate();
@@ -39,15 +38,15 @@ const LopendeOpdrachten = () => {
 	return (
 		<>
 			{onderzoeken.length === 0 ? (
-				<h1>Geen lopende opdrachten</h1>
+				<h1>Geen lopende onderzoeken</h1>
 			) : (
 				<>
-					<h1>Lopende opdrachten</h1>
-					<OnderzoekLijst handleClickButton={(id) => navigate(`/bedrijf/opdrachten/${id}`)} onderzoekLijst={onderzoeken} />
+					<h1>Lopende onderzoeken</h1>
+					<OnderzoekLijst handleClickButton={(id) => navigate(`/bedrijf/onderzoeken/${id}`)} onderzoekLijst={onderzoeken} />
 				</>
 			)}
 		</>
 	); 
 };
 
-export default LopendeOpdrachten;
+export default LopendeOnderzoeken;

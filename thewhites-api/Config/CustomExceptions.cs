@@ -2,47 +2,39 @@ using System;
 
 namespace AspTest.Config 
 {
-    public class InvalidOnderzoekTypesGivenException : Exception
+    public class BaseCustomException : Exception
     {
-        // Custom properties or fields
         public DateTime Timestamp { get; }
 
         // Constructors
-        public InvalidOnderzoekTypesGivenException()
+        public BaseCustomException()
         {
             Timestamp = DateTime.UtcNow;
         }
 
-        public InvalidOnderzoekTypesGivenException(string message) : base(message)
+        public BaseCustomException(string message) : base(message)
         {
             Timestamp = DateTime.UtcNow;
         }
 
-        public InvalidOnderzoekTypesGivenException(string message, Exception innerException) : base(message, innerException)
+        public BaseCustomException(string message, Exception innerException) : base(message, innerException)
         {
             Timestamp = DateTime.UtcNow;
         }
     }
 
-    public class InvalidBeperkingTypesGivenException : Exception
-    {
-        // Custom properties or fields
-        public DateTime Timestamp { get; }
+    public class InvalidOnderzoekTypesGivenException : BaseCustomException 
+    { 
+        public InvalidOnderzoekTypesGivenException(string message) : base(message) { }
+    }
 
-        // Constructors
-        public InvalidBeperkingTypesGivenException()
-        {
-            Timestamp = DateTime.UtcNow;
-        }
+    public class InvalidBeperkingTypesGivenException : BaseCustomException 
+    { 
+        public InvalidBeperkingTypesGivenException(string message) : base(message) { }
+    }
 
-        public InvalidBeperkingTypesGivenException(string message) : base(message)
-        {
-            Timestamp = DateTime.UtcNow;
-        }
-
-        public InvalidBeperkingTypesGivenException(string message, Exception innerException) : base(message, innerException)
-        {
-            Timestamp = DateTime.UtcNow;
-        }
+    public class InvalidOnderzoekException : BaseCustomException 
+    { 
+        public InvalidOnderzoekException(string message) : base(message) { }
     }
 }

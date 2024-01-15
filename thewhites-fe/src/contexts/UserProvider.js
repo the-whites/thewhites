@@ -43,7 +43,7 @@ export const UserProvider = ({ children }) => {
 				const response = await fetchApi({route: "api/Login/profileInfo"});
 		
 				if (response.status == 200) {
-					setUsername(response.data.voornaam + " " + response.data.achternaam); // Dit moet uiteindelijk de gebruikersnaam worden
+					setUsername(response.data.voornaam + " " + response.data.achternaam);
 					setRole(response.data.rol);
 					setUserId(response.data.id);
 					console.log(response.data);
