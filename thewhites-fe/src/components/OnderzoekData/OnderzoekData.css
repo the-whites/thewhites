@@ -21,3 +21,8 @@
 .data-row-buttons {
     margin-top: 3rem;
 }
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 100;
+}

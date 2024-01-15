@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchApi } from "../../../../hooks/useApi";
-import { OPDRACHT_DATA } from "../../../../constants/opdrachtData";
+import { ONDERZOEK_DATA } from "../../../../constants/onderzoekData";
 import OnderzoekData from "../../../../components/OnderzoekData/OnderzoekData";
 
-const BeheerOpdracht = () => {
+const BeheerOnderzoek = () => {
 	const { id } = useParams();
 	const [onderzoek, setOnderzoek] = useState(null);
 	const [deelnemers, setDeelnemers] = useState(0);
@@ -15,13 +15,14 @@ const BeheerOpdracht = () => {
 			
 			if (response.status === 200) {
 				setOnderzoek({
-					[OPDRACHT_DATA.OPDRACHT_NAAM]: response.data.titel,
-					[OPDRACHT_DATA.OPRACHT_OMSCHRIJVING]: response.data.beschrijving,
-					[OPDRACHT_DATA.BELONING]: response.data.beloning,
-					[OPDRACHT_DATA.LOCATIE]: response.data.locatie,
-					[OPDRACHT_DATA.START_DATUM]: response.data.startDatum,
-					[OPDRACHT_DATA.EIND_DATUM]: response.data.eindDatum,
-					[OPDRACHT_DATA.TYPE_OPDRACHT]: response.data.onderzoekCategories
+					[ONDERZOEK_DATA.ID]: id,
+					[ONDERZOEK_DATA.NAAM]: response.data.titel,
+					[ONDERZOEK_DATA.OMSCHRIJVING]: response.data.beschrijving,
+					[ONDERZOEK_DATA.BELONING]: response.data.beloning,
+					[ONDERZOEK_DATA.LOCATIE]: response.data.locatie,
+					[ONDERZOEK_DATA.START_DATUM]: response.data.startDatum,
+					[ONDERZOEK_DATA.EIND_DATUM]: response.data.eindDatum,
+					[ONDERZOEK_DATA.TYPE_ONDERZOEK]: response.data.onderzoekCategories
 				});
 			} else {
 				console.error(`Error fetching data. Status: ${response.status}`);
@@ -56,4 +57,4 @@ const BeheerOpdracht = () => {
 	);
 };
 
-export default BeheerOpdracht;
+export default BeheerOnderzoek;

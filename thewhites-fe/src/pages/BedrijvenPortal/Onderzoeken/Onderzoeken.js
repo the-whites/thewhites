@@ -1,10 +1,10 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-const Opdrachten = () => {
+const BedrijfOnderzoeken = () => {
 	return (
 		<Outlet />
 	);
 };
 
-export default Opdrachten;
+export default BedrijfOnderzoeken;

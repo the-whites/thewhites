@@ -7,8 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../MainStyles.css";
 import "./CustomDatePicker.css";
 
-const CustomDatePicker = ({ label = "", placeholder = "Kies een datum", isInvalid = false, required = false, handleChange = () => {} }) => {
-	const [selectedDateTime, setSelectedDateTime] = useState(null);
+const CustomDatePicker = ({ label = "", value = null, placeholder = "Kies een datum", isInvalid = false, required = false, handleChange = () => {} }) => {
+	const [selectedDateTime, setSelectedDateTime] = useState(value);
 
 	const handleDateChange = (date) => {
 		setSelectedDateTime(date);
@@ -38,7 +38,7 @@ const CustomDatePicker = ({ label = "", placeholder = "Kies een datum", isInvali
 				</Col>
 			</Row>
 			<Row>
-				<Col md={2}></Col>
+				<Col md={2} />
 				<Col md={10}>
 					{isInvalid && <div className="invalid-text invalid-date-picker-text">Vul de {label.toLowerCase()} correct in</div>}
 				</Col>
