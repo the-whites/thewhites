@@ -26,7 +26,7 @@ export const OnderzoekInfo = ({onderzoek}) => {
 		const lastItemId = leeftijdCriteria.length - 1;
 		return leeftijdCriteria.map(
 			(item, index) => (<span key={index}>
-				{item.minLeeftijd}{item.minLeeftijd != item.maxLeeftijd ? " tot " + item.maxLeeftijd : ""}{index == lastItemId ? "" : ", "}
+				{item.minLeeftijd}{item.minLeeftijd != item.maxLeeftijd ? " tot " + item.maxLeeftijd : ""} jaar oud{index == lastItemId ? "" : ", "}
 			</span>)
 		);
 	};
@@ -47,13 +47,13 @@ export const OnderzoekInfo = ({onderzoek}) => {
 					<Card.Body className="">
 						<span className="d-block"><b>Bedrijf</b>: {onderzoek.bedrijf.naam}</span>
 						<span className="d-block"><b>Link bedrijf</b>: <a href={onderzoek.bedrijf.link}>{onderzoek.bedrijf.link}</a> </span>
-						<span className="d-block"><b>Beloning</b>: {onderzoek.beloning}</span>
+						<span className="d-block"><b>Beloning</b>: {onderzoek.beloning ? onderzoek.beloning : "geen"}</span>
 						<br />
 						<span className="d-block"><b>locatie</b>: {onderzoek.locatie}</span>
 						<br />
 						<span className="d-block"><b>Beperking criteria</b>: {getFormattedBeperkingCriterias(onderzoek.beperkingCriteria)}</span>
 						<span className="d-block"><b>Onderzoek categorie criteria</b>: {getFormattedOnderzoekCategories(onderzoek.onderzoekCategories)}</span>
-						<span className="d-block"><b>Leeftijd criteria</b>: {getFormattedLeeftijdCriteria(onderzoek.leeftijdCriteria)} jaar oud</span>
+						<span className="d-block"><b>Leeftijd criteria</b>: {getFormattedLeeftijdCriteria(onderzoek.leeftijdCriteria)}</span>
 						<span className="d-block"><b>Postcode criteria</b>: {getFormattedPostcodeCriteria(onderzoek.postcodeCriteria)}</span>
 						<br />
 						<span className="d-block"><b>Start datum</b>: {getFormattedDateLocale(new Date(onderzoek.startDatum))}</span>
