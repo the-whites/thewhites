@@ -1,3 +1,4 @@
+using AspTest.Config;
 using AspTest.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -61,6 +62,27 @@ namespace AspTest.Repository
                 .Include(o => o.PostcodeCriteria)
                 .Where(o => o.Id == onderzoekId)
                 .FirstOrDefault();
+        }
+
+        public async Task AddErvaringsdeskundigeAanOnderzoek(Ervaringsdeskundige ervDeskundige, Onderzoek onderzoek)
+        {
+            var foundOnderzoek = _context.Onderzoeken.Include(o => o.OnderzoekDeelname).ToList().FirstOrDefault(onderzoek);
+        
+            if (foundOnderzoek == null)
+                throw new InvalidOnderzoekException("Onderzoek was invalid.");
+            
+            var deelname = new OnderzoekDeelname();
+            deelname.Ervaringsdeskundige = ervDeskundige;
+            deelname.Onderzoek = onderzoek;
+
+            _context.OnderzoekDeelnames.Add(deelname);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public IQueryable<Onderzoek> GetOnderzoekenWithQueryable()
+        {
+            return _context.Onderzoeken;
         }
     }
 }
