@@ -79,6 +79,7 @@ namespace AspTest.Controllers
             {
                 Titel = onderzoek.titel,
                 Beschrijving = onderzoek.beschrijving,
+                Inhoud = onderzoek.inhoud,
                 StartDatum = onderzoek.startDatum,
                 EindDatum = onderzoek.eindDatum,
                 Bedrijf = bedrijf,

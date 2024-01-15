@@ -4,6 +4,7 @@ namespace AspTest.Models
     {
         public string titel { get; set; }
         public string beschrijving { get; set; }
+        public string inhoud { get; set; }
         public DateTime startDatum { get; set; }
         public DateTime eindDatum { get; set; }
         public string beloning { get; set; }
