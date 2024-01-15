@@ -6,6 +6,7 @@ import { fetchApi, postApi } from "../../../hooks/useApi";
 import { Alert, Button, Container, Row } from "react-bootstrap";
 import { BewerkProfielPreview } from "./BewerkProfielPreview";
 import { BewerkProfielForm } from "./BewerkProfielForm";
+import { formatResponseError } from "../../../util/Util";
 
 
 const ProfielErvaringsdeskundige = () => {
@@ -82,7 +83,7 @@ const ProfielErvaringsdeskundige = () => {
 		const response = await postApi({route: "api/Ervaringsdeskundige/edit-profiel-info", body: postBody}).catch((e) =>	{
 			console.log((e.response && e.response.data));
 			setError((<><Alert variant="danger">
-				{JSON.stringify(e.response && e.response.data) || e.toString()}
+				{formatResponseError(e)}
 			</Alert></>));
 		});
 

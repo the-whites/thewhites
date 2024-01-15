@@ -32,4 +32,11 @@ export const formatDateText = (date) => {
 	default:
 		return "Nu";
 	}
-};  
+}; 
+
+
+export const getFormattedDateLocale = (date) => {
+	return date.toLocaleDateString() +  " om " + date.toLocaleTimeString();
+}
+
+export const formatResponseError = (error) => JSON.stringify(error.response && error.response.data) || error.toString();

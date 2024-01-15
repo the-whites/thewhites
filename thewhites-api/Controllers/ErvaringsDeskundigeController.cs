@@ -19,6 +19,7 @@ namespace AspTest.Controllers
         private readonly IGebruikerRepository _gebruikerRepository;
         private readonly IBeperkingRepository _beperkingRepository;
         private readonly IOnderzoekTypeRepository _onderzoekTypeRepository;
+        private readonly IOnderzoekRepository _onderzoekRepository;
         private readonly AspDbContext _context;
 
         public ErvaringsDeskundigeController(
@@ -26,12 +27,14 @@ namespace AspTest.Controllers
             IRefreshTokenRepository refreshTokenRepository,
             IBeperkingRepository beperkingRepository,
             IOnderzoekTypeRepository onderzoekTypeRepository,
+            IOnderzoekRepository onderzoekRepository,
             AspDbContext context
         )
         {
             _gebruikerRepository = gebruikerRepository;
             _beperkingRepository = beperkingRepository;
             _onderzoekTypeRepository = onderzoekTypeRepository;
+            _onderzoekRepository = onderzoekRepository;
             _context = context;
         }
 
@@ -155,6 +158,66 @@ namespace AspTest.Controllers
             
             await _context.SaveChangesAsync();
           
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("onderzoek-deelnemen/{onderzoekId}")]
+        public async Task<IActionResult> NeemDeelAanOnderzoek(int onderzoekId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Gebruiker? gebruiker = _gebruikerRepository
+                .GetGebruikersWithQueryable()
+                    .Include(g => g.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeBeperkingen)
+                            .ThenInclude(eb => eb.Beperking)
+
+                    .Include(g2 => g2.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeOnderzoekTypes)
+                            .ThenInclude(eo => eo.VoorkeurOnderzoekType)
+
+                    .Include(g3 => g3.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeVoorkeur)
+
+                    .FirstOrDefault(g4 => g4.Id == userId);
+
+            if (gebruiker == null)
+                return Unauthorized("No user found.");
+            
+            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
+
+            if (ervaringsdeskundigeInfo == null)
+                return Unauthorized("No ervaringsdeskundige info found.");
+            
+            var onderzoek = _onderzoekRepository.GetOnderzoekenWithQueryable()
+                .Include(o => o.OnderzoekDeelname)
+                .Include(o => o.LeeftijdCriteria)
+                .Include(o => o.OnderzoekCategories)
+                .Include(o => o.PostcodeCriteria)
+                .Include(o => o.BeperkingCriteria)
+                .FirstOrDefault(o => o.Id == onderzoekId);
+
+            if (onderzoek == null)
+                return Unauthorized("No onderzoek found.");
+
+            if (onderzoek.OnderzoekDeelname.Any(od => od.Ervaringsdeskundige == ervaringsdeskundigeInfo))
+                return Unauthorized("You are already enrolled in this onderzoek.");
+
+            if (onderzoek.EindDatum.Ticks < DateTime.Now.Ticks)
+                return Unauthorized("Onderzoek is finished.");
+            
+            var isEligibleForOnderzoek = OnderzoekService.IsErvaringsdeskundigeBinnenCriteria(ervaringsdeskundigeInfo, onderzoek, out string reden);
+
+            if (!isEligibleForOnderzoek)
+                return Unauthorized(reden);
+
+            await _onderzoekRepository.AddErvaringsdeskundigeAanOnderzoek(ervaringsdeskundigeInfo, onderzoek);
+
             return Ok();
         }
     }
