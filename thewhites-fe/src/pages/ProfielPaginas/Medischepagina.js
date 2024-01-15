@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
 import { ProfielContext } from "./ProfielContext";
 import { fetchApi } from "../../hooks/useApi";
+import "./Medischepagina.css"; 
 
 const medischepagina = () => {
 	const { profielData, setProfielData } = useContext(ProfielContext);
@@ -22,7 +23,7 @@ const medischepagina = () => {
 			setOnderzoekTypes(Object.values(onderzoekTypesResponse.data).map(item => {
 				return {id: item.id, type: item.type};
 			}));
-		}
+		};
 		fetch();
 	}, []);
 
@@ -37,7 +38,6 @@ const medischepagina = () => {
 
 	const handleSubmitForm = (event) => {
 		event.preventDefault();
-		// Validatie nog toevoegen voor de velden
 		navigate("/bevestingsPagina"); 
 	};
 	
@@ -45,7 +45,7 @@ const medischepagina = () => {
 	return (
 		<Form validated={true} onSubmit={handleSubmitForm}>
 			<Container>
-				<h2>Profiel pagina</h2>
+				<h2>Profiel pagina 2/2</h2>
 				<p>Vul hieronder u medische gegevens in</p>
 				<Row className="persoonlijkegegevens">
 					<InputBar 
@@ -65,8 +65,8 @@ const medischepagina = () => {
 						label="Type onderzoeken" 
 						items={onderzoekTypes}
 						handleSelection={(selectedItems) => { 
-							console.log(selectedItems)
-							return updateProfielData("onderzoekTypes", selectedItems)
+							console.log(selectedItems);
+							return updateProfielData("onderzoekTypes", selectedItems);
 						}}
 						initialSelectedItems={profielData.onderzoekTypes} 
 						getKey={(option) => option.id} 
@@ -112,8 +112,10 @@ const medischepagina = () => {
 						/>
 					</div>					
 				</Row>
-				<Button variant="secondary" type="button" onClick={navigateBack}>Terug</Button>
-				<Button type="submit">Volgende</Button>
+				<div className="button-container">
+					<Button variant="secondary" type="button" onClick={navigateBack} className="button-spacing">Terug</Button>
+					<Button type="submit">Volgende</Button>
+				</div>
 			</Container>
 		</Form>
 	);

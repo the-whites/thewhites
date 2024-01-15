@@ -87,7 +87,6 @@ function App() {
 										<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
 									</Route>
 								</Route>
-								<Route path="/medischePagina" component={<MedischePagina/>} />
 								<Route path="profielPagina" element={<ProfielPagina />} />
 								<Route path="medischePagina" element={<MedischePagina/>} />
 								<Route path="bevestingsPagina" element={<BevestigingsPagina/>} />

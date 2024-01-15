@@ -21,12 +21,13 @@ const BevestigingsPagina = () => {
 		
 		const response = await postApi({route:"api/ErvaringsDeskundige/create-profiel-info", body: body})
 		console.log(response);
+		navigate("/ervaringsdeskundige");
 
 	};
 
 	return (
 		<>
-			<h3>Uw profiel wordt met de volgende informatie bijgewerkt:</h3>
+			<h2>Uw profiel wordt met de volgende informatie bijgewerkt:</h2>
 			<Container>
 				<Table striped bordered hover>
 					<tbody>
