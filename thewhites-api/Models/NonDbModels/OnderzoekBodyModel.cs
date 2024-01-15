@@ -10,7 +10,7 @@ namespace AspTest.Models
         public string beloning { get; set; }
         public string locatie { get; set;}
         public List<string> postcodeCriteriaList { get; set; }
-        public List<(int, int)> leeftijdCriteriaList { get; set; }
+        public List<Test> leeftijdCriteria {get; set;}
         public List<int> beperkingCriteriaList { get; set; }
         public List<int> categoriesList { get; set; }
     }

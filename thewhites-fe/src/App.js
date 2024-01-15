@@ -15,13 +15,19 @@ import DefaultBeheerderPage from "./pages/BeheerderPortal/DefaultBeheerderTab/De
 import BedrijvenPortal from "./pages/BedrijvenPortal/BedrijvenPortal";
 import DefaultBedrijvenPage from "./pages/BedrijvenPortal/DefaultBedrijvenTab/DefaultBedrijvenTab";
 import Chat from "./pages/BedrijvenPortal/ChatBedrijf/ChatBedrijf";
-import Opdrachten from "./pages/BedrijvenPortal/Opdrachten/Opdrachten";
 import Profiel from "./pages/BedrijvenPortal/ProfielUpdate/ProfielUpdate";
 import ErvaringsdekundigePortal from "./pages/ErvaringsdeskundigePortal/ErvaringsdeskundigePortal";
 import DefaultErvaringsdeskundigePage from "./pages/ErvaringsdeskundigePortal/DefaultErvaringsdeskundigeTab/DefaultErvaringsdeskundigeTab";
 import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
 import Overzichtonderzoeken from "./pages/ErvaringsdeskundigePortal/OverzichtOnderzoeken/OverzichtOnderzoeken";
 import ProfielErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ProfielErvaringsdeskundige/ProfielErvaringdeskundige";
+import LopendeOnderzoeken from "./pages/BedrijvenPortal/Onderzoeken/LopendeOnderzoeken/LopendeOnderzoek";
+import BeheerOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/BeheerOnderzoek/BeheerOnderzoek";
+import OudeOnderzoeken from "./pages/BedrijvenPortal/Onderzoeken/OudeOnderzoeken/OudeOnderzoeken";
+import WijzigOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/BeheerOnderzoek/WijzigOnderzoek";
+import NieuwOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/NieuwOnderzoek/NieuwOnderzoek";
+import DefaultOnderzoekenTab from "./pages/BedrijvenPortal/Onderzoeken/DefaultOnderzoekenTab/DefaultOnderzoekenTab";
+import BedrijfOnderzoeken from "./pages/BedrijvenPortal/Onderzoeken/Onderzoeken";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -29,13 +35,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { UserProvider } from "./contexts/UserProvider";
 import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { ROLES } from "./constants/roles";
-import NieuwOpdracht from "./pages/BedrijvenPortal/Opdrachten/NieuwOpdracht/NieuwOpdracht";
-import DefaultOpdrachtenTab from "./pages/BedrijvenPortal/Opdrachten/DefaultOpdrachtenTab/DefaultOpdrachtenTab";
 import Layout from "./pages/Layout";
-import LopendeOpdrachten from "./pages/BedrijvenPortal/Opdrachten/LopendeOpdrachten/LopendeOpdrachten";
-import BeheerOpdracht from "./pages/BedrijvenPortal/Opdrachten/BeheerOpdracht/BeheerOpdracht";
-import OudeOpdrachten from "./pages/BedrijvenPortal/Opdrachten/OudeOpdrachten/OudeOpdrachten";
-import WijzigOpdracht from "./pages/BedrijvenPortal/Opdrachten/BeheerOpdracht/WijzigOpdracht";
+
 function App() {
 
 	return (
@@ -60,13 +61,13 @@ function App() {
 							<Route path="/bedrijf" element={<Layout><BedrijvenPortal /></Layout>} >
 								<Route index element={<DefaultBedrijvenPage />} />
 								<Route path="chat" element={<Chat />} />
-								<Route path="opdrachten" element={<Opdrachten />}>
-									<Route index element={<DefaultOpdrachtenTab />} />
-									<Route path="nieuw" element={<NieuwOpdracht />} />
-									<Route path="lopende-opdrachten" element={<LopendeOpdrachten />} />
-									<Route path="oude-opdrachten" element={<OudeOpdrachten />} />
-									<Route path=":id" element={<BeheerOpdracht />} />
-									<Route path="wijzig/:id" element={<WijzigOpdracht />} />
+								<Route path="onderzoeken" element={<BedrijfOnderzoeken />}>
+									<Route index element={<DefaultOnderzoekenTab />} />
+									<Route path="nieuw" element={<NieuwOnderzoek />} />
+									<Route path="lopende-onderzoeken" element={<LopendeOnderzoeken />} />
+									<Route path="oude-onderzoeken" element={<OudeOnderzoeken />} />
+									<Route path=":id" element={<BeheerOnderzoek />} />
+									<Route path="wijzig/:id" element={<WijzigOnderzoek />} />
 								</Route>
 								<Route path="profiel" element={<Profiel />} />
 							</Route>

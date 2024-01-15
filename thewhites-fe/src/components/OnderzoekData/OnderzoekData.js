@@ -6,7 +6,7 @@ import CountUp from "react-countup";
 import "./OnderzoekData.css";
 import LoadingAnimation from "../LoadingAnimation/LoadingAnimation";
 import { useNavigate } from "react-router-dom";
-import { OPDRACHT_DATA } from "../../constants/opdrachtData";
+import { ONDERZOEK_DATA } from "../../constants/onderzoekData";
 
 const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 	const [showStartdatum, setShowStartDatum] = useState(true);
@@ -27,7 +27,7 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 
 	useEffect(() => {
 		if (onderzoek !== null) { // Show start datum als het nog niet begonnen is, anders eind datum 
-			if (new Date(onderzoek[OPDRACHT_DATA.START_DATUM]) < Date.now()) {
+			if (new Date(onderzoek[ONDERZOEK_DATA.START_DATUM]) < Date.now()) {
 				setShowStartDatum(false);
 			} else {
 				setShowStartDatum(true);
@@ -41,16 +41,16 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 				<>
 					<Container>
 						<Row>
-							<h1 className="titel">{onderzoek.opdrachtNaam}</h1>
+							<h1 className="titel">{onderzoek.onderzoekNaam}</h1>
 						</Row>
 						<Row className="data-row-numbers">
 							<Col><h2><CountUp start={0} end={aantalDeelnemers} duration={2.5} /></h2></Col>
-							<Col><h2>{onderzoek[OPDRACHT_DATA.NAAM]}</h2></Col>
+							<Col><h2>{onderzoek[ONDERZOEK_DATA.NAAM]}</h2></Col>
 							<Col>
 								<h2>
 									<Countdown 
-										key={showStartdatum ? onderzoek[OPDRACHT_DATA.START_DATUM] : onderzoek[OPDRACHT_DATA.EIND_DATUM]} // key nodig om rerender te forceren
-										date={showStartdatum ? onderzoek[OPDRACHT_DATA.START_DATUM] : onderzoek[OPDRACHT_DATA.EIND_DATUM]}
+										key={showStartdatum ? onderzoek[ONDERZOEK_DATA.START_DATUM] : onderzoek[ONDERZOEK_DATA.EIND_DATUM]} // key nodig om rerender te forceren
+										date={showStartdatum ? onderzoek[ONDERZOEK_DATA.START_DATUM] : onderzoek[ONDERZOEK_DATA.EIND_DATUM]}
 										renderer={renderer}
 									/>
 								</h2>
@@ -59,13 +59,13 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 						<Row>
 							<Col><h3>deelnemers</h3></Col>
 							<Col><h3>gemaakt op (datum)</h3></Col>
-							<Col><h3>{new Date() < new Date(onderzoek[OPDRACHT_DATA.EIND_DATUM]) ? `voor het ${showStartdatum ? "begint" : "eindigt"}` : ""}</h3></Col>
+							<Col><h3>{new Date() < new Date(onderzoek[ONDERZOEK_DATA.EIND_DATUM]) ? `voor het ${showStartdatum ? "begint" : "eindigt"}` : ""}</h3></Col>
 						</Row>
 						<Row className="data-row-buttons">
 							<Col><Button>Bekijk deelnemers</Button></Col>
 							<Col />
 							<Col>
-								<Button onClick={() => navigate(`/bedrijf/opdrachten/wijzig/${onderzoek[OPDRACHT_DATA.ID]}`)}>
+								<Button onClick={() => navigate(`/bedrijf/onderzoeken/wijzig/${onderzoek[ONDERZOEK_DATA.ID]}`)}>
 									Wijzig onderzoek
 								</Button>
 							</Col>

@@ -3,7 +3,7 @@ import { fetchApi } from "../../../../hooks/useApi";
 import OnderzoekLijst from "../../../../components/OnderzoekLijst/OnderzoekLijst";
 import { useNavigate } from "react-router-dom";
 
-const OudeOpdrachten = () => {
+const OudeOnderzoeken = () => {
 	const [onderzoeken, setOnderzoeken] = useState([]);
 
 	const navigate = useNavigate();
@@ -36,15 +36,15 @@ const OudeOpdrachten = () => {
 	return (
 		<>
 			{onderzoeken.length === 0 ? (
-				<h1>Geen oude opdrachten</h1>
+				<h1>Geen oude onderzoeken</h1>
 			) : (
 				<>
-					<h1>Oude opdrachten</h1>
-					<OnderzoekLijst handleClickButton={(id) => navigate(`/bedrijf/opdrachten/${id}`)} onderzoekLijst={onderzoeken} />
+					<h1>Oude onderzoeken</h1>
+					<OnderzoekLijst handleClickButton={(id) => navigate(`/bedrijf/onderzoeken/${id}`)} onderzoekLijst={onderzoeken} />
 				</>
 			)}
 		</>
 	); 
 };
 
-export default OudeOpdrachten;
+export default OudeOnderzoeken;
