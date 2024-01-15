@@ -1,5 +1,4 @@
-import React from "react";
-import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/PortalWelcomeMessage";
+import React, { useState } from "react";
 import { Alert, Button, Card, Col, Container, Form, InputGroup, Pagination, Row } from "react-bootstrap";
 import { fetchApi, postApi } from "../../../hooks/useApi";
 import { OnderzoekInfo } from "./OnderzoekInfo";
