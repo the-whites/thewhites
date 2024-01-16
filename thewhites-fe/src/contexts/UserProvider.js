@@ -1,11 +1,12 @@
 import React, { useEffect, createContext, useState } from "react";
-import { postApi } from "../hooks/useApi";
-import { fetchApi } from "../hooks/useApi";
+import Cookies from "js-cookie";
+import { postApi, fetchApi } from "../hooks/useApi";
 import { ROLES } from "../constants/roles";
 import useUpdateLoginState from "../hooks/useUpdateLoginState";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoggedIn } from "../redux/loginSlice";
 import { setToken } from "../components/AxiosInstance";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 export const CustomLoginContext = createContext("");
@@ -18,6 +19,8 @@ export const UserProvider = ({ children }) => {
 	const [googleCredentials, setGoogleCredentials] = useState("");
 	const loggedIn = useSelector((state) => state.login_status.isLoggedIn);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 
 	useEffect(() => {
 		if (googleCredentials)
@@ -47,11 +50,16 @@ export const UserProvider = ({ children }) => {
 					setRole(response.data.rol);
 					setUserId(response.data.id);
 					console.log(response.data);
+					const isFirstLogin = Cookies.get("firstLogin") === undefined;
+					if (isFirstLogin) {
+						Cookies.set("firstLogin", "false", { expires: 1 }); // Cookie verloopt na 1 dagen TEST
+						navigate("/profielPagina"); 
+					}
 				}
 			};
 			getGebruikerInfo();	
 		}
-	}, [loggedIn]);
+	}, [loggedIn, navigate]);
 
 	const setValidRole = (newRole) => {
 		if (ROLES[newRole]) {
@@ -71,4 +79,5 @@ export const UserProvider = ({ children }) => {
 			</UserContext.Provider>
 		</CustomLoginContext.Provider>
 	);
+	
 };
