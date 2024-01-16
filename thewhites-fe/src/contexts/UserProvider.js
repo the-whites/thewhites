@@ -52,7 +52,7 @@ export const UserProvider = ({ children }) => {
 					console.log(response.data);
 					const isFirstLogin = Cookies.get("firstLogin") === undefined;
 					if (isFirstLogin) {
-						Cookies.set("firstLogin", "false", { expires: 1 }); // Cookie verloopt na 1 dagen TEST
+						Cookies.set("firstLogin", "false", { expires: 30 }); // Cookie verloopt na 1 dagen TEST
 						navigate("/profielPagina"); 
 					}
 				}
