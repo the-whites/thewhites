@@ -63,7 +63,7 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 						</Row>
 						<Row className="data-row-buttons">
 							<Col><Button>Bekijk deelnemers</Button></Col>
-							<Col />
+							<Col></Col>
 							<Col>
 								<Button onClick={() => navigate(`/bedrijf/onderzoeken/wijzig/${onderzoek[ONDERZOEK_DATA.ID]}`)}>
 									Wijzig onderzoek

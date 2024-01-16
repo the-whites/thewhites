@@ -1,3 +1,5 @@
+import { fetchAndFormatData } from "../hooks/useApi";
+
 export const getTimeLeft = (date) => {
 	const timeleft = date - new Date().getTime();
 
@@ -40,3 +42,17 @@ export const getFormattedDateLocale = (date) => {
 }
 
 export const formatResponseError = (error) => JSON.stringify(error.response && error.response.data) || error.toString();
+
+export const getOnderzoekTypesFromApi = async () => {
+	return await fetchAndFormatData("api/OnderzoekType/onderzoek-types", item => ({
+		id: item?.id,
+		naam: item?.type
+	}));
+};
+
+export const getBeperkingenFromApi = async () => {
+	return await fetchAndFormatData("api/Beperking/beperkingen", item => ({
+		id: item?.id,
+		naam: item?.naam
+	}));
+};

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal";
 import { postApi } from "../../../../hooks/useApi";
-import { fetchApi } from "../../../../hooks/useApi";
+import { getOnderzoekTypesFromApi, getBeperkingenFromApi } from "../../../../util/Util";
 import {  toast } from "react-toastify";
 import { ONDERZOEK_DATA, initialOnderzoekState } from "../../../../constants/onderzoekData";
 import "react-toastify/dist/ReactToastify.css";
@@ -81,43 +81,25 @@ const NieuwOnderzoek = () => {
 		navigate(-1);
 	};
 
-	const fetchData = async (route, formatItem) => {
-		try {
-			const response = await fetchApi({ route });
-	
-			if (response.status === 200) {
-				const items = response.data.map(item => formatItem(item));
-				return items;
-			} else {
-				console.error(`Error fetching data. Status: ${response.status}`);
-				return [];
-			}
-		} catch (error) {
-			console.error("Error fetching data:", error);
-			return [];
-		}
-	};
-
 	useEffect(() => {
-		const fetchDataAndSetState = async () => {
-			try {
-				const typeOnderzoekenItems = await fetchData("api/OnderzoekType/onderzoek-types", item => ({
-					id: item?.id,
-					naam: item?.type
-				}));
-				setTypeOnderzoeken(typeOnderzoekenItems);
+		const fetchTypeOnderzoekenFromApi = async () => {
+			const typeOnderzoekenResponse = await getOnderzoekTypesFromApi();
 
-				const beperkingenItems = await fetchData("api/Beperking/beperkingen", item => ({
-					id: item?.id,
-					naam: item?.naam
-				}));
-				setBeperkingen(beperkingenItems);
-			} catch (error) {
-				console.error("Error fetching and setting data:", error);
+			if(typeOnderzoekenResponse != null) {
+				setTypeOnderzoeken(typeOnderzoekenResponse);
 			}
 		};
-	
-		fetchDataAndSetState();
+
+		const fetchBeperkingenFromApi = async () => {
+			const beperkingenResponse = await getBeperkingenFromApi();
+
+			if(beperkingenResponse != null) {
+				setBeperkingen(beperkingenResponse);
+			}
+		};
+
+		fetchTypeOnderzoekenFromApi();
+		fetchBeperkingenFromApi();
 	}, []);
 
 	return (
