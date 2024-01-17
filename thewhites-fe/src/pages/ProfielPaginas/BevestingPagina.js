@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ProfielContext } from "./ProfielContext";
+import { ProfielContext } from "../../contexts/UserProvider";
 import { Container, Table, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { postApi } from "../../hooks/useApi";

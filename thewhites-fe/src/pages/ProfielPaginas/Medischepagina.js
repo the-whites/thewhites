@@ -3,7 +3,7 @@ import { Button, Container, Form, Row } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import { useNavigate } from "react-router-dom";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
-import { ProfielContext } from "./ProfielContext";
+import { ProfielContext } from "../../contexts/UserProvider";
 import { fetchApi } from "../../hooks/useApi";
 import "./Medischepagina.css"; 
 

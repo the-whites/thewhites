@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 export const UserContext = createContext();
 export const CustomLoginContext = createContext("");
 export const AuthContext = createContext("");
+export const ProfielContext = createContext();
 
 export const UserProvider = ({ children }) => {
 	const [username, setUsername] = useState("");

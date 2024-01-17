@@ -1,4 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, {useState } from "react";
+import { ProfielContext } from "../../contexts/UserProvider";
+
 const initiëleProfielData = {
 	// Persoonlijke gegevens
 	voornaam: "",
@@ -18,7 +20,6 @@ const initiëleProfielData = {
 	toestemmingUitnodigingen: false
 };
   
-export const ProfielContext = createContext();
   
 export const ProfielProvider = ({ children }) => {
 	const [profielData, setProfielData] = useState(initiëleProfielData);

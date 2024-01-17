@@ -4,7 +4,7 @@ import { Button, Container, Form, Row, Col } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
 import "./ProfielPagina.css";
-import { ProfielContext } from "./ProfielContext";
+import { ProfielContext } from "../../contexts/UserProvider";
 import { fetchApi } from "../../hooks/useApi";
 import { validation } from "../../components/Validation/Validation";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
