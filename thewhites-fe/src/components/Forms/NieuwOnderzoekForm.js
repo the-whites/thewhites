@@ -106,7 +106,6 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 			
 	};
 
-	// TODO: validation in useeffect voor real-time validation
 	const validateOnderzoekData = () => {
 		const invalidFields = {};
 
