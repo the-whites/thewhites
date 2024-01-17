@@ -105,6 +105,9 @@ const WijzigOnderzoek = () => {
 
 	return (
 		<>
+			<br />
+			<h1>Onderzoek wijzigen</h1>
+			<br />
 			{onderzoek ? 
 				<NieuwOnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} onderzoek={onderzoek} buttonConfirmText="Wijzig onderzoek" /> 
 				: 

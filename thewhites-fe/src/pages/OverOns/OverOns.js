@@ -3,7 +3,8 @@ import React from "react";
 const OverOns = () => {
 	return (
 		<>
-			<p>Over ons</p>
+			<h1>Over Ons</h1>
+			<p>Dit is leeg.</p>
 		</>	
 	);
 };

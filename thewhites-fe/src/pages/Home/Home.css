@@ -1,15 +1,15 @@
-h5 {
-	font-weight: lighter;
-}
 
-h4 {
+.home-kop h3 {
 	font-weight: 600;
 }
 
-.button-block {
-	margin-top: 2rem;
-	margin-bottom: 5rem;
-	margin-right: 10rem;
+.home-kop div {
+	justify-content: center !important;
+
+}
+
+.home-heading-row {
+	margin: 100px 0px;
 }
 
 .button-text {
@@ -17,7 +17,10 @@ h4 {
 	width: 250px;
 	padding-bottom: 1rem;
 	font-size: 18px;
-	text-align: left;
+}
+
+.login-block {
+	justify-content: center;
 }
 
 .btn-primary:hover {

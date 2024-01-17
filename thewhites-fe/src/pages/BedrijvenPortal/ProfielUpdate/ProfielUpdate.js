@@ -6,7 +6,8 @@ const ProfielUpdate = () => {
 	
 	return (
 		<>
-			<PortalWelcomeMessage name="profiel" text="Hier kunt u de profiel van het bedrijf aanpassen." username={bedrijfsnaam} />
+			<PortalWelcomeMessage name="profiel" />
+			<p>Hier kunt u de profiel van het bedrijf aanpassen. </p>
 		</>
 	);
 };

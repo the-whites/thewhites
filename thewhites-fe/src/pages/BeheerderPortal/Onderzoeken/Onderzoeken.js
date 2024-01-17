@@ -6,7 +6,8 @@ const Onderzoeken = () => {
 
 	return (
 		<>
-			<PortalWelcomeMessage name="onderzoeken" text="Hier bevindt zich een lijst met alle onderzoeken." username={beheerdersnaam} />
+			<PortalWelcomeMessage name="onderzoeken" />
+			<p>Hier bevindt zich een lijst met alle onderzoeken.</p>
 		</>
 	);
 };
