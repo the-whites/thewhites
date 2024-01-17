@@ -27,10 +27,6 @@ const medischepagina = () => {
 		fetch();
 	}, []);
 
-	useEffect(() => {
-		sessionStorage.setItem("profielData", JSON.stringify(profielData));
-	}, [profielData]);
-
 	const updateProfielData = useCallback((name, value) => {
 		setProfielData(prevState => ({ ...prevState, [name]: value }));
 	}, [setProfielData]);

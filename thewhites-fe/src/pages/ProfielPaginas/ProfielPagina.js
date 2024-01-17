@@ -6,14 +6,14 @@ import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelection
 import "./ProfielPagina.css";
 import { ProfielContext } from "./ProfielContext";
 import { fetchApi } from "../../hooks/useApi";
-import { Validation } from "../../components/Validation/Validation";
+import { validation } from "../../components/Validation/Validation";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 
 const ProfielPagina = () => {
 	const { profielData, setProfielData } = useContext(ProfielContext);
 	const navigate = useNavigate();
 	const [beperkingTypes, setBeperkingItems] = useState([]);
-	const { isFormValid, errors } = Validation(profielData);
+	const { isFormValid, errors } = validation(profielData);
 	const [showModal, setShowModal] = useState(false);
 	const [modalContent, setModalContent] = useState("");
 
@@ -27,10 +27,6 @@ const ProfielPagina = () => {
 		};
 		fetch();
 	}, []);
-
-	useEffect(() => {
-		sessionStorage.setItem("profielData", JSON.stringify(profielData));
-	}, [profielData]);
 
 	const updateProfielData = useCallback((name, value) => {
 		setProfielData(prevState => ({ ...prevState, [name]: value }));
@@ -71,7 +67,7 @@ const ProfielPagina = () => {
 							handleChange={(value) => updateProfielData("achternaam", value)}
 						/>
 						<Col md={10} className="uitleg">
-							<p2>Vul u postcode in als de volgende format: <strong>2424tq</strong></p2>
+							<p2>Vul u postcode in als de volgende format: <strong>2424WT</strong></p2>
 						</Col>
 						<InputBar
 							label="Postcode"

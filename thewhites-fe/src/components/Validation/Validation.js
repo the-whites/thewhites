@@ -1,4 +1,6 @@
-export const Validation = (profielData) => {
+import { postcodeValidator } from "postcode-validator";
+
+export const validation = (profielData) => {
 	const errors = {};
 
 	const validateEmail = (email) => {
@@ -11,8 +13,8 @@ export const Validation = (profielData) => {
 	};
 
 	const validatePostcode = (postcode) => {
-		const postcodeRegex = /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/;
-		if (!postcodeRegex.test(postcode)) {
+		if (!postcodeValidator(postcode, "NL")) 
+		{
 			errors.postcode = "Ongeldige postcode";
 			return false;
 		}
