@@ -15,6 +15,7 @@ namespace AspTest.Models
         public Bedrijf Bedrijf { get; set; }
         public DateTime StartDatum { get; set; }
         public DateTime EindDatum { get; set; }
+        public DateTime GemaaktOp { get; set; }
         public string Beloning { get; set; }
         public string Locatie {get;set;}
         public ICollection<OnderzoekCategories> OnderzoekCategories {get; set;}

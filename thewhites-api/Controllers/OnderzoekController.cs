@@ -93,6 +93,7 @@ namespace AspTest.Controllers
                 Bedrijf = bedrijf,
                 Beloning = onderzoek.beloning,
                 Locatie = onderzoek.locatie,
+                GemaaktOp = DateTime.Now,
                 OnderzoekCategories = onderzoekCategoriesList,
                 PostcodeCriteria = onderzoekPostcodeCriteriaList,
                 LeeftijdCriteria = onderzoekLeeftijdCriteriaList,
