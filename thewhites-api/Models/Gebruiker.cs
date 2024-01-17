@@ -10,7 +10,7 @@ namespace AspTest.Models
         public string? GoogleId {get; set;}
         public string Emailadres { get; set; }
         public string Rol { get; set; }
-
+        public bool SetupProfielInfo {get; set;}
         public Ervaringsdeskundige? Ervaringsdeskundige {get; set;}
         public Bedrijf? Bedrijf {get; set;}
 
