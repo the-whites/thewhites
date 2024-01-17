@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal";
 import { postApi } from "../../../../hooks/useApi";
-import { getOnderzoekTypesFromApi, getBeperkingenFromApi } from "../../../../util/Util";
+import { getOnderzoekTypesFromApi, getBeperkingenFromApi, formatOnderzoekLeeftijdValue, createOnderzoekDataObject } from "../../../../util/OnderzoekUtil";
 import {  toast } from "react-toastify";
 import { ONDERZOEK_DATA, initialOnderzoekState } from "../../../../constants/onderzoekData";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,8 +22,6 @@ const NieuwOnderzoek = () => {
 
 	const [onderzoekData, setOnderzoekData] = useState(initialOnderzoekState);
 
-	const [leeftijden, setLeeftijden] = useState([]);
-
 	const navigate = useNavigate();
 
 	const handleOnderzoekDataChange = (newOnderzoekData) => {
@@ -41,22 +39,7 @@ const NieuwOnderzoek = () => {
 	};
 
 	const createOnderzoek = async () => {
-		const onderzoekDataObject = {
-			titel: onderzoekData[ONDERZOEK_DATA.NAAM],
-			beschrijving: onderzoekData[ONDERZOEK_DATA.OMSCHRIJVING],
-			inhoud: onderzoekData[ONDERZOEK_DATA.INHOUD],
-			startDatum: onderzoekData[ONDERZOEK_DATA.START_DATUM],
-			eindDatum: onderzoekData[ONDERZOEK_DATA.EIND_DATUM],
-			beloning: onderzoekData[ONDERZOEK_DATA.BELONING],
-			locatie: onderzoekData[ONDERZOEK_DATA.LOCATIE],
-			postcodeCriteriaList: onderzoekData[ONDERZOEK_DATA.POSTCODE].map(postcode => postcode),
-			categoriesList: onderzoekData[ONDERZOEK_DATA.TYPE_ONDERZOEK].map(typeId => typeId),
-			beperkingCriteriaList: onderzoekData[ONDERZOEK_DATA.BEPERKING].map(beperkingId => beperkingId),
-			leeftijdCriteria: onderzoekData[ONDERZOEK_DATA.LEEFTIJD].map(leeftijd => ({
-				MinLeeftijd: leeftijd[0],
-				MaxLeeftijd: leeftijd[1]
-			}))
-		};
+		const onderzoekDataObject = createOnderzoekDataObject(onderzoekData);
 
 		try {
 			console.log(JSON.stringify(onderzoekDataObject));
@@ -104,7 +87,7 @@ const NieuwOnderzoek = () => {
 
 	return (
 		<>
-			<NieuwOnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} leeftijdInput={(leeftijden) => setLeeftijden(leeftijden)}beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} />
+			<NieuwOnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} />
 			{showModal && (
 				<ConfirmationModal
 					show={showModal}
@@ -128,7 +111,7 @@ const NieuwOnderzoek = () => {
 
 						{onderzoekData[ONDERZOEK_DATA.LEEFTIJD].length > 0 && (
 							<p>
-								<strong>Leeftijd(en):</strong> {leeftijden}
+								<strong>Leeftijd(en):</strong> {formatOnderzoekLeeftijdValue(onderzoekData[ONDERZOEK_DATA.LEEFTIJD])}
 							</p>
 						)}
 

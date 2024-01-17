@@ -77,9 +77,9 @@ namespace AspTest.Controllers
 
             foreach(var leeftijdCriteria in onderzoekLeeftijdCriteriaList) 
             {
-                if(leeftijdCriteria.MaxLeeftijd > leeftijdCriteria.MinLeeftijd)
+                if(leeftijdCriteria.MinLeeftijd > leeftijdCriteria.MaxLeeftijd)
                 {
-                    return BadRequest("Max leeftijd is groter dan min leeftijd");
+                    return BadRequest($"Min ({leeftijdCriteria.MinLeeftijd}) leeftijd is groter dan max leeftijd ({leeftijdCriteria.MaxLeeftijd})");
                 }
             }
 
@@ -139,6 +139,78 @@ namespace AspTest.Controllers
             }
 
             return Ok(deelnemers);
+        }
+
+        [Authorize]
+        [HttpPost("wijzig/{onderzoekId}")]
+        public async Task<IActionResult> EditOnderzoek([FromBody] OnderzoekBodyModel onderzoek, [FromRoute] int onderzoekId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Bedrijf? bedrijf = bedrijfRepository.GetBedrijfByUserId(userId);
+
+            if(bedrijf == null)
+            {
+                return Unauthorized("Gebruiker heeft geen bedrijf");
+            }
+
+            Onderzoek? originalOnderzoek = onderzoekRepository.GetOnderzoekByOnderzoekId(onderzoekId);
+
+            if(originalOnderzoek == null || originalOnderzoek.Bedrijf != bedrijf)
+            {
+                return Unauthorized("Gebruiker heeft geen toegang naar dit onderzoek");
+            }
+
+            // Criteria list gedoe dubbele code met create-onderzoek
+            ICollection<OnderzoekCategories> onderzoekCategoriesList = CriteriaListMapper.MapCriteriaList(onderzoek.categoriesList, categorieId => new OnderzoekCategories { Type = onderzoekTypeRepository.GetOnderzoekTypeById(categorieId) });
+            ICollection<OnderzoekPostcodeCriteria> onderzoekPostcodeCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.postcodeCriteriaList, postcode => new OnderzoekPostcodeCriteria { Postcode = postcode });
+            ICollection<OnderzoekLeeftijdCriteria> onderzoekLeeftijdCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.leeftijdCriteria, leeftijd => new OnderzoekLeeftijdCriteria { MinLeeftijd = leeftijd.MinLeeftijd, MaxLeeftijd = leeftijd.MaxLeeftijd });
+
+            ICollection<OnderzoekBeperkingCriteria> onderzoekBeperkingCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.beperkingCriteriaList, beperking => new OnderzoekBeperkingCriteria { Beperking = beperkingRepository.GetBeperkingById(beperking) });
+
+            if (onderzoekCategoriesList.Any(oc => oc.Type == null))
+            {
+                return NotFound("Een of meedere onderzoekcategorieen bestaan niet.");
+            }
+
+            if(onderzoekBeperkingCriteriaList.Any(obc => obc.Beperking == null))
+            {
+                return NotFound("Een of meerdere beperkingen bestaan niet.");
+            }
+
+            foreach(var leeftijdCriteria in onderzoekLeeftijdCriteriaList) 
+            {
+                if(leeftijdCriteria.MinLeeftijd > leeftijdCriteria.MaxLeeftijd)
+                {
+                    return BadRequest($"Min ({leeftijdCriteria.MinLeeftijd}) leeftijd is groter dan max leeftijd ({leeftijdCriteria.MaxLeeftijd})");
+                }
+            }
+
+            Onderzoek newOnderzoek = new Onderzoek
+            {
+                Titel = onderzoek.titel,
+                Beschrijving = onderzoek.beschrijving,
+                Inhoud = onderzoek.inhoud,
+                StartDatum = onderzoek.startDatum,
+                EindDatum = onderzoek.eindDatum,
+                Bedrijf = originalOnderzoek.Bedrijf,
+                Beloning = onderzoek.beloning,
+                Locatie = onderzoek.locatie,
+                OnderzoekCategories = onderzoekCategoriesList,
+                PostcodeCriteria = onderzoekPostcodeCriteriaList,
+                LeeftijdCriteria = onderzoekLeeftijdCriteriaList.Where(leeftijd => leeftijd.MinLeeftijd != 0 || leeftijd.MaxLeeftijd != 0).ToList(),
+                BeperkingCriteria = onderzoekBeperkingCriteriaList
+            };
+
+            await onderzoekRepository.UpdateOnderzoek(originalOnderzoek, newOnderzoek);
+            return Ok();
         }
     }
 }

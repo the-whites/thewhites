@@ -14,9 +14,10 @@ const getIdByNaam = (naam, data) => {
 	return foundItem ? foundItem.id : null;
 };
 
-const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, beperkingen, typeOnderzoeken, onderzoek, buttonConfirmText = "Maak onderzoek aan"}) => {
+const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderzoeken, onderzoek, buttonConfirmText = "Maak onderzoek aan"}) => {
 	const [localOnderzoekData, setLocalOnderzoekData] = useState(initialOnderzoekState);
 	const [leeftijden, setLeeftijden] = useState([]); // Leeftijd wordt ook gehandeld in localOnderzoekData, deze useState is alleen voor visualisatie
+	const [postcodes, setPostcodes] = useState([]); // zelfde als leeftijd usestate basically
 
 	const [invalidPostcodes, setInvalidPostcodes] = useState([]);
 
@@ -34,43 +35,54 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 
 	const navigate = useNavigate();
 
+	const parseLeeftijd = (part) => {
+		const trimmedPart = part.trim();
+	
+		if (trimmedPart.includes("-")) {
+			// Leeftijd ranges 
+			const [start, end] = trimmedPart.split("-").map(Number);
+			const minLeeftijd = isNaN(start) || start === 0 ? end : Math.min(start, end);
+			const maxLeeftijd = isNaN(end) || end === 0 ? minLeeftijd : Math.max(start, end);
+	
+			return (isNaN(minLeeftijd) && isNaN(maxLeeftijd) || (minLeeftijd === 0 && maxLeeftijd === 0)) ? null : [minLeeftijd, maxLeeftijd];
+		} else {
+			// Individuele leeftijd
+			const age = parseInt(trimmedPart);
+	
+			return !isNaN(age) ? [age, age] : null;
+		}
+	};
+
 	const handleTypeSelection = (items) => {
 		if(items) {
 			// Pak alleen de nummer uit de string oftewel de ID
 			const ids = items.map(naam => getIdByNaam(naam, typeOnderzoeken));
-			setLocalOnderzoekData(({...localOnderzoekData, typeOnderzoek: ids }));
+			setLocalOnderzoekData(prevState => ({...prevState, [ONDERZOEK_DATA.TYPE_ONDERZOEK]: ids }));
 		}
 	};
    
 	const handleBeperkingChange = (items) => {
 		if(items) {
 			const ids = items.map(naam => getIdByNaam(naam, beperkingen));
-			setLocalOnderzoekData(({...localOnderzoekData, beperking: ids }));
+			setLocalOnderzoekData(prevState => ({...prevState, [ONDERZOEK_DATA.BEPERKING]: ids }));
 		}
 	};
 	
 	const handleLeeftijdChange = (value) => {
-		setLeeftijden([value]);
-		
-		let leeftijdenData = [];
-		const leeftijdParts = value.split(",").map(part => part.trim());
+		const leeftijdParts = value.split(",");
 
-		leeftijdParts.forEach(part => {
-			if (part.includes("-")) {
-				// Check voor ranges
-				const [start, end] = part.split("-");
-				const leeftijdCriteria = [parseInt(start.trim()), parseInt(end.trim())];
-				leeftijdenData.push(leeftijdCriteria);
-			} else {
-				// Check voor individuele leeftijden
-				const leeftijd = parseInt(part);
-				leeftijdenData.push([leeftijd, leeftijd]);
-			}
-		});
-		setLocalOnderzoekData(({...localOnderzoekData,  leeftijd: leeftijdenData }));
+		const leeftijdenData = leeftijdParts
+			.map(parseLeeftijd)
+			.filter((leeftijdCriteria) => leeftijdCriteria !== null);
+
+		console.log(leeftijdenData);
+
+		setLeeftijden([value]);
+		setLocalOnderzoekData((prevState) => ({ ...prevState, leeftijd: leeftijdenData }));
 	};
 	
 	const handlePostcodeChange = (value) => {
+		setPostcodes(value);
 		let postcoden = [];
 
 		if (value.includes(",")) {
@@ -81,7 +93,7 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 			}
 		}
 
-		setLocalOnderzoekData(({...localOnderzoekData, postcode: postcoden }));
+		setLocalOnderzoekData(prevState => ({...prevState, postcode: postcoden }));
 	};
 
 	const handleSubmit = (event) => {
@@ -89,17 +101,17 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 		const valid = validateOnderzoekData();
 
 		if(valid) {
-			leeftijdInput(leeftijden);
 			handleOnderzoekDataChange(localOnderzoekData);
 		}
 			
 	};
 
+	// TODO: validation in useeffect voor real-time validation
 	const validateOnderzoekData = () => {
 		const invalidFields = {};
 
 		for (const key in isInvalidFields) {
-			if (localOnderzoekData[key] === null || localOnderzoekData[key] === "") {
+			if (localOnderzoekData[key] === null || localOnderzoekData[key] === "" || localOnderzoekData[key] === undefined) {
 				invalidFields[key] = true;
 			} else {
 				invalidFields[key] = false;
@@ -126,7 +138,7 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 		localOnderzoekData[ONDERZOEK_DATA.LEEFTIJD].forEach(leeftijdMinMax => {
 			if(leeftijdMinMax[0] > leeftijdMinMax[1])
 				invalidFields[ONDERZOEK_DATA.LEEFTIJD] = true;
-		})
+		});
 
 		validatePostcodes();
 
@@ -156,13 +168,22 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 			setLocalOnderzoekData(onderzoek);
 
 			if(onderzoek[ONDERZOEK_DATA.LEEFTIJD]) {
-				const leeftijdOnderzoek = onderzoek[ONDERZOEK_DATA.LEEFTIJD].map(l => {l.minLeeftijd === l.maxLeeftijd ? l.minLeeftijd : `${l.minLeeftijd}-${l.maxLeeftijd}`;});
-				setLeeftijden(leeftijdOnderzoek);
+				const leeftijdOnderzoek = onderzoek[ONDERZOEK_DATA.LEEFTIJD].map(l =>
+					l.minLeeftijd === l.maxLeeftijd ? `${l.minLeeftijd}` : `${l.minLeeftijd}-${l.maxLeeftijd}`).join(", ");
+				handleLeeftijdChange(leeftijdOnderzoek);
 			}
 
 			if(onderzoek[ONDERZOEK_DATA.POSTCODE]) {
-				setLocalOnderzoekData(({ ...onderzoek, 
-					[ONDERZOEK_DATA.POSTCODE]: onderzoek[ONDERZOEK_DATA.POSTCODE].map(postcode => postcode.postcode) }));
+				const postcodes = onderzoek[ONDERZOEK_DATA.POSTCODE].map(postcode => postcode.postcode);
+				handlePostcodeChange(postcodes.toString());
+			}
+
+			if(onderzoek[ONDERZOEK_DATA.TYPE_ONDERZOEK]) {
+				setLocalOnderzoekData(prevState => ({ ...prevState, [ONDERZOEK_DATA.TYPE_ONDERZOEK]: onderzoek[ONDERZOEK_DATA.TYPE_ONDERZOEK].map(type => type.id) }));
+			}
+
+			if(onderzoek[ONDERZOEK_DATA.BEPERKING]) {
+				setLocalOnderzoekData(prevState => ({ ...prevState, [ONDERZOEK_DATA.BEPERKING]: onderzoek[ONDERZOEK_DATA.BEPERKING].map(type => type.id) }));
 			}
 		}
 	}, [onderzoek]);
@@ -245,7 +266,7 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 								handleChange={handleLeeftijdChange} />
 							<InputBar 
 								label="Postcode"
-								value={localOnderzoekData[ONDERZOEK_DATA.POSTCODE] ? localOnderzoekData[ONDERZOEK_DATA.POSTCODE].map(postcode => postcode.toString()).join(", ") : ""}
+								value={postcodes}
 								placeholder="Vul hier de postcode(s) in die in aanmerking kunnen komen voor deze onderzoek" 
 								infoText="Je kan meerdere postcodes invullen doormiddel van een scheiding met een komma: 2554GW, 2551AB" 
 								errorMessage={postcodeErrorText} 
@@ -273,7 +294,7 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, leeftijdInput = null, b
 
 				<Row className="justify-content-center mt-3">
 					<Col md={4} className="text-start">
-						<Button onClick={() => navigate(-1)} variant="danger">Annuleren</Button>
+						<Button onClick={() => navigate(-1)} variant="outline-danger">Terug</Button>
 					</Col>
 					<Col md={2} className="text-end">
 						<Button onClick={handleSubmit}>{buttonConfirmText}</Button>

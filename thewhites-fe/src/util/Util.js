@@ -39,20 +39,7 @@ export const formatDateText = (date) => {
 
 export const getFormattedDateLocale = (date) => {
 	return date.toLocaleDateString() +  " om " + date.toLocaleTimeString();
-}
+};
 
 export const formatResponseError = (error) => JSON.stringify(error.response && error.response.data) || error.toString();
-
-export const getOnderzoekTypesFromApi = async () => {
-	return await fetchAndFormatData("api/OnderzoekType/onderzoek-types", item => ({
-		id: item?.id,
-		naam: item?.type
-	}));
-};
-
-export const getBeperkingenFromApi = async () => {
-	return await fetchAndFormatData("api/Beperking/beperkingen", item => ({
-		id: item?.id,
-		naam: item?.naam
-	}));
-};
+  

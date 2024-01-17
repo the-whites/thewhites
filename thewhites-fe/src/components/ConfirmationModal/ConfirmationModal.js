@@ -1,9 +1,9 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const ConfirmationModal = ({ show, handleClose, handleConfirm, title, children }) => {
+const ConfirmationModal = ({ show, handleClose, handleConfirm, title, size = "l", children }) => {
 	return (
-		<Modal show={show} onHide={handleClose}>
+		<Modal show={show} onHide={handleClose} size={size}>
 			<Modal.Header closeButton>
 				<Modal.Title>{title}</Modal.Title>
 			</Modal.Header>
@@ -11,7 +11,7 @@ const ConfirmationModal = ({ show, handleClose, handleConfirm, title, children }
 				{children}
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="secondary" onClick={handleClose}>
+				<Button variant="outline-danger" onClick={handleClose}>
 				Annuleren
 				</Button>
 				<Button variant="primary" onClick={handleConfirm}>

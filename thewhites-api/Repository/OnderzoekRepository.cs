@@ -84,5 +84,29 @@ namespace AspTest.Repository
         {
             return _context.Onderzoeken;
         }
+
+        public async Task UpdateOnderzoek(Onderzoek onderzoek, Onderzoek updatedOnderzoek)
+        {
+            var originalOnderzoek = await _context.Onderzoeken.FindAsync(onderzoek.Id);
+
+            if (originalOnderzoek == null)
+            {
+                throw new InvalidOperationException("The original Onderzoek entity is not found.");
+            }
+
+            originalOnderzoek.Titel = updatedOnderzoek.Titel;
+            originalOnderzoek.Beschrijving = updatedOnderzoek.Beschrijving;
+            originalOnderzoek.Inhoud = updatedOnderzoek.Inhoud;
+            originalOnderzoek.Locatie = updatedOnderzoek.Locatie;
+            originalOnderzoek.StartDatum = updatedOnderzoek.StartDatum;
+            originalOnderzoek.EindDatum = updatedOnderzoek.EindDatum;
+            originalOnderzoek.Beloning = updatedOnderzoek.Beloning;
+            originalOnderzoek.BeperkingCriteria = updatedOnderzoek.BeperkingCriteria;
+            originalOnderzoek.OnderzoekCategories = updatedOnderzoek.OnderzoekCategories;
+            originalOnderzoek.PostcodeCriteria = updatedOnderzoek.PostcodeCriteria;
+            originalOnderzoek.LeeftijdCriteria = updatedOnderzoek.LeeftijdCriteria;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
