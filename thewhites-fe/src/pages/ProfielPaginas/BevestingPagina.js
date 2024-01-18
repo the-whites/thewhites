@@ -57,10 +57,6 @@ const BevestigingsPagina = () => {
 							<td>{profielData.postcode}</td>
 						</tr>
 						<tr>
-							<td>E-mailadres</td>
-							<td>{profielData.emailadres}</td>
-						</tr>
-						<tr>
 							<td>Telefoonnummer</td>
 							<td>{profielData.telefoonnummer}</td>
 						</tr>

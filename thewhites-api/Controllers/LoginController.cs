@@ -218,7 +218,8 @@ namespace AspTest.Controllers
                 voornaam = gebruiker.Voornaam,
                 achternaam = gebruiker.Achternaam,
                 email = gebruiker.Emailadres,
-                rol = gebruiker.Rol
+                rol = gebruiker.Rol,
+                profielSetupStatus = gebruiker.SetupProfielInfo
             };
             return Ok(profile);
         }

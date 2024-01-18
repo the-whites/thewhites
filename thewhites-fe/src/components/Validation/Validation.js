@@ -3,15 +3,6 @@ import { postcodeValidator } from "postcode-validator";
 export const validation = (profielData) => {
 	const errors = {};
 
-	const validateEmail = (email) => {
-		const emailRegex = /\S+@\S+\.\S+/;
-		if (!emailRegex.test(email)) {
-			errors.emailadres = "Ongeldig e-mailadres";
-			return false;
-		}
-		return true;
-	};
-
 	const validatePostcode = (postcode) => {
 		if (!postcodeValidator(postcode, "NL")) 
 		{
@@ -43,7 +34,6 @@ export const validation = (profielData) => {
 		return (
 			profielData.voornaam.length > 0 &&
             profielData.achternaam.length > 0 &&
-            validateEmail(profielData.emailadres) &&
             validatePostcode(profielData.postcode) &&
             validateTelefoon(profielData.telefoonnummer) &&
             validateBeperkingType(profielData.beperkingTypes)

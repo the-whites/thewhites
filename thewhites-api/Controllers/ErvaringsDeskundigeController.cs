@@ -290,9 +290,9 @@ namespace AspTest.Controllers
             ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Portaal = profiel.portaalBenadering;
             ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.ToestemmingUitnodigingen = profiel.toestemmingUitnodigingen;
             ervaringsdeskundigeInfo.Postcode = profiel.postcode;
-            gebruiker.Emailadres = profiel.emailadres;
             gebruiker.Achternaam = profiel.achternaam;
             gebruiker.Voornaam = profiel.voornaam;
+            gebruiker.SetupProfielInfo = true;
 
             
             await _context.SaveChangesAsync();

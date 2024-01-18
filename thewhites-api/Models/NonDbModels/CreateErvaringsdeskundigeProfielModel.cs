@@ -8,7 +8,6 @@ namespace AspTest.Models
 
         public DateTime geboortedatum{get; set;}
         public string postcode { get; set; }
-        public string emailadres { get; set; }
         public string telefoonnummer { get; set; }
         public ICollection<int> beperkingTypes {get; set;}
         public string aandoening { get; set; }

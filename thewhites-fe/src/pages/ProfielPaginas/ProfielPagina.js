@@ -4,7 +4,7 @@ import { Button, Container, Form, Row, Col } from "react-bootstrap";
 import InputBar from "../../components/Inputbar/InputBar";
 import MultiSelectionBar from "../../components/MultiSelectionBar/MultiSelectionBar";
 import "./ProfielPagina.css";
-import { ProfielContext } from "../../contexts/UserProvider";
+import { ProfielContext, UserContext, UserProvider } from "../../contexts/UserProvider";
 import { fetchApi } from "../../hooks/useApi";
 import { validation } from "../../components/Validation/Validation";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
@@ -16,6 +16,7 @@ const ProfielPagina = () => {
 	const { isFormValid, errors } = validation(profielData);
 	const [showModal, setShowModal] = useState(false);
 	const [modalContent, setModalContent] = useState("");
+	const {setupVoornaam, setupAchternaam} = useContext(UserContext);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -26,6 +27,8 @@ const ProfielPagina = () => {
 			}));
 		};
 		fetch();
+		updateProfielData("voornaam", setupVoornaam);
+		updateProfielData("achternaam", setupAchternaam);
 	}, []);
 
 	const updateProfielData = useCallback((name, value) => {
@@ -67,7 +70,7 @@ const ProfielPagina = () => {
 							handleChange={(value) => updateProfielData("achternaam", value)}
 						/>
 						<Col md={10} className="uitleg">
-							<p2>Vul u postcode in als de volgende format: <strong>2424WT</strong></p2>
+							<p>Vul u postcode in als de volgende format: <strong>2424WT</strong></p>
 						</Col>
 						<InputBar
 							label="Postcode"
@@ -76,16 +79,7 @@ const ProfielPagina = () => {
 							handleChange={(value) => updateProfielData("postcode", value)}
 						/>
 						<Col md={10} className="uitleg">
-							<p2>Vul u email in als de volgende format: <strong>test@gmail.com</strong></p2>
-						</Col>
-						<InputBar
-							label="E-mailadres"
-							required
-							value={profielData.emailadres || ""}
-							handleChange={(value) => updateProfielData("emailadres", value)}
-						/>
-						<Col md={10} className="uitleg">
-							<p2>Vul u telefoonnummer in als de volgende format: <strong> 0612345678</strong></p2>
+							<p>Vul u telefoonnummer in als de volgende format: <strong> 0612345678</strong></p>
 						</Col>
 						<InputBar
 							label="Telefoonnummer"
