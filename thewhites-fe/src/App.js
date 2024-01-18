@@ -38,6 +38,7 @@ import { ROLES } from "./constants/roles";
 import Layout from "./pages/Layout";
 
 import Footer from "./components/Footer/Footer";
+import Meldingen from "./pages/Meldingen/Meldingen";
 function App() {
 
 	return (
@@ -51,6 +52,9 @@ function App() {
 							<Route path="/" element={<Home />} />
 							<Route path="/over-ons" element={<OverOns />} />
 							<Route path="/contact" element={<Contact />} />
+							<Route element={<RequireAuth allowedRoles={[ROLES.beheerder, ROLES.ervaringsdeskundige, ROLES.bedrijf]} />}>
+								<Route path="/meldingen" element={<Meldingen />} />
+							</Route>
 							<Route element={<RequireAuth allowedRoles={[ROLES.beheerder]} />}>
 								<Route path="/beheerder" element={<BeheerderPortal />}>
 									<Route index element={<DefaultBeheerderPage />} />
@@ -67,9 +71,9 @@ function App() {
 										<Route index element={<DefaultOnderzoekenTab />} />
 										<Route path="nieuw" element={<NieuwOnderzoek />} />
 										<Route path="lopende-onderzoeken" element={<LopendeOnderzoeken />} />
-									<Route path="oude-onderzoeken" element={<OudeOnderzoeken />} />
+										<Route path="oude-onderzoeken" element={<OudeOnderzoeken />} />
 										<Route path=":id" element={<BeheerOnderzoek />} />
-									<Route path="wijzig/:id" element={<WijzigOnderzoek />} />
+										<Route path="wijzig/:id" element={<WijzigOnderzoek />} />
 									</Route>
 									<Route path="profiel" element={<Profiel />} />
 								</Route>

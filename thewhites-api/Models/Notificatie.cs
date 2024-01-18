@@ -1,4 +1,4 @@
-
+using System.Text.Json.Serialization;
 
 namespace AspTest.Models
 {
@@ -8,6 +8,7 @@ namespace AspTest.Models
         public string Tekst {get; set; }
         public bool status {get; set; }
         public DateTime datum { get; set; }
+        [JsonIgnore]
         public Gebruiker Gebruiker {get;set;}
     }
 }

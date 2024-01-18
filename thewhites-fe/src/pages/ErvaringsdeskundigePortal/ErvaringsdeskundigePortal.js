@@ -1,20 +1,12 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import NavbarPortal from "../../components/NavbarPortal/NavbarPortal";
+import ErvaringsdeskundigeNavbar from "../../components/NavbarPortal/ErvaringsdeskundigeNavbar";
 
 
 const Ervaringsdeskundigeportal = () => {
 	return (
 		<>
-			<NavbarPortal 
-				portalName="Ervaringsdeskundige Portaal" 
-				portalPath="/ervaringsdeskundige"
-				links={[
-					{ name: "Chat", path: "/ervaringsdeskundige/chatErvaringdeskundige" },
-					{ name: "Onderzoeken", path: "/ervaringsdeskundige/overzicht" },
-					{ name: "Profiel", path: "/ervaringsdeskundige/profiel" }
-				]} 
-			/>
+			<ErvaringsdeskundigeNavbar />
 			<Outlet />
 		</>
 	);

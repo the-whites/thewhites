@@ -37,6 +37,6 @@ export const formatDateText = (date) => {
 
 export const getFormattedDateLocale = (date) => {
 	return date.toLocaleDateString() +  " om " + date.toLocaleTimeString();
-}
+};
 
 export const formatResponseError = (error) => JSON.stringify(error.response && error.response.data) || error.toString();
