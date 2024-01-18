@@ -32,6 +32,7 @@ builder.Services.AddScoped<IBedrijfRepository, BedrijfRepository>();
 builder.Services.AddScoped<IBeperkingRepository, BeperkingRepository>();
 builder.Services.AddScoped<IOnderzoekTypeRepository, OnderzoekTypeRepository>();
 builder.Services.AddScoped<IOnderzoekDeelnameRepository, OnderzoekDeelnameRepository>();
+builder.Services.AddScoped<INotificatieRepository, NotificatieRepository>();
 builder.Services.AddScoped<OnderzoekService>();
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";

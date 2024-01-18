@@ -7,3 +7,7 @@
     color: white;
     margin-right: 50px;
 }
+
+.dropdown-menu {
+    min-width: 300px;
+}

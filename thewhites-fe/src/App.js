@@ -41,6 +41,7 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { ROLES } from "./constants/roles";
 
 import Footer from "./components/Footer/Footer";
+import Meldingen from "./pages/Meldingen/Meldingen";
 import Layout from "./components/Toastify/ToastifyLayout";
 import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
 function App() {
@@ -56,6 +57,9 @@ function App() {
 								<Route path="/" element={<Home />} />
 								<Route path="/over-ons" element={<OverOns />} />
 								<Route path="/contact" element={<Contact />} />
+								<Route element={<RequireAuth allowedRoles={[ROLES.beheerder, ROLES.ervaringsdeskundige, ROLES.bedrijf]} />}>
+									<Route path="/meldingen" element={<Meldingen />} />
+								</Route>
 								<Route element={<RequireAuth allowedRoles={[ROLES.beheerder]} />}>
 									<Route path="/beheerder" element={<BeheerderPortal />}>
 										<Route index element={<DefaultBeheerderPage />} />
