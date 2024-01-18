@@ -32,13 +32,14 @@ namespace AspTest.Repository
                     .ThenInclude(o => o.LeeftijdCriteria)
                 .Include(od => od.Onderzoek)
                     .ThenInclude(o => o.OnderzoekCategories)
+                        .ThenInclude(oc => oc.Type)
                 .Include(od => od.Onderzoek)
                     .ThenInclude(o => o.PostcodeCriteria)
                 .Include(od => od.Onderzoek)
                     .ThenInclude(o => o.BeperkingCriteria)
+                        .ThenInclude(bc => bc.Beperking)
 
-                .Where(p => p.Ervaringsdeskundige == deelnemer)
-                .ToList();
+                .Where(p => p.ErvaringsdeskundigeId == deelnemer.Id);
             
             return deelnemerDeelnames.Select((deelname) => deelname.Onderzoek).ToList();
         }

@@ -139,7 +139,7 @@ const OverzichtOnderzoeken = () => {
 									<Card.Header><h2>Onderzoek: {item.titel}</h2></Card.Header>
 									<Card.Body>
 										<Card.Text>
-											<p>{item.beschrijving}</p>
+											<span>{item.beschrijving}</span>
 											<br/><br/>
 											<span>Verzorgd door bedrijf {item.bedrijf.naam}</span>
 											<br/>

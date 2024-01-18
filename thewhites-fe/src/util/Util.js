@@ -41,5 +41,16 @@ export const getFormattedDateLocale = (date) => {
 	return date.toLocaleDateString() +  " om " + date.toLocaleTimeString();
 };
 
-export const formatResponseError = (error) => JSON.stringify(error.response && error.response.data) || error.toString();
+export const formatResponseError = (error) => {
+
+	if (error.code === "ERR_NETWORK")
+		return "Kon niet verbinden met de server. Probeer later opnieuw.";
+
+	console.log(error);
+
+	if (error.response && error.response.status == 404)
+		return "Request bestaat niet.";
+
+	return JSON.stringify(error.response && error.response.data) || error.toString();
+};
   

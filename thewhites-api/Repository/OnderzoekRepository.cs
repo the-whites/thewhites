@@ -74,6 +74,7 @@ namespace AspTest.Repository
             var deelname = new OnderzoekDeelname();
             deelname.Ervaringsdeskundige = ervDeskundige;
             deelname.Onderzoek = onderzoek;
+            deelname.Feedback = "";
 
             _context.OnderzoekDeelnames.Add(deelname);
 
