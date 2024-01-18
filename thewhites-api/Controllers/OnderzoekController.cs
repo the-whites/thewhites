@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AspTest.Models;
 using AspTest.Repository;
+using AspTest.Services;
 using AspTest.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +18,22 @@ namespace AspTest.Controllers
         private readonly IBeperkingRepository beperkingRepository;
         private readonly IOnderzoekTypeRepository onderzoekTypeRepository;
         private readonly IOnderzoekDeelnameRepository onderzoekDeelnameRepository;
+        private readonly OnderzoekService onderzoekService;
 
-        public OnderzoekController(IOnderzoekRepository onderzoekRepository, IBedrijfRepository bedrijfRepository, IBeperkingRepository beperkingRepository, IOnderzoekTypeRepository onderzoekTypeRepository, IOnderzoekDeelnameRepository onderzoekDeelnameRepository)
+        public OnderzoekController(
+            IOnderzoekRepository onderzoekRepository, 
+            IBedrijfRepository bedrijfRepository, 
+            IBeperkingRepository beperkingRepository, 
+            IOnderzoekTypeRepository onderzoekTypeRepository, 
+            IOnderzoekDeelnameRepository onderzoekDeelnameRepository,
+            OnderzoekService onderzoekService)
         {
             this.onderzoekRepository = onderzoekRepository;
             this.bedrijfRepository = bedrijfRepository;
             this.beperkingRepository = beperkingRepository;
             this.onderzoekTypeRepository = onderzoekTypeRepository;
             this.onderzoekDeelnameRepository = onderzoekDeelnameRepository;
+            this.onderzoekService = onderzoekService;
         }
 
         [HttpGet("onderzoeken")]
@@ -47,23 +56,24 @@ namespace AspTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            // TODO add RBAC via authorization header
-            Claim? UserIdClaim = User.FindFirst("user_id");
-
-            int.TryParse(UserIdClaim!.Value, out int userId);
-
-            Bedrijf? bedrijf = bedrijfRepository.GetBedrijfByUserId(userId);
+            Bedrijf? bedrijf = onderzoekService.GetBedrijfByUserId(User);
 
             if(bedrijf == null)
             {
                 return Unauthorized("Gebruiker heeft geen bedrijf");
             }
 
-            ICollection<OnderzoekCategories> onderzoekCategoriesList = CriteriaListMapper.MapCriteriaList(onderzoek.categoriesList, categorieId => new OnderzoekCategories { Type = onderzoekTypeRepository.GetOnderzoekTypeById(categorieId) });
-            ICollection<OnderzoekPostcodeCriteria> onderzoekPostcodeCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.postcodeCriteriaList, postcode => new OnderzoekPostcodeCriteria { Postcode = postcode });
-            ICollection<OnderzoekLeeftijdCriteria> onderzoekLeeftijdCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.leeftijdCriteria, leeftijd => new OnderzoekLeeftijdCriteria { MinLeeftijd = leeftijd.MinLeeftijd, MaxLeeftijd = leeftijd.MaxLeeftijd });
+            var validationResult = onderzoekService.ValidateAndMapCriteriaLists(onderzoek,
+                out ICollection<OnderzoekCategories> onderzoekCategoriesList,
+                out ICollection<OnderzoekPostcodeCriteria> onderzoekPostcodeCriteriaList,
+                out ICollection<OnderzoekLeeftijdCriteria> onderzoekLeeftijdCriteriaList,
+                out ICollection<OnderzoekBeperkingCriteria> onderzoekBeperkingCriteriaList,
+                out string reden);
 
-            ICollection<OnderzoekBeperkingCriteria> onderzoekBeperkingCriteriaList = CriteriaListMapper.MapCriteriaList(onderzoek.beperkingCriteriaList, beperking => new OnderzoekBeperkingCriteria { Beperking = beperkingRepository.GetBeperkingById(beperking) });
+            if (!validationResult)
+            {
+                return BadRequest(reden);
+            }
 
             if (onderzoekCategoriesList.Any(oc => oc.Type == null))
             {
@@ -77,9 +87,9 @@ namespace AspTest.Controllers
 
             foreach(var leeftijdCriteria in onderzoekLeeftijdCriteriaList) 
             {
-                if(leeftijdCriteria.MaxLeeftijd > leeftijdCriteria.MinLeeftijd)
+                if(leeftijdCriteria.MinLeeftijd > leeftijdCriteria.MaxLeeftijd)
                 {
-                    return BadRequest("Max leeftijd is groter dan min leeftijd");
+                    return BadRequest($"Min ({leeftijdCriteria.MinLeeftijd}) leeftijd is groter dan max leeftijd ({leeftijdCriteria.MaxLeeftijd})");
                 }
             }
 
@@ -113,11 +123,7 @@ namespace AspTest.Controllers
                 return BadRequest(ModelState);
             }
 
-            Claim? UserIdClaim = User.FindFirst("user_id");
-
-            int.TryParse(UserIdClaim!.Value, out int userId);
-
-            Bedrijf? bedrijf = bedrijfRepository.GetBedrijfByUserId(userId);
+            Bedrijf? bedrijf = onderzoekService.GetBedrijfByUserId(User);
 
             if(bedrijf == null)
             {
@@ -139,6 +145,61 @@ namespace AspTest.Controllers
             }
 
             return Ok(deelnemers);
+        }
+
+        [Authorize]
+        [HttpPost("wijzig/{onderzoekId}")]
+        public async Task<IActionResult> EditOnderzoek(OnderzoekBodyModel onderzoek, [FromRoute] int onderzoekId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Bedrijf? bedrijf = onderzoekService.GetBedrijfByUserId(User);
+
+            if(bedrijf == null)
+            {
+                return Unauthorized("Gebruiker heeft geen bedrijf");
+            }
+
+            Onderzoek? originalOnderzoek = onderzoekRepository.GetOnderzoekByOnderzoekId(onderzoekId);
+
+            if(originalOnderzoek == null || originalOnderzoek.Bedrijf != bedrijf)
+            {
+                return Unauthorized("Gebruiker heeft geen toegang naar dit onderzoek");
+            }
+
+            var validationResult = onderzoekService.ValidateAndMapCriteriaLists(onderzoek,
+                out ICollection<OnderzoekCategories> onderzoekCategoriesList,
+                out ICollection<OnderzoekPostcodeCriteria> onderzoekPostcodeCriteriaList,
+                out ICollection<OnderzoekLeeftijdCriteria> onderzoekLeeftijdCriteriaList,
+                out ICollection<OnderzoekBeperkingCriteria> onderzoekBeperkingCriteriaList,
+                out string reden);
+
+            if (!validationResult)
+            {
+                return BadRequest(reden);
+            }
+
+            Onderzoek newOnderzoek = new Onderzoek
+            {
+                Titel = onderzoek.titel,
+                Beschrijving = onderzoek.beschrijving,
+                Inhoud = onderzoek.inhoud,
+                StartDatum = onderzoek.startDatum,
+                EindDatum = onderzoek.eindDatum,
+                Bedrijf = originalOnderzoek.Bedrijf,
+                Beloning = onderzoek.beloning,
+                Locatie = onderzoek.locatie,
+                OnderzoekCategories = onderzoekCategoriesList,
+                PostcodeCriteria = onderzoekPostcodeCriteriaList,
+                LeeftijdCriteria = onderzoekLeeftijdCriteriaList.Where(leeftijd => leeftijd.MinLeeftijd != 0 || leeftijd.MaxLeeftijd != 0).ToList(),
+                BeperkingCriteria = onderzoekBeperkingCriteriaList
+            };
+
+            await onderzoekRepository.UpdateOnderzoek(originalOnderzoek, newOnderzoek);
+            return Ok();
         }
     }
 }

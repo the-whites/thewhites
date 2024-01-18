@@ -1,3 +1,5 @@
+import { fetchAndFormatData } from "../hooks/useApi";
+
 export const getTimeLeft = (date) => {
 	const timeleft = date - new Date().getTime();
 
@@ -40,3 +42,4 @@ export const getFormattedDateLocale = (date) => {
 };
 
 export const formatResponseError = (error) => JSON.stringify(error.response && error.response.data) || error.toString();
+  

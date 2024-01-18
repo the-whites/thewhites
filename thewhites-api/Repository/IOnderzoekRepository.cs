@@ -11,5 +11,6 @@ namespace AspTest.Repository
         Onderzoek? GetOnderzoekByOnderzoekId(int onderzoekId);
         IQueryable<Onderzoek> GetOnderzoekenWithQueryable();
         Task AddErvaringsdeskundigeAanOnderzoek(Ervaringsdeskundige ervDeskundige, Onderzoek onderzoek);
+        Task UpdateOnderzoek(Onderzoek onderzoek, Onderzoek newOnderzoek);
     }
 }
