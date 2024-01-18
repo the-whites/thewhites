@@ -223,5 +223,81 @@ namespace AspTest.Controllers
 
             return Ok();
         }
+        
+        
+        [Authorize]
+        [HttpPost("create-profiel-info")]
+        public async Task<IActionResult> CreateUserProfileInfo(CreateErvaringsdeskundigeProfielModel profiel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Gebruiker? gebruiker = _gebruikerRepository
+                .GetGebruikersWithQueryable()
+                    .Include(g => g.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeBeperkingen)
+                            .ThenInclude(eb => eb.Beperking)
+
+                    .Include(g2 => g2.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeOnderzoekTypes)
+                            .ThenInclude(eo => eo.VoorkeurOnderzoekType)
+
+                    .Include(g3 => g3.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeVoorkeur)
+
+                    .FirstOrDefault(g4 => g4.Id == userId);
+
+            if (gebruiker == null)
+                return Unauthorized("No user found.");
+            
+            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
+
+            if (ervaringsdeskundigeInfo == null)
+                return Unauthorized("No ervaringsdeskundige info found.");
+
+            // maak beperking & onderzoek types voor de ervaringsdeskundige leeg
+            await _beperkingRepository.ClearBeperkingenGebruiker(ervaringsdeskundigeInfo, false);
+            await _onderzoekTypeRepository.ClearOnderzoekTypesGebruiker(ervaringsdeskundigeInfo, false);
+                       
+            
+            // set beperking types
+            try {
+                await _beperkingRepository.AddMultipleBeperkingTypeGebruiker(ervaringsdeskundigeInfo, profiel.beperkingTypes, false);
+                await _onderzoekTypeRepository.AddMultipleVoorkeurOnderzoekTypeGebruiker(ervaringsdeskundigeInfo, profiel.onderzoekTypes, false);
+            }
+            // Niet 500 internal server error als dit gebeurt, maar gewoon badrequest om meer error info te geven.
+            catch (InvalidOnderzoekTypesGivenException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+            catch (InvalidBeperkingTypesGivenException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+
+            // set overige info
+            ervaringsdeskundigeInfo.Geboortedatum = profiel.geboortedatum;
+            ervaringsdeskundigeInfo.Telefoonnummer = profiel.telefoonnummer;
+            ervaringsdeskundigeInfo.Beschikbaarheid = profiel.beschikbaar;
+            ervaringsdeskundigeInfo.Hulpmiddel = profiel.hulpmiddelen;
+            ervaringsdeskundigeInfo.Ziekte = profiel.aandoening;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Telefonisch = profiel.telefonischBenadering;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Portaal = profiel.portaalBenadering;
+            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.ToestemmingUitnodigingen = profiel.toestemmingUitnodigingen;
+            ervaringsdeskundigeInfo.Postcode = profiel.postcode;
+            gebruiker.Achternaam = profiel.achternaam;
+            gebruiker.Voornaam = profiel.voornaam;
+            gebruiker.SetupProfielInfo = true;
+
+            
+            await _context.SaveChangesAsync();
+          
+            return Ok();
+        }
     }
 }
