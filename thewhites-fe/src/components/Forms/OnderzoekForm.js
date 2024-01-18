@@ -14,7 +14,7 @@ const getIdByNaam = (naam, data) => {
 	return foundItem ? foundItem.id : null;
 };
 
-const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderzoeken, onderzoek, buttonConfirmText = "Maak onderzoek aan"}) => {
+const OnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderzoeken, onderzoek, editable = true, buttonConfirmText = "Maak onderzoek aan"}) => {
 	const [localOnderzoekData, setLocalOnderzoekData] = useState(initialOnderzoekState);
 	const [leeftijden, setLeeftijden] = useState([]); // Leeftijd wordt ook gehandeld in localOnderzoekData, deze useState is alleen voor visualisatie
 	const [postcodes, setPostcodes] = useState([]); // zelfde als leeftijd usestate basically
@@ -130,7 +130,11 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 		if(localOnderzoekData[ONDERZOEK_DATA.START_DATUM] === null) {
 			invalidFields[ONDERZOEK_DATA.START_DATUM] = true;
 		} else {
-			invalidFields[ONDERZOEK_DATA.START_DATUM] = false;
+			if(new Date(localOnderzoekData[ONDERZOEK_DATA.START_DATUM]) <= new Date()) {
+				invalidFields[ONDERZOEK_DATA.START_DATUM] = true;
+			} else {
+				invalidFields[ONDERZOEK_DATA.START_DATUM] = false;
+			}
 		}
 
 		if(localOnderzoekData[ONDERZOEK_DATA.START_DATUM] > localOnderzoekData[ONDERZOEK_DATA.EIND_DATUM]) {
@@ -196,7 +200,8 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								required={true} 
 								value={localOnderzoekData[ONDERZOEK_DATA.NAAM]} 
 								isInvalid={isInvalidFields[ONDERZOEK_DATA.NAAM]} 
-								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.NAAM]: value }))} />
+								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.NAAM]: value }))}
+								canEdit={editable} />
 							<InputBar 
 								label="Onderzoek omschrijving" 
 								type="textarea" 
@@ -204,7 +209,8 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								required={true} 
 								value={localOnderzoekData[ONDERZOEK_DATA.OMSCHRIJVING]} 
 								isInvalid={isInvalidFields[ONDERZOEK_DATA.OMSCHRIJVING]}
-								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.OMSCHRIJVING]: value }))} />
+								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.OMSCHRIJVING]: value }))} 
+								canEdit={editable} />
 							<InputBar 
 								label="Onderzoek inhoud" 
 								type="textarea" 
@@ -212,19 +218,22 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								required={true} 
 								value={localOnderzoekData[ONDERZOEK_DATA.INHOUD]} 
 								isInvalid={isInvalidFields[ONDERZOEK_DATA.INHOUD]}
-								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.INHOUD]: value }))} />
+								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.INHOUD]: value }))}
+								canEdit={editable} />
 							<InputBar 
 								label="Locatie van onderzoek" 
 								placeholder="Vul hier de locatie in waar de onderzoek uitgevoerd moet worden" 
 								required={true}
 								value={localOnderzoekData[ONDERZOEK_DATA.LOCATIE]} 
 								isInvalid={isInvalidFields[ONDERZOEK_DATA.LOCATIE]} 
-								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.LOCATIE]: value }))} />
+								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.LOCATIE]: value }))}
+								canEdit={editable} />
 							<InputBar 
 								label="Beloning" 
 								value={localOnderzoekData[ONDERZOEK_DATA.BELONING]}
 								placeholder="Vul hier de beloning in die de deelnemers krijgen voor het uitvoeren van de onderzoek" 
-								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.BELONING]: value }))} />
+								handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.BELONING]: value }))}
+								canEdit={editable} />
 						</div>
 						<div className="mb-3">
 							<MultiSelectionBar 
@@ -235,7 +244,8 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								getKey={(option) => option.toString()} 
 								isInvalid={isInvalidFields[ONDERZOEK_DATA.TYPE_ONDERZOEK]} 
 								required={true} 
-								handleSelection={handleTypeSelection} />
+								handleSelection={handleTypeSelection}
+								canEdit={editable} />
 						</div>
 						<h2 className="text-center mb-3 header">Criteria</h2>
 						<div className="mb-3" >
@@ -245,7 +255,8 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								items={beperkingen ? mapItemsToStrings(beperkingen) : []} 
 								getKey={(option) => option.toString()} 
 								initialSelectedItems={onderzoek && mapItemsToStrings(onderzoek[ONDERZOEK_DATA.BEPERKING])}
-								handleSelection={handleBeperkingChange} />
+								handleSelection={handleBeperkingChange} 
+								canEdit={editable} />
 						</div>
 						<div className="mb-3" >
 							<InputBar 
@@ -255,7 +266,8 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								infoText="Je kan meerdere leeftijden invullen doormiddel van kommas zoals: 18, 20, 26 of 13-20 (dit is dan 13 tot en met 20)" 
 								errorMessage="Er is een leeftijd criteria onjuist ingevuld"
 								isInvalid={isInvalidFields[ONDERZOEK_DATA.LEEFTIJD]}
-								handleChange={handleLeeftijdChange} />
+								handleChange={handleLeeftijdChange}
+								canEdit={editable} />
 							<InputBar 
 								label="Postcode"
 								value={postcodes}
@@ -263,7 +275,8 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								infoText="Je kan meerdere postcodes invullen doormiddel van een scheiding met een komma: 2554GW, 2551AB" 
 								errorMessage={postcodeErrorText} 
 								isInvalid={isInvalidFields[ONDERZOEK_DATA.POSTCODE]} 
-								handleChange={handlePostcodeChange} />
+								handleChange={handlePostcodeChange}
+								canEdit={editable} />
 						</div>
 						<h2 className="text-center mb-3 header ">Datum</h2>
 						<CustomDatePicker 
@@ -271,14 +284,16 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 							required={true} 
 							value={onderzoek && onderzoek[ONDERZOEK_DATA.START_DATUM]}
 							isInvalid={isInvalidFields[ONDERZOEK_DATA.START_DATUM]} 
-							handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.START_DATUM]: value }))} />
+							handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.START_DATUM]: value }))}
+							canEdit={editable} />
 						<div className="mb-3" />
 						<CustomDatePicker 
 							label="Eind datum" 
 							value={onderzoek && onderzoek[ONDERZOEK_DATA.EIND_DATUM]}
 							required={true} 
 							isInvalid={isInvalidFields[ONDERZOEK_DATA.EIND_DATUM]} 
-							handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.EIND_DATUM]: value }))}/>
+							handleChange={(value) => setLocalOnderzoekData(({ ...localOnderzoekData, [ONDERZOEK_DATA.EIND_DATUM]: value }))}
+							canEdit={editable} />
 					</Col>
 				</Row>
 
@@ -298,4 +313,4 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 	);
 };
 
-export default NieuwOnderzoekForm;
+export default OnderzoekForm;
