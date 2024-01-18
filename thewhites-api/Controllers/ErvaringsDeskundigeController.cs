@@ -21,6 +21,7 @@ namespace AspTest.Controllers
         private readonly IOnderzoekTypeRepository _onderzoekTypeRepository;
         private readonly IOnderzoekRepository _onderzoekRepository;
         private readonly AspDbContext _context;
+        private readonly OnderzoekService _onderzoekService;
 
         public ErvaringsDeskundigeController(
             IGebruikerRepository gebruikerRepository, 
@@ -28,7 +29,8 @@ namespace AspTest.Controllers
             IBeperkingRepository beperkingRepository,
             IOnderzoekTypeRepository onderzoekTypeRepository,
             IOnderzoekRepository onderzoekRepository,
-            AspDbContext context
+            AspDbContext context,
+            OnderzoekService onderzoekService
         )
         {
             _gebruikerRepository = gebruikerRepository;
@@ -36,6 +38,7 @@ namespace AspTest.Controllers
             _onderzoekTypeRepository = onderzoekTypeRepository;
             _onderzoekRepository = onderzoekRepository;
             _context = context;
+            _onderzoekService = onderzoekService;
         }
 
         // Met deze route kun je checken of je ingelogd ben en verkrijg je jouw lokale id en google id.
@@ -211,7 +214,7 @@ namespace AspTest.Controllers
             if (onderzoek.EindDatum.Ticks < DateTime.Now.Ticks)
                 return Unauthorized("Onderzoek is finished.");
             
-            var isEligibleForOnderzoek = OnderzoekService.IsErvaringsdeskundigeBinnenCriteria(ervaringsdeskundigeInfo, onderzoek, out string reden);
+            var isEligibleForOnderzoek = _onderzoekService.IsErvaringsdeskundigeBinnenCriteria(ervaringsdeskundigeInfo, onderzoek, out string reden);
 
             if (!isEligibleForOnderzoek)
                 return Unauthorized(reden);

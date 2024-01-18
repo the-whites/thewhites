@@ -42,6 +42,22 @@ export const postApi = async ({
 	return await AxiosInstance.post(route, body, {...options, withCredentials: true, headers: {...options.headers, Authorization: "Bearer " + getToken()} });
 };
 
+export const fetchAndFormatData = async (route, formatItem) => {
+	try {
+		const response = await fetchApi({ route });
+
+		if (response.status === 200) {
+			const items = response.data.map(item => formatItem(item));
+			return items;
+		} else {
+			console.error(`Error fetching data. Status: ${response.status}`);
+			return [];
+		}
+	} catch (error) {
+		console.error("Error fetching data:", error);
+		return [];
+	}
+};
 
 /*export const useFetchWithAuth = async (
 	route, 

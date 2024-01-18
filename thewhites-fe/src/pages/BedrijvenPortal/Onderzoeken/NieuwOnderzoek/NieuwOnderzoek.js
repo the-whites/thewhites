@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal";
 import { postApi } from "../../../../hooks/useApi";
-import { fetchApi } from "../../../../hooks/useApi";
+import { getOnderzoekTypesFromApi, getBeperkingenFromApi, formatOnderzoekLeeftijdValue, createOnderzoekDataObject } from "../../../../util/OnderzoekUtil";
 import {  toast } from "react-toastify";
 import { ONDERZOEK_DATA, initialOnderzoekState } from "../../../../constants/onderzoekData";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,8 +22,6 @@ const NieuwOnderzoek = () => {
 
 	const [onderzoekData, setOnderzoekData] = useState(initialOnderzoekState);
 
-	const [leeftijden, setLeeftijden] = useState([]);
-
 	const navigate = useNavigate();
 
 	const handleOnderzoekDataChange = (newOnderzoekData) => {
@@ -41,22 +39,7 @@ const NieuwOnderzoek = () => {
 	};
 
 	const createOnderzoek = async () => {
-		const onderzoekDataObject = {
-			titel: onderzoekData[ONDERZOEK_DATA.NAAM],
-			beschrijving: onderzoekData[ONDERZOEK_DATA.OMSCHRIJVING],
-			inhoud: onderzoekData[ONDERZOEK_DATA.INHOUD],
-			startDatum: onderzoekData[ONDERZOEK_DATA.START_DATUM],
-			eindDatum: onderzoekData[ONDERZOEK_DATA.EIND_DATUM],
-			beloning: onderzoekData[ONDERZOEK_DATA.BELONING],
-			locatie: onderzoekData[ONDERZOEK_DATA.LOCATIE],
-			postcodeCriteriaList: onderzoekData[ONDERZOEK_DATA.POSTCODE].map(postcode => postcode),
-			categoriesList: onderzoekData[ONDERZOEK_DATA.TYPE_ONDERZOEK].map(typeId => typeId),
-			beperkingCriteriaList: onderzoekData[ONDERZOEK_DATA.BEPERKING].map(beperkingId => beperkingId),
-			leeftijdCriteria: onderzoekData[ONDERZOEK_DATA.LEEFTIJD].map(leeftijd => ({
-				MinLeeftijd: leeftijd[0],
-				MaxLeeftijd: leeftijd[1]
-			}))
-		};
+		const onderzoekDataObject = createOnderzoekDataObject(onderzoekData);
 
 		try {
 			console.log(JSON.stringify(onderzoekDataObject));
@@ -81,43 +64,25 @@ const NieuwOnderzoek = () => {
 		navigate(-1);
 	};
 
-	const fetchData = async (route, formatItem) => {
-		try {
-			const response = await fetchApi({ route });
-	
-			if (response.status === 200) {
-				const items = response.data.map(item => formatItem(item));
-				return items;
-			} else {
-				console.error(`Error fetching data. Status: ${response.status}`);
-				return [];
-			}
-		} catch (error) {
-			console.error("Error fetching data:", error);
-			return [];
-		}
-	};
-
 	useEffect(() => {
-		const fetchDataAndSetState = async () => {
-			try {
-				const typeOnderzoekenItems = await fetchData("api/OnderzoekType/onderzoek-types", item => ({
-					id: item?.id,
-					naam: item?.type
-				}));
-				setTypeOnderzoeken(typeOnderzoekenItems);
+		const fetchTypeOnderzoekenFromApi = async () => {
+			const typeOnderzoekenResponse = await getOnderzoekTypesFromApi();
 
-				const beperkingenItems = await fetchData("api/Beperking/beperkingen", item => ({
-					id: item?.id,
-					naam: item?.naam
-				}));
-				setBeperkingen(beperkingenItems);
-			} catch (error) {
-				console.error("Error fetching and setting data:", error);
+			if(typeOnderzoekenResponse != null) {
+				setTypeOnderzoeken(typeOnderzoekenResponse);
 			}
 		};
-	
-		fetchDataAndSetState();
+
+		const fetchBeperkingenFromApi = async () => {
+			const beperkingenResponse = await getBeperkingenFromApi();
+
+			if(beperkingenResponse != null) {
+				setBeperkingen(beperkingenResponse);
+			}
+		};
+
+		fetchTypeOnderzoekenFromApi();
+		fetchBeperkingenFromApi();
 	}, []);
 
 	return (
@@ -125,11 +90,11 @@ const NieuwOnderzoek = () => {
 			<br />
 			<h1>Nieuw onderzoek</h1>
 			<br />
-			<NieuwOnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} leeftijdInput={(leeftijden) => setLeeftijden(leeftijden)}beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} />
+			<NieuwOnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} />
 			{showModal && (
 				<ConfirmationModal
 					show={showModal}
-					handleClose={() => console.log(onderzoekData[ONDERZOEK_DATA.LEEFTIJD])}
+					handleClose={handleCloseModal}
 					handleConfirm={handleConfirm}
 					title="Weet u het zeker?">
 					<div className="confirmation-border">
@@ -149,7 +114,7 @@ const NieuwOnderzoek = () => {
 
 						{onderzoekData[ONDERZOEK_DATA.LEEFTIJD].length > 0 && (
 							<p>
-								<strong>Leeftijd(en):</strong> {leeftijden}
+								<strong>Leeftijd(en):</strong> {formatOnderzoekLeeftijdValue(onderzoekData[ONDERZOEK_DATA.LEEFTIJD])}
 							</p>
 						)}
 

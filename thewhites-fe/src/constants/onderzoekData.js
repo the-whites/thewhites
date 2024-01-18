@@ -11,6 +11,7 @@ export const ONDERZOEK_DATA = {
 	EIND_DATUM: "eindDatum",
 	LOCATIE: "locatie",
 	BELONING: "beloning",
+	GEMAAKT_OP: "gemaaktOp"
 };
 
 export const initialOnderzoekState = {

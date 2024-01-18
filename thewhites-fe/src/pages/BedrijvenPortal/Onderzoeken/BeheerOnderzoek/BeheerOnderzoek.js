@@ -22,7 +22,8 @@ const BeheerOnderzoek = () => {
 					[ONDERZOEK_DATA.LOCATIE]: response.data.locatie,
 					[ONDERZOEK_DATA.START_DATUM]: response.data.startDatum,
 					[ONDERZOEK_DATA.EIND_DATUM]: response.data.eindDatum,
-					[ONDERZOEK_DATA.TYPE_ONDERZOEK]: response.data.onderzoekCategories
+					[ONDERZOEK_DATA.TYPE_ONDERZOEK]: response.data.onderzoekCategories,
+					[ONDERZOEK_DATA.GEMAAKT_OP]: response.data.gemaaktOp
 				});
 			} else {
 				console.error(`Error fetching data. Status: ${response.status}`);
