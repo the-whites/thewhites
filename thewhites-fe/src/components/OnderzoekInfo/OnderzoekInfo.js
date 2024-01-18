@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import { getFormattedDateLocale } from "../../../util/Util";
+import { getFormattedDateLocale } from "../../util/Util";
 
 export const OnderzoekInfo = ({onderzoek}) => {
 

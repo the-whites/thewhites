@@ -20,6 +20,7 @@ namespace AspTest.Controllers
         private readonly IBeperkingRepository _beperkingRepository;
         private readonly IOnderzoekTypeRepository _onderzoekTypeRepository;
         private readonly IOnderzoekRepository _onderzoekRepository;
+        private readonly IOnderzoekDeelnameRepository _onderzoekDeelnameRepository;
         private readonly AspDbContext _context;
         private readonly OnderzoekService _onderzoekService;
 
@@ -29,14 +30,16 @@ namespace AspTest.Controllers
             IBeperkingRepository beperkingRepository,
             IOnderzoekTypeRepository onderzoekTypeRepository,
             IOnderzoekRepository onderzoekRepository,
-            AspDbContext context,
-            OnderzoekService onderzoekService
+            OnderzoekService onderzoekService,
+            IOnderzoekDeelnameRepository onderzoekDeelnameRepository,
+            AspDbContext context
         )
         {
             _gebruikerRepository = gebruikerRepository;
             _beperkingRepository = beperkingRepository;
             _onderzoekTypeRepository = onderzoekTypeRepository;
             _onderzoekRepository = onderzoekRepository;
+            _onderzoekDeelnameRepository = onderzoekDeelnameRepository;
             _context = context;
             _onderzoekService = onderzoekService;
         }
@@ -224,7 +227,48 @@ namespace AspTest.Controllers
             return Ok();
         }
         
-        
+
+        [Authorize]
+        [HttpGet("mijn-onderzoeken")]
+        public async Task<IActionResult> GetMijnOnderzoeken()
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Gebruiker? gebruiker = _gebruikerRepository
+                .GetGebruikersWithQueryable()
+                    .Include(g => g.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeBeperkingen)
+                            .ThenInclude(eb => eb.Beperking)
+
+                    .Include(g2 => g2.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeOnderzoekTypes)
+                            .ThenInclude(eo => eo.VoorkeurOnderzoekType)
+
+                    .Include(g3 => g3.Ervaringsdeskundige)
+                        .ThenInclude(ed => ed!.ErvaringsdeskundigeVoorkeur)
+
+                    .FirstOrDefault(g4 => g4.Id == userId);
+
+            if (gebruiker == null)
+                return Unauthorized("No user found.");
+            
+            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
+
+            if (ervaringsdeskundigeInfo == null)
+                return Unauthorized("No ervaringsdeskundige info found.");
+            
+            var onderzoeken = _onderzoekDeelnameRepository.GetDeelnemerOnderzoeken(ervaringsdeskundigeInfo)
+                .Where(onderzoek => onderzoek.EindDatum > DateTime.Now); // Zorg dat we alleen de lopende/aankomende onderzoeken tonen.
+
+            return Ok(onderzoeken);
+        }
+
+
+
         [Authorize]
         [HttpPost("create-profiel-info")]
         public async Task<IActionResult> CreateUserProfileInfo(CreateErvaringsdeskundigeProfielModel profiel)

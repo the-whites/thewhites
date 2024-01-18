@@ -12,6 +12,11 @@ h3 {
   font-size: 22px !important;
 }
 
+h4 {
+  font-weight: 500 !important;
+  font-size: 18px !important;
+}
+
 .App {
   text-align: center;
 }
