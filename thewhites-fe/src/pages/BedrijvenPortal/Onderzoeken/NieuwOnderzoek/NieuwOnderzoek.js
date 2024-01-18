@@ -8,7 +8,7 @@ import { ONDERZOEK_DATA, initialOnderzoekState } from "../../../../constants/ond
 import "react-toastify/dist/ReactToastify.css";
 
 import "./NieuwOnderzoek.css";
-import NieuwOnderzoekForm from "../../../../components/Forms/NieuwOnderzoekForm";
+import OnderzoekForm from "../../../../components/Forms/OnderzoekForm";
 
 const getTypeNaamById = (id, data) => {
 	const foundItem = data.find(item => item.id === id);
@@ -27,7 +27,7 @@ const NieuwOnderzoek = () => {
 	const handleOnderzoekDataChange = (newOnderzoekData) => {
 		setOnderzoekData(newOnderzoekData);
 
-		// Validation is al gedaan in NieuwOnderzoekForm.js, dus confirmation kan geshowed worden
+		// Validation is al gedaan in OnderzoekForm.js, dus confirmation kan geshowed worden
 		handleShowModal();
 	};
 
@@ -90,7 +90,7 @@ const NieuwOnderzoek = () => {
 			<br />
 			<h1>Nieuw onderzoek</h1>
 			<br />
-			<NieuwOnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} />
+			<OnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} />
 			{showModal && (
 				<ConfirmationModal
 					show={showModal}

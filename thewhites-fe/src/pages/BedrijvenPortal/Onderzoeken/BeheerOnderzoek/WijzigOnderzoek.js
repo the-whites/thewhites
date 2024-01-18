@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchApi, postApi } from "../../../../hooks/useApi";
 import { ONDERZOEK_DATA } from "../../../../constants/onderzoekData";
-import NieuwOnderzoekForm from "../../../../components/Forms/NieuwOnderzoekForm";
+import OnderzoekForm from "../../../../components/Forms/OnderzoekForm";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal";
 import LoadingAnimation from "../../../../components/LoadingAnimation/LoadingAnimation";
 import { getOnderzoekTypesFromApi, getBeperkingenFromApi, formatOnderzoekLeeftijdValue, createOnderzoekDataObject } from "../../../../util/OnderzoekUtil";
@@ -46,7 +46,7 @@ const WijzigOnderzoek = () => {
 
 	const didArrayGetChanged = (data) => {
 		const oldArray = onderzoek[data].map(item => item.id);
-		const newArray = newOnderzoek[data]
+		const newArray = newOnderzoek[data];
 		console.log(oldArray, newArray);
 		return oldArray.length !== newArray.length || oldArray.some(id => !newArray.includes(id));
 	};
@@ -130,6 +130,8 @@ const WijzigOnderzoek = () => {
 		fetchTypeOnderzoekenFromApi();
 		fetchBeperkingenFromApi();
 		fetchOnderzoek();
+
+		
 	}, []);
 
 	return (
@@ -138,7 +140,12 @@ const WijzigOnderzoek = () => {
 			<h1>Onderzoek wijzigen</h1>
 			<br />
 			{onderzoek ? 
-				<NieuwOnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} onderzoek={onderzoek} buttonConfirmText="Wijzig onderzoek" /> 
+				<OnderzoekForm 
+					handleOnderzoekDataChange={handleOnderzoekDataChange} 
+					beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} 
+					onderzoek={onderzoek} 
+					buttonConfirmText="Wijzig onderzoek" 
+					editable={new Date(onderzoek.startDatum) > new Date()}/> 
 				: 
 				<LoadingAnimation />}
 				

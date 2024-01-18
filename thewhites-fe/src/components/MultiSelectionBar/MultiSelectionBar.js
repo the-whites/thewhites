@@ -16,7 +16,8 @@ const MultiSelectionBar = ({
 	handleSelection = () => {}, 
 	getKey = (option) => items.indexOf(option), 
 	getValue = (option) => option,
-	isInvalid = false
+	isInvalid = false,
+	canEdit = true
 }) => {
 	const [selectedItems, setSelectedItems] = useState(() => initialSelectedItems);
 
@@ -25,7 +26,7 @@ const MultiSelectionBar = ({
 	const selectItem = (key, calledFromJSX = false) => { 
 		if (selectedItems.find((x) => getKey(x) == key)) {
 			if (calledFromJSX) 
-				removeItem(key);
+				handleRemoveItem(key);
 		} else { 
 			var item = items.find(x => getKey(x) == key);
 			
@@ -38,7 +39,11 @@ const MultiSelectionBar = ({
 		} 
 	};
 
-	const removeItem = (key) => setSelectedItems(selectedItems.filter((item) => getKey(item) != key));
+	const handleRemoveItem = (key) => {
+		if(canEdit === false) return;
+
+		setSelectedItems(selectedItems.filter((item) => getKey(item) != key))
+	};
 
 	useEffect(() => {
 		console.log("test' : " + JSON.stringify(initialSelectedItems));
@@ -58,7 +63,7 @@ const MultiSelectionBar = ({
 						selectedItems.map((option) => (
 							<Badge key={getKey(option)} bg="grey" className="selection-badge text-dark d-flex justify-content-between">
 								{getValue(option)}
-								<CloseButton onClick={() => removeItem(getKey(option))}/>
+								<CloseButton onClick={() => handleRemoveItem(getKey(option))}/>
 							</Badge>
 						))
 					) : (
@@ -72,7 +77,7 @@ const MultiSelectionBar = ({
 				</Col>
 				<Col xs={6}>
 					<Dropdown className="w-100">
-						<Dropdown.Toggle variant={isInvalid ? "danger" : "success"} className="dropdown-button-w" id="dropdown-basic">
+						<Dropdown.Toggle disabled={!canEdit} variant={isInvalid ? "danger" : "success"} className="dropdown-button-w" id="dropdown-basic">
 							{buttonText}
 						</Dropdown.Toggle>
 						<Dropdown.Menu className="dropdown-menu">

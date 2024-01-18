@@ -1,6 +1,6 @@
 import React from "react";
 import { Nav, Navbar, Container } from "react-bootstrap";
-import ButtonPortal from "../LogoutButton/LogoutButton";
+import LogoutButton from "../LogoutButton/LogoutButton";
 
 import "./NavbarPortal.css";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ const NavbarPortal = ({ portalName, portalPath, links }) => {
 						<Nav.Link key={index} as={Link} to={link.path}>{link.name}</Nav.Link>
 					))}
 				</Nav>
-				<ButtonPortal/>
+				<LogoutButton/>
 			</Container>
 		</Navbar>
 	);

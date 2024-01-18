@@ -2,10 +2,9 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { postApi } from "../../hooks/useApi";
-import "./LogoutButton.css";
 import { logout } from "../logout";
 
-const ButtonPortal = () => {
+const LogoutButton = () => {
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
@@ -18,10 +17,10 @@ const ButtonPortal = () => {
 	};
   
 	return (
-		<Button variant="outline-info" className="btn-uitloggen" onClick={handleLogout}>
+		<Button variant="outline-danger" onClick={handleLogout}>
         Uitloggen
 		</Button>
 	);
 };
   
-export default ButtonPortal;
+export default LogoutButton;
