@@ -6,7 +6,8 @@ const ChatErvaringsdeskundige = () => {
 	
 	return (
 		<>
-			<PortalWelcomeMessage name="chat" text="Hier kunt u chats starten met bedrijven of met de Stichting." username={ErvaringsdeskundigeNaam} />
+			<PortalWelcomeMessage name="chat" />
+			<p>Hier kunt u chats starten met bedrijven of met de Stichting.</p>
 		</>
 	);
 };

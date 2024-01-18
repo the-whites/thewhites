@@ -99,6 +99,8 @@ const ProfielErvaringsdeskundige = () => {
 	return (
 		<>
 			{error}
+			<br />
+			<h1>Profiel bewerken</h1>
 			{isConfirming && <>
 			
 				<BewerkProfielPreview profielData={profielData} />

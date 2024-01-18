@@ -4,7 +4,8 @@ import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/Porta
 const DefaultErvaringsdeskundigePage = () => {
 	return (
 		<>
-			<PortalWelcomeMessage name="Ervaringsdeskundige" text="Hier kunt u kiezen om mee te doen aan onderzoeken of u profiel wijzingen" username="changeme" />
+			<PortalWelcomeMessage name="Ervaringsdeskundige" />
+			<p>Hier kunt u kiezen om mee te doen aan onderzoeken of u profiel wijzingen</p>
 		</>
 	);
 };

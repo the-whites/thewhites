@@ -18,7 +18,7 @@ import Chat from "./pages/BedrijvenPortal/ChatBedrijf/ChatBedrijf";
 import Profiel from "./pages/BedrijvenPortal/ProfielUpdate/ProfielUpdate";
 import ErvaringsdekundigePortal from "./pages/ErvaringsdeskundigePortal/ErvaringsdeskundigePortal";
 import DefaultErvaringsdeskundigePage from "./pages/ErvaringsdeskundigePortal/DefaultErvaringsdeskundigeTab/DefaultErvaringsdeskundigeTab";
-import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
+
 import Overzichtonderzoeken from "./pages/ErvaringsdeskundigePortal/OverzichtOnderzoeken/OverzichtOnderzoeken";
 import ProfielErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ProfielErvaringsdeskundige/ProfielErvaringdeskundige";
 import LopendeOnderzoeken from "./pages/BedrijvenPortal/Onderzoeken/LopendeOnderzoeken/LopendeOnderzoek";
@@ -35,10 +35,11 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { UserProvider } from "./contexts/UserProvider";
 import RequireAuth from "./components/RequireAuth/RequireAuth";
 import { ROLES } from "./constants/roles";
-import Layout from "./pages/Layout";
 
 import Footer from "./components/Footer/Footer";
 import Meldingen from "./pages/Meldingen/Meldingen";
+import Layout from "./components/Toastify/ToastifyLayout";
+import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
 function App() {
 
 	return (

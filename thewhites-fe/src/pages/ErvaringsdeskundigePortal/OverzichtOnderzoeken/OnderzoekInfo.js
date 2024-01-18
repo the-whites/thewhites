@@ -43,7 +43,7 @@ export const OnderzoekInfo = ({onderzoek}) => {
 		<Row className="justify-content-md-center">
 			<Col className="onderzoeken-search-item" md={4}>
 				<Card className="text-center">
-					<Card.Header>Onderzoek Specificaties</Card.Header>
+					<Card.Header><h3>Onderzoek Specificaties</h3></Card.Header>
 					<Card.Body className="">
 						<span className="d-block"><b>Bedrijf</b>: {onderzoek.bedrijf.naam}</span>
 						<span className="d-block"><b>Link bedrijf</b>: <a href={onderzoek.bedrijf.link}>{onderzoek.bedrijf.link}</a> </span>
@@ -63,7 +63,7 @@ export const OnderzoekInfo = ({onderzoek}) => {
 			</Col>
 			<Col className="onderzoeken-search-item" md={8}>
 				<Card className="text-center">
-					<Card.Header>Onderzoek</Card.Header>
+					<Card.Header><h3>Onderzoek Beschrijving</h3></Card.Header>
 					<Card.Body>
 						<Card.Title>{onderzoek.titel}</Card.Title>
 						<Card.Text>

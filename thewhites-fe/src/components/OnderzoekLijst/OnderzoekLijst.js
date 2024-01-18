@@ -64,7 +64,7 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 			<Row className="justify-content-center">
 				{titleSort.map((info, index) => (
 					<Col key={index} xs={2} className="text-right">
-						<h1>{info.title} {info.sorted} {info.sorted ? <FaArrowUp onClick={() => toggleSort(info)}/> : <FaArrowDown onClick={() => toggleSort(info)}/>}</h1>
+						<h3>{info.title} {info.sorted} {info.sorted ? <FaArrowUp onClick={() => toggleSort(info)}/> : <FaArrowDown onClick={() => toggleSort(info)}/>}</h3>
 					</Col>
 				))}
 				<Col xs={2}>

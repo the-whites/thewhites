@@ -4,7 +4,8 @@ import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/Porta
 const DefaultBeheerderPage = () => {
 	return (
 		<>
-			<PortalWelcomeMessage name="beheerders" text="Hier kunt u kiezen wat u wilt beheren" username="changeme" />
+			<PortalWelcomeMessage name="beheerders" />
+			<p>Hier bevindt zich een lijst met alle bedrijven.</p>
 		</>
 	);
 };

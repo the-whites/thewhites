@@ -6,7 +6,9 @@ const BedrijvenBHP = () => {
 	
 	return (
 		<>
-			<PortalWelcomeMessage name="bedrijven" text="Hier bevindt zich een lijst met alle bedrijven." username={beheerdersnaam} />
+			<PortalWelcomeMessage name="bedrijven"  />
+			<p>Hier bevindt zich een lijst met alle bedrijven.</p>
+
 		</>
 	);
 };

@@ -4,7 +4,8 @@ import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/Porta
 const DefaultBedrijvenPage = () => {
 	return (
 		<>
-			<PortalWelcomeMessage name="bedrijven" text="" username="Test Bedrijf" />
+			<PortalWelcomeMessage name="bedrijven" />
+			<p>Hier ziet u een overzicht van uw bedrijfsaccount.</p>
 		</>
 	);
 };
