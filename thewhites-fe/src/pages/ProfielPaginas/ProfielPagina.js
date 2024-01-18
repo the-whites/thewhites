@@ -8,6 +8,7 @@ import { ProfielContext, UserContext, UserProvider } from "../../contexts/UserPr
 import { fetchApi } from "../../hooks/useApi";
 import { validation } from "../../components/Validation/Validation";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
+import CustomDatePicker from "../../components/CustomDatePicker/CustomDatePicker";
 
 const ProfielPagina = () => {
 	const { profielData, setProfielData } = useContext(ProfielContext);
@@ -87,6 +88,15 @@ const ProfielPagina = () => {
 							value={profielData.telefoonnummer || ""}
 							handleChange={(value) => updateProfielData("telefoonnummer", value)}
 						/>
+						<CustomDatePicker 
+							label="Geboortedatum" 
+							required={true} 
+							value={profielData.geboortedatum || null}
+							handleChange={(value) => updateProfielData("geboortedatum", value)}
+							isInvalid={profielData.geboortedatum == null}
+							dateFormat="yyyy-MM-dd"
+							timeFormat={null}
+							canEdit={true} />
 						<MultiSelectionBar
 							label="Type beperkingen"
 							required

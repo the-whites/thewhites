@@ -37,8 +37,12 @@ export const formatDateText = (date) => {
 }; 
 
 
-export const getFormattedDateLocale = (date) => {
+export const getFormattedDateTimeLocale = (date) => {
 	return date.toLocaleDateString() +  " om " + date.toLocaleTimeString();
+};
+
+export const getFormattedDateLocale = (date) => {
+	return date.toLocaleDateString();
 };
 
 export const formatResponseError = (error) => {

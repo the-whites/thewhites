@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Container, Form, InputGroup, Pagination, Row } from "react-bootstrap";
 import { fetchApi, postApi } from "../../../hooks/useApi";
 import { OnderzoekInfo } from "../../../components/OnderzoekInfo/OnderzoekInfo";
-import { formatResponseError, getFormattedDateLocale } from "../../../util/Util";
+import { formatResponseError, getFormattedDateTimeLocale } from "../../../util/Util";
 
 
 
@@ -143,7 +143,7 @@ const OverzichtOnderzoeken = () => {
 											<br/><br/>
 											<span>Verzorgd door bedrijf {item.bedrijf.naam}</span>
 											<br/>
-											<span>Van start op {getFormattedDateLocale(new Date(item.startDatum))}</span>
+											<span>Van start op {getFormattedDateTimeLocale(new Date(item.startDatum))}</span>
 										</Card.Text>
 									</Card.Body>
 									<Card.Footer className="text-muted">

@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import { getFormattedDateLocale } from "../../util/Util";
+import { getFormattedDateTimeLocale } from "../../util/Util";
 
 export const OnderzoekInfo = ({onderzoek}) => {
 
@@ -56,8 +56,8 @@ export const OnderzoekInfo = ({onderzoek}) => {
 						<span className="d-block"><b>Leeftijd criteria</b>: {getFormattedLeeftijdCriteria(onderzoek.leeftijdCriteria)}</span>
 						<span className="d-block"><b>Postcode criteria</b>: {getFormattedPostcodeCriteria(onderzoek.postcodeCriteria)}</span>
 						<br />
-						<span className="d-block"><b>Start datum</b>: {getFormattedDateLocale(new Date(onderzoek.startDatum))}</span>
-						<span className="d-block"><b>Eind datum</b>: {getFormattedDateLocale(new Date(onderzoek.eindDatum))}</span>
+						<span className="d-block"><b>Start datum</b>: {getFormattedDateTimeLocale(new Date(onderzoek.startDatum))}</span>
+						<span className="d-block"><b>Eind datum</b>: {getFormattedDateTimeLocale(new Date(onderzoek.eindDatum))}</span>
 					</Card.Body>
 				</Card>
 			</Col>

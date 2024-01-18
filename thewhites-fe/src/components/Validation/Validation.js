@@ -21,6 +21,14 @@ export const validation = (profielData) => {
 		return true;
 	};
 
+	const validateGeboortedatum = (geboortedatum) => {
+		if (geboortedatum == null || geboortedatum.length === 0) {
+			errors.geboortedatum = "Er is geen geboortedatum geselecteerd.";
+			return false;
+		}
+		return true;
+	}
+
 	const validateBeperkingType = (beperkingTypes) => {
 		if
 		(beperkingTypes.length === 0) {
@@ -36,6 +44,7 @@ export const validation = (profielData) => {
             profielData.achternaam.length > 0 &&
             validatePostcode(profielData.postcode) &&
             validateTelefoon(profielData.telefoonnummer) &&
+			validateGeboortedatum(profielData.geboortedatum) &&
             validateBeperkingType(profielData.beperkingTypes)
 		);
 	};
