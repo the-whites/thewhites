@@ -7,7 +7,8 @@ const Chat = () => {
 	
 	return (
 		<>
-			<PortalWelcomeMessage name="chat" text="Hier kunt u chats starten met ervaringsdeskundige." username={bedrijfsnaam} />
+			<PortalWelcomeMessage name="chat" username={bedrijfsnaam} />
+			<p>Hier kunt u chats starten met ervaringsdeskundige.</p>
 
 		</>
 	);

@@ -7,7 +7,8 @@ const ErvaringsdeskundigeBHP = () => {
 	
 	return (
 		<>
-			<PortalWelcomeMessage name="ervaringsdeskundige" text="Hier bevindt zich een lijst met alle ervaringsdeskundigen." username={beheerdersnaam} />
+			<PortalWelcomeMessage name="ervaringsdeskundige"  />
+			<p>Hier bevindt zich een lijst met alle ervaringsdeskundigen.</p>
 		</>
 	);
 };

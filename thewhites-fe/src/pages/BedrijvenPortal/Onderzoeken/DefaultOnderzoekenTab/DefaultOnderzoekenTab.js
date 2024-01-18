@@ -6,7 +6,7 @@ import { Row, Container } from "react-bootstrap";
 const DefaultOnderzoekenTab = () => {
 	return (
 		<>
-			<PortalWelcomeMessage name="onderzoeken" text="Hier kunt u onderzoeken plaatsen, uw lopende onderzoeken bekijken en wijzigen en oude onderzoeken inzien." username="." />
+			<PortalWelcomeMessage name="onderzoeken" />
 			<Container>
 				<Row className="justify-content-center">
 					<NavigationCard

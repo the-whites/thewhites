@@ -188,7 +188,7 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 				<Row className="justify-content-center">
 					<Col md={{ span: 12, offset: 3 }}>
 						
-						<h1 className="text-center mb-4 header">Algemeen</h1>
+						<h2 className="text-center mb-4 header">Algemeen</h2>
 						<div className="mb-3">
 							<InputBar 
 								label="Onderzoek naam" 
@@ -237,7 +237,7 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								required={true} 
 								handleSelection={handleTypeSelection} />
 						</div>
-						<h1 className="text-center mb-3 header">Criteria</h1>
+						<h2 className="text-center mb-3 header">Criteria</h2>
 						<div className="mb-3" >
 							<MultiSelectionBar 
 								label="Uitstellen op beperking" 
@@ -265,7 +265,7 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 								isInvalid={isInvalidFields[ONDERZOEK_DATA.POSTCODE]} 
 								handleChange={handlePostcodeChange} />
 						</div>
-						<h1 className="text-center mb-3 header ">Datum</h1>
+						<h2 className="text-center mb-3 header ">Datum</h2>
 						<CustomDatePicker 
 							label="Start datum" 
 							required={true} 

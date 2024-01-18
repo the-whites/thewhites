@@ -53,6 +53,8 @@ const BeheerOnderzoek = () => {
 
 	return (
 		<>
+			<br />
+			<h1>Beheer onderzoek</h1>
 			<OnderzoekData onderzoek={onderzoek} aantalDeelnemers={deelnemers}/>
 		</>
 	);

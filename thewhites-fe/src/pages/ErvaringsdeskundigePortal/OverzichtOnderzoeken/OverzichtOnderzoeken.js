@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Container, Form, InputGroup, Pagination, Row } from "react-bootstrap";
 import { fetchApi, postApi } from "../../../hooks/useApi";
 import { OnderzoekInfo } from "./OnderzoekInfo";
@@ -13,10 +13,22 @@ const OverzichtOnderzoeken = () => {
 	const [results, setResults] = useState([]);
 	const [geselecteerdeOnderzoek, setGeselecteerdeOnderzoek] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [header, setHeader] = useState("Onderzoeken");
 	const [error, setError] = useState(null);
 	const startIndex = (currentPage - 1) * itemsPerPage;
 	const endIndex = startIndex + itemsPerPage;
 	const currentItems = results.slice(startIndex, endIndex);
+
+	useEffect(() => {
+		handleSearch();
+	}, []);
+
+	useEffect(() => {
+		if (geselecteerdeOnderzoek == null)
+			setHeader("Onderzoeken");
+		else
+			setHeader("Onderzoek: " + geselecteerdeOnderzoek.titel);
+	}, [geselecteerdeOnderzoek]);
   
 	const handleSearch = async () => {
 		const response = await fetchApi({route: "api/Onderzoek/onderzoeken"});
@@ -55,88 +67,100 @@ const OverzichtOnderzoeken = () => {
 
 	return (<>
 		<br />
-		{error}
-		{geselecteerdeOnderzoek && <Container>
+		<Container>
+			<h1>{header}</h1>
+			{error}
+			{geselecteerdeOnderzoek && <div>
 
-			<OnderzoekInfo onderzoek={geselecteerdeOnderzoek} />
+				<OnderzoekInfo onderzoek={geselecteerdeOnderzoek} />
 
-			<Row className="justify-content-md-center">
-				<Col md={8}>
+				<Row className="justify-content-md-center">
+					<Col md={8}>
+						<Button 
+							variant="outline-secondary" 
+							id="search-bar-onderzoeken-sbmt"
+							onClick={() => { setGeselecteerdeOnderzoek(null); setError(null);}}
+						
+						>
+						Terug
+						</Button>
+
+						<Button 
+							variant="success" 
+							id="search-bar-onderzoeken-sbmt"
+							onClick={handleDeelnemen}
+						
+						>
+						Deelnemen
+						</Button>
+					</Col>
+				</Row>
+			</div> }
+			<div hidden={geselecteerdeOnderzoek ? "hidden" : ""}>
+				<InputGroup className="mb-3">
+					<Form.Control
+						placeholder="Zoek iets hier..."
+						aria-label="Zoek waarde"
+						aria-describedby="search-bar-onderzoeken-sbmt"
+						value={query}
+						onChange={(e) => setQuery(e.target.value)}
+					/>
 					<Button 
 						variant="outline-secondary" 
 						id="search-bar-onderzoeken-sbmt"
-						onClick={() => { setGeselecteerdeOnderzoek(null); setError(null);}}
-					
+						onClick={handleSearch}
 					>
-					Terug
+					Zoek
 					</Button>
+				</InputGroup>
 
-					<Button 
-						variant="success" 
-						id="search-bar-onderzoeken-sbmt"
-						onClick={handleDeelnemen}
-					
-					>
-					Deelnemen
-					</Button>
-				</Col>
-			</Row>
-		</Container> }
-		<Container hidden={geselecteerdeOnderzoek ? "hidden" : ""}>
-			<InputGroup className="mb-3">
-				<Form.Control
-					placeholder="Zoeken..."
-					aria-label="Zoek waarde"
-					aria-describedby="search-bar-onderzoeken-sbmt"
-					value={query}
-					onChange={(e) => setQuery(e.target.value)}
-				/>
-				<Button 
-					variant="outline-secondary" 
-					id="search-bar-onderzoeken-sbmt"
-					onClick={handleSearch}
-				>
-				Zoek
-				</Button>
-			</InputGroup>
-
-			
-			<Container>
-				<Row className="justify-content-md-center">
-					<Col md={12}>
-						<Pagination className="justify-content-md-center">
-							{[...Array(Math.ceil(results.length / itemsPerPage))].map((_, index) => (
-								<Pagination.Item
-									key={index + 1}
-									active={index + 1 === currentPage}
-									onClick={() => setCurrentPage(index + 1)}
-								>
-									{index + 1}
-								</Pagination.Item>
-							))}
-						</Pagination>
-					</Col>
-
-					{currentItems.map((item) => (
-						<Col className="onderzoeken-search-item" key={item.id} md={7}>
-							<Card className="text-center">
-								<Card.Header>Bedrijf: {item.bedrijf.naam}</Card.Header>
-								<Card.Body>
-									<Card.Title>{item.titel}</Card.Title>
-									<Card.Text>
-										{item.beschrijving}
-									</Card.Text>
-									<Button variant="primary" onClick={() => setGeselecteerdeOnderzoek(item)}>Meer info</Button>
-								</Card.Body>
-								<Card.Footer className="text-muted">
-									Van start op {getFormattedDateLocale(new Date(item.startDatum))}
-								</Card.Footer>
-							</Card>
+				
+				<Container>
+					<Row className="justify-content-md-center">
+						<Col md={12}>
+							<Pagination className="justify-content-md-center">
+								{[...Array(Math.ceil(results.length / itemsPerPage))].map((_, index) => (
+									<Pagination.Item
+										key={index + 1}
+										active={index + 1 === currentPage}
+										onClick={() => setCurrentPage(index + 1)}
+										aria-label={"Open rij " + (index + 1) + " van de resultaten"}
+									>
+										{index + 1}
+									</Pagination.Item>
+								))}
+							</Pagination>
 						</Col>
-					))}
-				</Row>
-			</Container>
-	
+
+						{currentItems.map((item) => (
+							<Col className="onderzoeken-search-item" key={item.id} md={7}>
+								<Card className="text-center">
+									<Card.Header><h2>Onderzoek: {item.titel}</h2></Card.Header>
+									<Card.Body>
+										<Card.Text>
+											<p>{item.beschrijving}</p>
+											<br/><br/>
+											<span>Verzorgd door bedrijf {item.bedrijf.naam}</span>
+											<br/>
+											<span>Van start op {getFormattedDateLocale(new Date(item.startDatum))}</span>
+										</Card.Text>
+									</Card.Body>
+									<Card.Footer className="text-muted">
+										<Button 
+											variant="primary" 
+											aria-label={"Klik hier voor meer info over onderzoek " + item.titel} 
+											onClick={() => setGeselecteerdeOnderzoek(item)}
+										>
+											Meer info over dit onderzoek
+										</Button>
+									</Card.Footer>
+								</Card>
+							</Col>
+						))}
+					</Row>
+				</Container>
+		
+			</div>
 		</Container>
 	</>);
 };

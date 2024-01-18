@@ -5,7 +5,7 @@ import "./OnderzoekPreviewButton.css";
 
 const OnderzoekPreviewButton = ({ onderzoek, handleClickButton }) => {
 	const previewInfo = [
-		<h1 key="titel">{onderzoek.titel}</h1>,
+		<h3 key="titel">{onderzoek.titel}</h3>,
 		formatDateText(onderzoek.startDatum),
 		formatDateText(onderzoek.eindDatum),
 		<Button onClick={() => handleClickButton(onderzoek.id)}key="button-onderzoek" variant="primary">Bekijk onderzoek</Button> 

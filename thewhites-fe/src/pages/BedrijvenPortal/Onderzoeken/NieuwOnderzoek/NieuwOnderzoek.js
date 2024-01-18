@@ -87,6 +87,9 @@ const NieuwOnderzoek = () => {
 
 	return (
 		<>
+			<br />
+			<h1>Nieuw onderzoek</h1>
+			<br />
 			<NieuwOnderzoekForm handleOnderzoekDataChange={handleOnderzoekDataChange} beperkingen={beperkingen} typeOnderzoeken={typeOnderzoeken} />
 			{showModal && (
 				<ConfirmationModal
@@ -95,7 +98,7 @@ const NieuwOnderzoek = () => {
 					handleConfirm={handleConfirm}
 					title="Weet u het zeker?">
 					<div className="confirmation-border">
-						<h1>{onderzoekData[ONDERZOEK_DATA.NAAM]}</h1>
+						<h2>{onderzoekData[ONDERZOEK_DATA.NAAM]}</h2>
 						<p>{onderzoekData[ONDERZOEK_DATA.OMSCHRIJVING]}</p>
 						<p>
 							<strong>Type Onderzoek:</strong>{" "}
