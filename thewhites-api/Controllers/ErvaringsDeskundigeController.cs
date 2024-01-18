@@ -20,6 +20,7 @@ namespace AspTest.Controllers
         private readonly IBeperkingRepository _beperkingRepository;
         private readonly IOnderzoekTypeRepository _onderzoekTypeRepository;
         private readonly IOnderzoekRepository _onderzoekRepository;
+        private readonly IOnderzoekDeelnameRepository _onderzoekDeelnameRepository;
         private readonly AspDbContext _context;
         private readonly OnderzoekService _onderzoekService;
 
@@ -29,14 +30,16 @@ namespace AspTest.Controllers
             IBeperkingRepository beperkingRepository,
             IOnderzoekTypeRepository onderzoekTypeRepository,
             IOnderzoekRepository onderzoekRepository,
-            AspDbContext context,
-            OnderzoekService onderzoekService
+            OnderzoekService onderzoekService,
+            IOnderzoekDeelnameRepository onderzoekDeelnameRepository,
+            AspDbContext context
         )
         {
             _gebruikerRepository = gebruikerRepository;
             _beperkingRepository = beperkingRepository;
             _onderzoekTypeRepository = onderzoekTypeRepository;
             _onderzoekRepository = onderzoekRepository;
+            _onderzoekDeelnameRepository = onderzoekDeelnameRepository;
             _context = context;
             _onderzoekService = onderzoekService;
         }
@@ -224,7 +227,143 @@ namespace AspTest.Controllers
             return Ok();
         }
         
-        
+
+        [Authorize]
+        [HttpGet("mijn-onderzoeken")]
+        public async Task<IActionResult> GetMijnOnderzoeken()
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Gebruiker? gebruiker = _gebruikerRepository
+                .GetGebruikersWithQueryable()
+                .Include(g => g.Ervaringsdeskundige)
+                .FirstOrDefault(g4 => g4.Id == userId);
+
+            if (gebruiker == null)
+                return Unauthorized("Geen gebruiker gevonden.");
+            
+            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
+
+            if (ervaringsdeskundigeInfo == null)
+                return Unauthorized("Geen ervaringsdeskundige gevonden.");
+            
+            var onderzoeken = _onderzoekDeelnameRepository.GetDeelnemerOnderzoeken(ervaringsdeskundigeInfo)
+                .Where(onderzoek => onderzoek.EindDatum > DateTime.Now); // Zorg dat we alleen de lopende/aankomende onderzoeken tonen.
+
+            return Ok(onderzoeken);
+        }
+
+        [Authorize]
+        [HttpGet("mijn-onderzoek-feedback/{onderzoekId}")]
+        public IActionResult GetMijnOnderzoekFeedback([FromRoute] int onderzoekId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Gebruiker? gebruiker = _gebruikerRepository
+                .GetGebruikersWithQueryable()
+                .Include(g => g.Ervaringsdeskundige)
+                .FirstOrDefault(g4 => g4.Id == userId);
+
+            if (gebruiker == null)
+                return Unauthorized("Geen user gevonden.");
+            
+            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
+
+            if (ervaringsdeskundigeInfo == null)
+                return Unauthorized("Geen ervaringsdeskundige info gevonden.");
+            
+            var onderzoekDeelname = _context.OnderzoekDeelnames
+                .Include(od => od.Ervaringsdeskundige)
+                .FirstOrDefault(od => od.OnderzoekId == onderzoekId && od.Ervaringsdeskundige == ervaringsdeskundigeInfo);
+
+            if (onderzoekDeelname == null)
+                return Unauthorized("Geen deelname van dit onderzoek gevonden op dit account.");
+
+            return Ok(new {
+                feedback = onderzoekDeelname.Feedback
+            });
+        }
+
+        [Authorize]
+        [HttpPost("mijn-onderzoek-feedback/{onderzoekId}")]
+        public async Task<IActionResult> SetMijnOnderzoekFeedback(OnderzoekFeedbackBodyModel feedbackModel, [FromRoute] int onderzoekId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Gebruiker? gebruiker = _gebruikerRepository
+                .GetGebruikersWithQueryable()
+                .Include(g => g.Ervaringsdeskundige)
+                .FirstOrDefault(g4 => g4.Id == userId);
+
+            if (gebruiker == null)
+                return Unauthorized("No user found.");
+            
+            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
+
+            if (ervaringsdeskundigeInfo == null)
+                return Unauthorized("No ervaringsdeskundige info found.");
+            
+            var onderzoekDeelname = _context.OnderzoekDeelnames.FirstOrDefault(od => od.OnderzoekId == onderzoekId);
+
+            if (onderzoekDeelname == null)
+                return Unauthorized("Geen onderzoek gevonden.");
+            
+            onderzoekDeelname.Feedback = feedbackModel.feedback;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("mijn-onderzoek-verlaten/{onderzoekId}")]
+        public async Task<IActionResult> VerlaatMijnOnderzoek([FromRoute] int onderzoekId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Claim? UserIdClaim = User.FindFirst("user_id");
+            int.TryParse(UserIdClaim!.Value, out int userId);
+
+            Gebruiker? gebruiker = _gebruikerRepository
+                .GetGebruikersWithQueryable()
+                .Include(g => g.Ervaringsdeskundige)
+                .FirstOrDefault(g4 => g4.Id == userId);
+
+            if (gebruiker == null)
+                return Unauthorized("Geen gebruiker gevonden.");
+            
+            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
+
+            if (ervaringsdeskundigeInfo == null)
+                return Unauthorized("Geen ervaringsdeskundige gevonden.");
+            
+            var onderzoekDeelname = _context.OnderzoekDeelnames.FirstOrDefault(od => od.OnderzoekId == onderzoekId && od.Ervaringsdeskundige == ervaringsdeskundigeInfo);
+
+            if (onderzoekDeelname == null)
+                return Unauthorized("Geen deelname van dit onderzoek gevonden op dit account.");
+            
+            _context.OnderzoekDeelnames.Remove(onderzoekDeelname);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+
+
         [Authorize]
         [HttpPost("create-profiel-info")]
         public async Task<IActionResult> CreateUserProfileInfo(CreateErvaringsdeskundigeProfielModel profiel)

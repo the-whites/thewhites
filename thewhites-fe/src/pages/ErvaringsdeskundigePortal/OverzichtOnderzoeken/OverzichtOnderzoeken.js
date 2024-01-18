@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Container, Form, InputGroup, Pagination, Row } from "react-bootstrap";
 import { fetchApi, postApi } from "../../../hooks/useApi";
-import { OnderzoekInfo } from "./OnderzoekInfo";
+import { OnderzoekInfo } from "../../../components/OnderzoekInfo/OnderzoekInfo";
 import { formatResponseError, getFormattedDateLocale } from "../../../util/Util";
 
 
@@ -106,7 +106,7 @@ const OverzichtOnderzoeken = () => {
 						onChange={(e) => setQuery(e.target.value)}
 					/>
 					<Button 
-						variant="outline-secondary" 
+						variant="primary" 
 						id="search-bar-onderzoeken-sbmt"
 						onClick={handleSearch}
 					>
@@ -121,6 +121,7 @@ const OverzichtOnderzoeken = () => {
 							<Pagination className="justify-content-md-center">
 								{[...Array(Math.ceil(results.length / itemsPerPage))].map((_, index) => (
 									<Pagination.Item
+										
 										key={index + 1}
 										active={index + 1 === currentPage}
 										onClick={() => setCurrentPage(index + 1)}
@@ -138,7 +139,7 @@ const OverzichtOnderzoeken = () => {
 									<Card.Header><h2>Onderzoek: {item.titel}</h2></Card.Header>
 									<Card.Body>
 										<Card.Text>
-											<p>{item.beschrijving}</p>
+											<span>{item.beschrijving}</span>
 											<br/><br/>
 											<span>Verzorgd door bedrijf {item.bedrijf.naam}</span>
 											<br/>
@@ -147,7 +148,7 @@ const OverzichtOnderzoeken = () => {
 									</Card.Body>
 									<Card.Footer className="text-muted">
 										<Button 
-											variant="primary" 
+											variant="outline-primary" 
 											aria-label={"Klik hier voor meer info over onderzoek " + item.titel} 
 											onClick={() => setGeselecteerdeOnderzoek(item)}
 										>

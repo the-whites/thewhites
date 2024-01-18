@@ -19,5 +19,29 @@ namespace AspTest.Repository
                 .Where(p => p.Onderzoek == onderzoek)
                 .ToList();
         }
+
+        public ICollection<Onderzoek> GetDeelnemerOnderzoeken(Ervaringsdeskundige deelnemer)
+        {
+            var deelnemerDeelnames =_context.OnderzoekDeelnames
+                .Include(od => od.Ervaringsdeskundige)
+
+                // Omdat dit nog een oudere versie van aspnetcore/efcore is, moet dit zo en is er geen AlsoInclude().
+                .Include(od => od.Onderzoek)
+                    .ThenInclude(o => o.Bedrijf)
+                .Include(od => od.Onderzoek)
+                    .ThenInclude(o => o.LeeftijdCriteria)
+                .Include(od => od.Onderzoek)
+                    .ThenInclude(o => o.OnderzoekCategories)
+                        .ThenInclude(oc => oc.Type)
+                .Include(od => od.Onderzoek)
+                    .ThenInclude(o => o.PostcodeCriteria)
+                .Include(od => od.Onderzoek)
+                    .ThenInclude(o => o.BeperkingCriteria)
+                        .ThenInclude(bc => bc.Beperking)
+
+                .Where(p => p.ErvaringsdeskundigeId == deelnemer.Id);
+            
+            return deelnemerDeelnames.Select((deelname) => deelname.Onderzoek).ToList();
+        }
     }
 }
