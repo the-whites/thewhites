@@ -36,7 +36,7 @@ const NavigationBar = () => {
 						{username ? 
 							<UserDropdown />
 							: 
-							<Nav.Link as={Link} to="login" className="nav-bar-item">Login</Nav.Link>
+							""
 						}
 					</Nav>
 				</Navbar.Collapse>
