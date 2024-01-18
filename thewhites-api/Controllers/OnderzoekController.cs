@@ -149,7 +149,7 @@ namespace AspTest.Controllers
 
         [Authorize]
         [HttpPost("wijzig/{onderzoekId}")]
-        public async Task<IActionResult> EditOnderzoek([FromBody] OnderzoekBodyModel onderzoek, [FromRoute] int onderzoekId)
+        public async Task<IActionResult> EditOnderzoek(OnderzoekBodyModel onderzoek, [FromRoute] int onderzoekId)
         {
             if (!ModelState.IsValid)
             {
