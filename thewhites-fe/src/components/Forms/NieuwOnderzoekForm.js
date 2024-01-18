@@ -94,6 +94,10 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 		}
 
 		setLocalOnderzoekData(prevState => ({...prevState, postcode: postcoden }));
+
+		setInvalidPostcodes(() => postcoden
+			.map(postcode => postcode.replace(" ", ""))
+			.filter(postcode => !postcodeValidator(postcode, "NL")));		
 	};
 
 	const handleSubmit = (event) => {
@@ -139,8 +143,6 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 				invalidFields[ONDERZOEK_DATA.LEEFTIJD] = true;
 		});
 
-		validatePostcodes();
-
 		if(invalidPostcodes.length !== 0 && !invalidPostcodes.includes("")) {
 			invalidFields[ONDERZOEK_DATA.POSTCODE] = true;
 		}
@@ -149,17 +151,8 @@ const NieuwOnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderz
 		return Object.values(invalidFields).every(value => value === false);
 	};
 
-	const validatePostcodes = () => {
-		const tempInvalidPostcodes = localOnderzoekData[ONDERZOEK_DATA.POSTCODE]
-			.map(postcode => postcode.replace(" ", ""))
-			.filter(postcode => !postcodeValidator(postcode, "NL"));
-
-		setInvalidPostcodes(tempInvalidPostcodes);
-	};
-
 	useEffect(() => {
-		const hasInvalidPostcodes = invalidPostcodes.length !== 0 && !invalidPostcodes.includes("");
-		setIsInvalidFields(({ ...isInvalidFields, postcode: hasInvalidPostcodes }));
+
 	}, [invalidPostcodes]);
 
 	useEffect(() => {
