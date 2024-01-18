@@ -11,6 +11,7 @@ const medischepagina = () => {
 	const { profielData, setProfielData } = useContext(ProfielContext);
 	const navigate = useNavigate();
 	const [onderzoekTypes, setOnderzoekTypes] = useState([]);
+	const [akkoordprivacyverklaring, setAkkoordprivacyverklaring] = useState(false);
 
 	const navigateBack = () => {
 		navigate("/profielPagina");
@@ -106,12 +107,27 @@ const medischepagina = () => {
 							checked={profielData.toestemmingUitnodigingen || false}  
 							onChange={(event) => updateProfielData("toestemmingUitnodigingen", event.target.checked)}
 						/>
-					</div>					
+					</div>	
+					
+					<div className="bewerk-profiel-checkbox">
+						<label htmlFor="akkoord-privacy">Akkoord met privacyverklaring</label>
+						<input 
+							type="checkbox" 
+							id="akkoord-privacy" 
+							name="akkoord-met-privacy" 
+							checked={akkoordprivacyverklaring}  
+							onChange={(event) => setAkkoordprivacyverklaring(event.target.checked)}	
+							required
+						/>
+					</div>	
+
+					<p>U vindt de privacyverklaring <a href="#">hier</a></p>				
 				</Row>
 				<div className="button-container">
 					<Button variant="secondary" type="button" onClick={navigateBack} className="button-spacing">Terug</Button>
 					<Button type="submit">Volgende</Button>
 				</div>
+				
 			</Container>
 		</Form>
 	);
