@@ -107,7 +107,7 @@ const Meldingen = () => {
 								<Card key={index} style={{ width: "30rem", margin: "10px" }}>
 									<Card.Header><h2>{melding.status ? "Gelezen" : "Niet gelezen"}</h2></Card.Header>
 									<Card.Body>
-										<Card.Title><h1 className="melding-titel">Melding titel</h1></Card.Title>
+										<Card.Title><h1 className="melding-titel">{melding.titel}</h1></Card.Title>
 										<Card.Subtitle className="mb-2 text-muted"><h3 className="datum-ontvangen">{formatDateText(new Date(melding.datum))} ontvangen</h3></Card.Subtitle>
 										<Card.Text><p>{melding.tekst}</p></Card.Text>
 									</Card.Body>
