@@ -21,6 +21,7 @@ namespace AspTest.Controllers
         private readonly IOnderzoekTypeRepository _onderzoekTypeRepository;
         private readonly IOnderzoekRepository _onderzoekRepository;
         private readonly IOnderzoekDeelnameRepository _onderzoekDeelnameRepository;
+        private readonly IErvaringsdeskundigeRepository _ervaringsdeskundigeRepository;
         private readonly AspDbContext _context;
         private readonly OnderzoekService _onderzoekService;
 
@@ -32,6 +33,7 @@ namespace AspTest.Controllers
             IOnderzoekRepository onderzoekRepository,
             OnderzoekService onderzoekService,
             IOnderzoekDeelnameRepository onderzoekDeelnameRepository,
+            IErvaringsdeskundigeRepository ervaringsdeskundigeRepository,
             AspDbContext context
         )
         {
@@ -40,6 +42,7 @@ namespace AspTest.Controllers
             _onderzoekTypeRepository = onderzoekTypeRepository;
             _onderzoekRepository = onderzoekRepository;
             _onderzoekDeelnameRepository = onderzoekDeelnameRepository;
+            _ervaringsdeskundigeRepository = ervaringsdeskundigeRepository;
             _context = context;
             _onderzoekService = onderzoekService;
         }
@@ -393,16 +396,25 @@ namespace AspTest.Controllers
 
             if (gebruiker == null)
                 return Unauthorized("No user found.");
-            
-            var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
 
-            if (ervaringsdeskundigeInfo == null)
-                return Unauthorized("No ervaringsdeskundige info found.");
+            var ervaringsdeskundigeInfo = await _ervaringsdeskundigeRepository.CreateErvaringsdeskundigeVoorGebruiker(
+                    gebruiker,
+                    profiel.postcode,
+                    profiel.telefoonnummer,
+                    profiel.beschikbaar,
+                    profiel.geboortedatum.Date,
+                    profiel.hulpmiddelen,
+                    profiel.aandoening,
+                    false
+            );
 
-            // maak beperking & onderzoek types voor de ervaringsdeskundige leeg
-            await _beperkingRepository.ClearBeperkingenGebruiker(ervaringsdeskundigeInfo, false);
-            await _onderzoekTypeRepository.ClearOnderzoekTypesGebruiker(ervaringsdeskundigeInfo, false);
-                       
+            await _ervaringsdeskundigeRepository.AddBenaderingVoorkeurGebruiker(
+                ervaringsdeskundigeInfo, 
+                profiel.telefonischBenadering,
+                profiel.portaalBenadering,
+                profiel.toestemmingUitnodigingen,
+                false
+            );       
             
             // set beperking types
             try {
@@ -420,19 +432,9 @@ namespace AspTest.Controllers
             }
 
             // set overige info
-            ervaringsdeskundigeInfo.Geboortedatum = profiel.geboortedatum;
-            ervaringsdeskundigeInfo.Telefoonnummer = profiel.telefoonnummer;
-            ervaringsdeskundigeInfo.Beschikbaarheid = profiel.beschikbaar;
-            ervaringsdeskundigeInfo.Hulpmiddel = profiel.hulpmiddelen;
-            ervaringsdeskundigeInfo.Ziekte = profiel.aandoening;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Telefonisch = profiel.telefonischBenadering;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.Portaal = profiel.portaalBenadering;
-            ervaringsdeskundigeInfo.ErvaringsdeskundigeVoorkeur.ToestemmingUitnodigingen = profiel.toestemmingUitnodigingen;
-            ervaringsdeskundigeInfo.Postcode = profiel.postcode;
             gebruiker.Achternaam = profiel.achternaam;
             gebruiker.Voornaam = profiel.voornaam;
             gebruiker.SetupProfielInfo = true;
-
             
             await _context.SaveChangesAsync();
           

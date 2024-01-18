@@ -65,14 +65,9 @@ namespace AspTest.Controllers
             // Register stukje
             if (gebruiker == null)
             {
+
                 // Maak gebruiker
                 gebruiker = await _gebruikerRepository.CreateGebruiker(payload.GivenName, payload.FamilyName, payload.Subject, payload.Email);
-
-                // TEMPORARY: maak test data alvast (omdat we nog geen register informatie kunnen verkrijgen)
-                var result = await CreateTestDataVoorRegistratie(gebruiker);
-
-                if (result != null)
-                    return result;
             }
 
             // Maak een token
@@ -159,44 +154,6 @@ namespace AspTest.Controllers
             {
                 return BadRequest("Something went wrong while parsing the user id.");
             }
-        }
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IActionResult?> CreateTestDataVoorRegistratie(Gebruiker gebruiker)
-        {
-            await _ervaringsdeskundigeRepository.CreateErvaringsdeskundigeVoorGebruiker(
-                    gebruiker,
-                    "1234AB",
-                    "0612345678",
-                    "test",
-                    new DateTime(2024, 1, 6),
-                    "knuppel",
-                    "hoofdpijn van die mannetjes",
-                    false
-                );
-
-            Console.WriteLine("CREATING TEST DATA");
-            // Maak alvast ervaringsdeskundige, omdat we dit nodig hebben bij de volgende twee queries.
-            await _context.SaveChangesAsync();
-
-            await _ervaringsdeskundigeRepository.AddBenaderingVoorkeurGebruiker(gebruiker.Ervaringsdeskundige!, true, false, true, false);
-
-            OnderzoekType? onderzoekType = _onderzoekTypeRepository.GetOnderzoekTypeById(2);
-
-            if (onderzoekType == null)
-                return StatusCode(500, "Could not create temporary register info. Check LoginController. onderzoekType not found.");
-            
-            Beperking? beperking = _beperkingRepository.GetBeperkingById(2);
-        
-            if (beperking == null)
-                return StatusCode(500, "Could not create temporary register info. Check LoginController. beperking not found.");
-
-            await _onderzoekTypeRepository.AddVoorkeurOnderzoekTypeGebruiker(gebruiker.Ervaringsdeskundige!, onderzoekType, false);
-            await _beperkingRepository.AddBeperkingBijGebruiker(gebruiker.Ervaringsdeskundige!, beperking, false);
-
-            await _context.SaveChangesAsync();
-
-            return null;
         }
 
         // Met deze route kun je checken of je ingelogd ben en verkrijg je jouw lokale id en google id.
