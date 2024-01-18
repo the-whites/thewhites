@@ -91,7 +91,7 @@ const NieuwOnderzoek = () => {
 			{showModal && (
 				<ConfirmationModal
 					show={showModal}
-					handleClose={() => console.log(onderzoekData[ONDERZOEK_DATA.LEEFTIJD])}
+					handleClose={handleCloseModal}
 					handleConfirm={handleConfirm}
 					title="Weet u het zeker?">
 					<div className="confirmation-border">
