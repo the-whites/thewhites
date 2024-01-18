@@ -10,6 +10,7 @@ namespace AspTest.Models
         [JsonIgnore]
         public int OnderzoekId { get; set; }
         public Onderzoek Onderzoek { get; set; }
+        public string Feedback { get; set; }
         public bool status { get; set;}
     }
 }
