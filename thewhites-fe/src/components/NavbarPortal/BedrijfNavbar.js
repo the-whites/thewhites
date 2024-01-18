@@ -11,7 +11,8 @@ const BedrijfNavbar = () => {
 				{ name: "Onderzoeken", path: "./onderzoeken" },
 				{ name: "Chat", path: "./chat" },
 				{ name: "Profiel", path: "./profiel" },
-				{ name: "Meldingen", path: "/meldingen" }
+				{ name: "Meldingen", path: "/meldingen" },
+				{ name: "Ervaringsdeskundigen", path: "./ervaringsdeskundigen" }
 			]} 
 		/>
 	);
