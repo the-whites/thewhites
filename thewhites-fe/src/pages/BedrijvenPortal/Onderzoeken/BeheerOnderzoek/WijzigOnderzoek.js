@@ -134,13 +134,6 @@ const WijzigOnderzoek = () => {
 		
 	}, []);
 
-	useEffect(() => {
-		if(onderzoek == null) return;
-		console.log(new Date(onderzoek.startDatum) > new Date());
-
-	}, [onderzoek]);
-	
-
 	return (
 		<>
 			<br />
