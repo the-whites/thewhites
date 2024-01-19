@@ -1,0 +1,19 @@
+.contact {
+    min-height: 100px;
+    text-align: left;
+    margin: 0;
+    padding-left: 200px;
+}
+.header{
+    margin-top: 35px
+}
+
+.adres,
+.contact-opnemen
+{
+    margin-top: 35px;
+}
+
+p {
+    margin-bottom: 10px
+}
