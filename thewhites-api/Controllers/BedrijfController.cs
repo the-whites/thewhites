@@ -13,10 +13,13 @@ namespace AspTest.Controllers
         private readonly IBedrijfRepository bedrijfRepository;
         private readonly IOnderzoekRepository onderzoekRepository;
 
-        public BedrijfController(IBedrijfRepository bedrijfRepository, IOnderzoekRepository onderzoekRepository)
+        private readonly IErvaringsdeskundigeRepository ervaringsdeskundigeRepository;
+
+        public BedrijfController(IBedrijfRepository bedrijfRepository, IOnderzoekRepository onderzoekRepository, IErvaringsdeskundigeRepository ervaringsdeskundigeRepository)
         {
             this.bedrijfRepository = bedrijfRepository;
             this.onderzoekRepository = onderzoekRepository;
+            this.ervaringsdeskundigeRepository = ervaringsdeskundigeRepository;
         }
 
         [Authorize]
@@ -68,6 +71,13 @@ namespace AspTest.Controllers
             }
             
             return Ok(onderzoek);
+        }
+        [Authorize]
+        [HttpGet("alleErvaringsdeskundigen")]
+        public async Task<IActionResult> GetAllErvaringsdeskundigen()
+        {
+            var ervaringsdeskundigenDetails = await ervaringsdeskundigeRepository.GetAllErvaringsdeskundigenDetailsAsync();
+            return Ok(ervaringsdeskundigenDetails);
         }
     }
 }

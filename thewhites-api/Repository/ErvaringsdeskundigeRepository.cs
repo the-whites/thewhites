@@ -1,14 +1,17 @@
 using AspTest.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspTest.Repository
 {
     public class ErvaringsdeskundigeRepository : IErvaringsdeskundigeRepository
     {
         private readonly AspDbContext _context;
-
-        public ErvaringsdeskundigeRepository(AspDbContext context)
+        private readonly ILogger<ErvaringsdeskundigeRepository> _logger;
+        public ErvaringsdeskundigeRepository(AspDbContext context, ILogger<ErvaringsdeskundigeRepository> logger)
         {
             _context = context;
+            _logger = logger;
+
         }
 
         public async Task<Ervaringsdeskundige> CreateErvaringsdeskundigeVoorGebruiker(
@@ -64,5 +67,25 @@ namespace AspTest.Repository
 
             return ervBenaderingVoorkeur;
         }
+        public async Task<IEnumerable<object>> GetAllErvaringsdeskundigenDetailsAsync()
+    {
+        var ervaringsdeskundigen = await _context.Ervaringsdeskundigen
+            .Select(e => new 
+            {
+                e.Id,
+                e.Postcode,
+                e.Telefoonnummer,
+                Gebruikersnaam = e.Gebruiker.Voornaam + " " + e.Gebruiker.Achternaam,
+                e.Hulpmiddel,
+                e.Ziekte,
+                e.Beschikbaarheid,
+                e.Geboortedatum,
+                e.GebruikerId
+            })
+            .ToListAsync();
+
+        _logger.LogInformation($"Opgehaald {ervaringsdeskundigen.Count} ervaringsdeskundigen uit de database.");
+        return ervaringsdeskundigen;
     }
+}
 }
