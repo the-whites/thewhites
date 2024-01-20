@@ -12,8 +12,14 @@ namespace AspTest.Controllers
     {
         private readonly IGebruikerRepository _gebruikerRepository;
         private readonly INotificatieRepository _notificatieRepository;
+        private readonly IErvaringsdeskundigeRepository _ervaringsdeskundigeRepository;
+        private readonly IBedrijfRepository _bedrijfRepository;
 
-        public GebruikerController(IGebruikerRepository gebruikerRepository, INotificatieRepository notificatieRepository)
+        public GebruikerController(
+            IGebruikerRepository gebruikerRepository, 
+            INotificatieRepository notificatieRepository,
+            IErvaringsdeskundigeRepository ervaringsdeskundigeRepository,
+            IBedrijfRepository bedrijfRepository)
         {
             _gebruikerRepository = gebruikerRepository;
             _notificatieRepository = notificatieRepository;
@@ -120,5 +126,24 @@ namespace AspTest.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpPost("verwijder-account")]
+        public IActionResult DeleteAccount()
+        {
+            Claim? UserIdClaim = User.FindFirst("user_id");
+
+            int.TryParse(UserIdClaim!.Value, out int userId);
+            
+            Gebruiker? gebruiker = _gebruikerRepository.GetGebruikerById(userId);
+
+            if(gebruiker == null)
+            {
+                return Unauthorized("Gebruiker bestaat niet");
+            }
+
+            Response.Cookies.Delete("refresh_token");
+            _gebruikerRepository.DeleteGebruiker(gebruiker);
+            return Ok();
+        }
     }
 }
