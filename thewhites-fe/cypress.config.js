@@ -5,7 +5,12 @@ module.exports = defineConfig({
     devServer: {
       framework: "create-react-app",
       bundler: "webpack",
-      port: 8055
+    },
+  },
+
+  e2e: {
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
     },
   },
 });
