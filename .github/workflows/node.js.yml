@@ -38,12 +38,12 @@ jobs:
     - name: Run cypress component tests
       working-directory: thewhites-fe
       run: |
-        npm cypress run --component
+        npx cypress run --component
 
     - name: Run cypress end-to-end tests
       working-directory: thewhites-fe
       run: |
-        npm cypress run --e2e
+        npx cypress run --e2e
 
     - name: Code Quality (ESLint)
       working-directory: thewhites-fe
