@@ -17,7 +17,9 @@
         }
     },
     "ignorePatterns": [
-        "build/*"
+        "build/*",
+        "cypress/*",
+        "**/*.cy.js"
     ],
     "plugins": [
         "react"
