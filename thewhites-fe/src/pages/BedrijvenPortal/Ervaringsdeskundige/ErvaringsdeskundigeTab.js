@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/PortalWelcomeMessage";
 import { fetchApi } from "../../../hooks/useApi";
+import "./ErvaringsdeskundigeTab.css"; // Zorg dat je het CSS-bestand importeert
+import { Row, Table } from "react-bootstrap";
 
 const ErvaringsdeskundigeTab = () => {
 	const [bedrijfsnaam] = useState("Test Bedrijf");
@@ -13,8 +15,7 @@ const ErvaringsdeskundigeTab = () => {
 			setIsLoading(true);
 			setError("");
 			try {
-				// De route is een string die de URL naar de API endpoint specificeert
-				const response = await fetchApi({route: "/api/bedrijf/alleErvaringsdeskundigen"});
+				const response = await fetchApi({route: "api/bedrijf/alleErvaringsdeskundigen"});
 				if (response.status === 200) {
 					setErvaringsdeskundigen(response.data);
 				} else {
@@ -22,7 +23,6 @@ const ErvaringsdeskundigeTab = () => {
 				}
 			} catch (error) {
 				setError(`Fout bij het ophalen van de gegevens: ${error}`);
-				console.error(`Fout bij het ophalen van de gegevens: ${error}`);
 			}
 			setIsLoading(false);
 		};
@@ -33,32 +33,24 @@ const ErvaringsdeskundigeTab = () => {
 	return (
 		<>
 			<PortalWelcomeMessage name="Ervaringsdeskundige" username={bedrijfsnaam} />
-			<p>Hier kunt u informatie zien van alle ervaringsdeskundigen.</p>
-
-			{error && <p className="error">{error}</p>}
-
-			{isLoading ? (
-				<p>Loading...</p>
-			) : (
-				ervaringsdeskundigen.length > 0 ? (
-					<ul>
-						{ervaringsdeskundigen.map((deskundige) => (
-							// Zorg ervoor dat je een unieke key prop gebruikt, bijvoorbeeld de ID
-							<li key={deskundige.id}>
-								<p>Naam: {deskundige.gebruikersnaam} {deskundige.achternaam}</p>
-								<p>Postcode: {deskundige.postcode}</p>
-								<p>Telefoonnummer: {deskundige.telefoonnummer}</p>
-								<p>Hulpmiddel: {deskundige.hulpmiddel}</p>
-								<p>Ziekte: {deskundige.ziekte}</p>
-								<p>Beschikbaarheid: {deskundige.beschikbaarheid}</p>
-								
-							</li>
-						))}
-					</ul>
-				) : (
-					<p>Geen ervaringsdeskundigen gevonden.</p>
-				)
-			)}
+			<Row className="ervaringsdeskundige-list">
+				<p>Hier kunt u informatie zien van alle ervaringsdeskundigen:</p>
+				{error && <p className="error">{error}</p>}
+				{isLoading ? <p>Loading...</p> : (
+					ervaringsdeskundigen.length > 0 ? (
+						ervaringsdeskundigen.map((deskundige) => (
+							<div key={deskundige.id} className="deskundige-container">
+								<div className="deskundige-veld"><strong>Naam:</strong> {deskundige.gebruikersnaam}</div>
+								<div className="deskundige-veld"><strong>Postcode:</strong> {deskundige.postcode}</div>
+								<div className="deskundige-veld"><strong>Telefoonnummer:</strong> {deskundige.telefoonnummer}</div>
+								<div className="deskundige-veld"><strong>Hulpmiddel:</strong> {deskundige.hulpmiddel}</div>
+								<div className="deskundige-veld"><strong>Ziekte:</strong> {deskundige.ziekte}</div>
+								<div className="deskundige-veld"><strong>Beschikbaarheid:</strong> {deskundige.beschikbaarheid}</div>
+							</div>
+						))
+					) : <p>Geen ervaringsdeskundigen gevonden.</p>
+				)}
+			</Row>
 		</>
 	);
 };
