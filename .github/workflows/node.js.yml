@@ -29,12 +29,21 @@ jobs:
         cache: 'npm'
         cache-dependency-path: thewhites-fe/package-lock.json
 
-    - name: Install dependencies and run tests
+    - name: Install dependencies and run
       working-directory: thewhites-fe
       run: |
         npm ci
         CI=false npm run build --if-present
-        npx jest --passWithNoTests
+
+    - name: Run cypress component tests
+      working-directory: thewhites-fe
+      run: |
+        npm cypress run --component
+
+    - name: Run cypress end-to-end tests
+      working-directory: thewhites-fe
+      run: |
+        npm cypress run --e2e
 
     - name: Code Quality (ESLint)
       working-directory: thewhites-fe
