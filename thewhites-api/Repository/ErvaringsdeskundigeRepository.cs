@@ -66,26 +66,24 @@ namespace AspTest.Repository
                 await _context.SaveChangesAsync();
 
             return ervBenaderingVoorkeur;
-        }
-        public async Task<IEnumerable<object>> GetAllErvaringsdeskundigenDetailsAsync()
-    {
-        var ervaringsdeskundigen = await _context.Ervaringsdeskundigen
-            .Select(e => new 
+            }
+            public async Task<IEnumerable<ErvaringsdeskundigeDTO>> GetAllErvaringsdeskundigenDetailsAsync()
             {
-                e.Id,
-                e.Postcode,
-                e.Telefoonnummer,
-                Gebruikersnaam = e.Gebruiker.Voornaam + " " + e.Gebruiker.Achternaam,
-                e.Hulpmiddel,
-                e.Ziekte,
-                e.Beschikbaarheid,
-                e.Geboortedatum,
-                e.GebruikerId
-            })
-            .ToListAsync();
+                return await _context.Ervaringsdeskundigen
+                    .Select(e => new ErvaringsdeskundigeDTO
+                    {
+                        Id = e.Id,
+                        Postcode = e.Postcode,
+                        Telefoonnummer = e.Telefoonnummer,
+                        Gebruikersnaam = e.Gebruiker.Voornaam + " " + e.Gebruiker.Achternaam,
+                        Hulpmiddel = e.Hulpmiddel,
+                        Ziekte = e.Ziekte,
+                        Beschikbaarheid = e.Beschikbaarheid,
+                        Geboortedatum = e.Geboortedatum,
+                        GebruikerId = e.GebruikerId
+                    })
+                    .ToListAsync();
+            }
 
-        _logger.LogInformation($"Opgehaald {ervaringsdeskundigen.Count} ervaringsdeskundigen uit de database.");
-        return ervaringsdeskundigen;
-    }
-}
+        }
 }

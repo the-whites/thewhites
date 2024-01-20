@@ -6,25 +6,23 @@ const ErvaringsdeskundigeTab = () => {
 	const [bedrijfsnaam] = useState("Test Bedrijf");
 	const [isLoading, setIsLoading] = useState(true);
 	const [ervaringsdeskundigen, setErvaringsdeskundigen] = useState([]);
-	const [error, setError] = useState(""); // State voor het opslaan van eventuele fouten
+	const [error, setError] = useState("");
 
 	useEffect(() => {
 		const fetchErvaringsdeskundigen = async () => {
 			setIsLoading(true);
-			setError(""); // Reset de foutmelding
+			setError("");
 			try {
-				const response = await fetchApi({route: "api/bedrijf/alleErvaringsdeskundigen"});
+				// De route is een string die de URL naar de API endpoint specificeert
+				const response = await fetchApi({route: "/api/bedrijf/alleErvaringsdeskundigen"});
 				if (response.status === 200) {
 					setErvaringsdeskundigen(response.data);
 				} else {
-					// Sla de foutmelding op in de staat en log naar de console
-					setError(`Error fetching data. Status: ${response.status}`);
-					console.error(`Error fetching data. Status: ${response.status}`);
+					setError(`Fout bij het ophalen van gegevens. Status: ${response.status}`);
 				}
 			} catch (error) {
-				// Sla de foutmelding op in de staat en log naar de console
-				setError(`Error trying to fetch the data: ${error}`);
-				console.error(`Error trying to fetch the data: ${error}`);
+				setError(`Fout bij het ophalen van de gegevens: ${error}`);
+				console.error(`Fout bij het ophalen van de gegevens: ${error}`);
 			}
 			setIsLoading(false);
 		};
@@ -45,10 +43,15 @@ const ErvaringsdeskundigeTab = () => {
 				ervaringsdeskundigen.length > 0 ? (
 					<ul>
 						{ervaringsdeskundigen.map((deskundige) => (
-							<li key={deskundige.Id}>
-								<p>Naam: {deskundige.Gebruikersnaam || "Niet vermeld"}</p>
-								<p>Postcode: {deskundige.Postcode || "Niet vermeld"}</p>
-								<p>Telefoonnummer: {deskundige.Telefoonnummer || "Niet vermeld"}</p>
+							// Zorg ervoor dat je een unieke key prop gebruikt, bijvoorbeeld de ID
+							<li key={deskundige.id}>
+								<p>Naam: {deskundige.gebruikersnaam} {deskundige.achternaam}</p>
+								<p>Postcode: {deskundige.postcode}</p>
+								<p>Telefoonnummer: {deskundige.telefoonnummer}</p>
+								<p>Hulpmiddel: {deskundige.hulpmiddel}</p>
+								<p>Ziekte: {deskundige.ziekte}</p>
+								<p>Beschikbaarheid: {deskundige.beschikbaarheid}</p>
+								
 							</li>
 						))}
 					</ul>
