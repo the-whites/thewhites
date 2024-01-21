@@ -47,5 +47,11 @@ namespace AspTest.Repository
         {
             return _context.Gebruikers;
         }
+
+        public void DeleteGebruiker(Gebruiker gebruiker)
+        {
+            _context.Gebruikers.Remove(gebruiker);
+            _context.SaveChanges();
+        }
     }
 }

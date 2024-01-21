@@ -7,6 +7,7 @@ import { Alert, Button, Container, Row } from "react-bootstrap";
 import { BewerkProfielPreview } from "./BewerkProfielPreview";
 import { BewerkProfielForm } from "./BewerkProfielForm";
 import { formatResponseError } from "../../../util/Util";
+import DeleteAccountButton from "../../../components/DeleteAccountButton/DeleteAccountButton";
 
 
 const ProfielErvaringsdeskundige = () => {
@@ -112,16 +113,21 @@ const ProfielErvaringsdeskundige = () => {
 			<div hidden={isConfirming || isLoading ? "hidden" : ""}>
 
 				<br />
-				{!isLoading && <BewerkProfielForm 
-					profielData={profielData} 
-					setProfielData={(newItems) => setProfielData(newItems)}
-					handleSubmitForm={handleSubmitForm} 
-					formIsValidated={formIsValidated} 
-					beperkingItems={beperkingItems}
-					onderzoekTypeItems={onderzoekTypeItems}
-				/> }
-
+				{!isLoading && 
+				<>
+					<BewerkProfielForm 
+						profielData={profielData} 
+						setProfielData={(newItems) => setProfielData(newItems)}
+						handleSubmitForm={handleSubmitForm} 
+						formIsValidated={formIsValidated} 
+						beperkingItems={beperkingItems}
+						onderzoekTypeItems={onderzoekTypeItems}
+					/> 
+					<DeleteAccountButton />
+				</>}
 			</div>
+
+			
 		</>
 	);
 };
