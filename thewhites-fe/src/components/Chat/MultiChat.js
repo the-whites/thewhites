@@ -1,17 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import { fetchApi, postApi } from "../../../hooks/useApi";
-import { UserContext } from "../../../contexts/UserProvider";
+import { fetchApi, postApi } from "../../hooks/useApi";
+import { UserContext } from "../../contexts/UserProvider";
 import { SingleChat } from "./SingleChat";
 
 export const MultiChat = () => {
-	const [chats, setChats] = useState([]);
-	const [testInt, setTestInt] = useState(1);
 	const [selectedChatPartner, setSelectedChatPartner] = useState(null);
 	const [selectedChatPartnerMessages, setSelectedChatPartnerMessages] = useState([]);
-	const [newMessage, setNewMessage] = useState("");
 	const [chatPartners, setChatPartners] = useState([]);
-	const { userId } = useContext(UserContext);
 
 	const fetchMessages = async () => {
 		const response = await fetchApi({route: "api/Gebruiker/chats/" + selectedChatPartner.id});

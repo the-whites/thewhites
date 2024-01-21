@@ -3,13 +3,11 @@ import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/Porta
 import { Button,  Card,  Col, Container, Row } from "react-bootstrap";
 
 import "./style.css";
-import { UserContext } from "../../../contexts/UserProvider";
 import { fetchApi, postApi } from "../../../hooks/useApi";
-import { SingleChat } from "./SingleChat";
+import { SingleChat } from "../../../components/Chat/SingleChat";
 import { useParams } from "react-router-dom";
 
 const ChatErvaringsdeskundige = () => {
-	const [ErvaringsdeskundigeNaam] = useState("Test Ervaringsdeskundige"); // moet de beheerdersnaam nog uit de database halen/ die inlogd is
 	const { id } = useParams(); // partner id voor chat
 	const [toNaam, setToNaam] = useState("");
 	const [messages, setMessages] = useState([]);

@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Badge, Button, Card, Col, Row } from "react-bootstrap";
-import { fetchApi } from "../../../hooks/useApi";
-import { UserContext } from "../../../contexts/UserProvider";
+import { fetchApi } from "../../hooks/useApi";
+import { UserContext } from "../../contexts/UserProvider";
 
 export const SingleChat = ({toNaam, messages, handleVersturen = (newMessage) => {}}) => {
-	const [chats, setChats] = useState([]);
-	const [testInt, setTestInt] = useState(1);
-	const [selectedChat, setSelectedChat] = useState(null);
 	const [newMessage, setNewMessage] = useState("");
 	const { userId } = useContext(UserContext);
 
