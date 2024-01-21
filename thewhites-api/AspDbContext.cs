@@ -27,6 +27,7 @@ namespace AspTest
         public DbSet<ErvaringsdeskundigeBenaderingVoorkeur> ErvaringsdeskundigeBenaderingVoorkeuren { get; set; }
         public DbSet<ErvaringsdeskundigeOnderzoekType> ErvaringsdeskundigeVoorkeurOnderzoekTypes { get; set; }
         public DbSet<OnderzoekDeelname> OnderzoekDeelnames { get; set;}
+        public DbSet<Chat> Chats {get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
