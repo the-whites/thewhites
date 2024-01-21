@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using AspTest.Models;
 
 namespace AspTest.Util
 {
@@ -18,6 +19,10 @@ namespace AspTest.Util
                 age = age - 1;
 
             return age;
+        }
+
+        public static string GetFullNaamFromGebruiker(Gebruiker gebruiker){
+        return gebruiker.Voornaam + " " + gebruiker.Achternaam;
         }
     }
 }

@@ -5,6 +5,7 @@ using AspTest.Services;
 using AspTest.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // WIP
 namespace AspTest.Controllers
@@ -19,14 +20,15 @@ namespace AspTest.Controllers
         private readonly IOnderzoekTypeRepository onderzoekTypeRepository;
         private readonly IOnderzoekDeelnameRepository onderzoekDeelnameRepository;
         private readonly OnderzoekService onderzoekService;
-
+        private readonly AspDbContext _context;
         public OnderzoekController(
             IOnderzoekRepository onderzoekRepository, 
             IBedrijfRepository bedrijfRepository, 
             IBeperkingRepository beperkingRepository, 
             IOnderzoekTypeRepository onderzoekTypeRepository, 
             IOnderzoekDeelnameRepository onderzoekDeelnameRepository,
-            OnderzoekService onderzoekService)
+            OnderzoekService onderzoekService,
+            AspDbContext context)
         {
             this.onderzoekRepository = onderzoekRepository;
             this.bedrijfRepository = bedrijfRepository;
@@ -34,6 +36,7 @@ namespace AspTest.Controllers
             this.onderzoekTypeRepository = onderzoekTypeRepository;
             this.onderzoekDeelnameRepository = onderzoekDeelnameRepository;
             this.onderzoekService = onderzoekService;
+            this._context = context;
         }
 
         [HttpGet("onderzoeken")]
@@ -137,14 +140,19 @@ namespace AspTest.Controllers
                 return Unauthorized("Gebruiker heeft geen toegang naar dit onderzoek");
             }
 
-            var deelnemers = onderzoekDeelnameRepository.GetOnderzoekDeelnemers(onderzoek);
+            var deelnames = _context.OnderzoekDeelnames
+                .Include(od => od.Ervaringsdeskundige)
+                    .ThenInclude(e => e.Gebruiker)
+                .Where(p => p.Onderzoek == onderzoek)
+                .ToList()
+                .Select(d => new{deelname = d,voornaam = GeneralUtils.GetFullNaamFromGebruiker(d.Ervaringsdeskundige.Gebruiker)});
 
-            if(deelnemers == null)
+            if(deelnames == null)
             {
                 return NotFound("Geen deelnemers gevonden");
             }
 
-            return Ok(deelnemers);
+            return Ok(deelnames);
         }
 
         [Authorize]

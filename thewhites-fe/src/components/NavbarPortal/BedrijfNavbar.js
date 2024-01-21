@@ -8,11 +8,11 @@ const BedrijfNavbar = () => {
 			portalName="Bedrijf Portaal"
 			portalPath="/bedrijf"
 			links={[
-				{ name: "Onderzoeken", path: "./onderzoeken" },
-				{ name: "Chat", path: "./chat" },
-				{ name: "Profiel", path: "./profiel" },
+				{ name: "Onderzoeken", path: "/bedrijf/onderzoeken" },
+				{ name: "Chat", path: "/bedrijf/chat" },
+				{ name: "Profiel", path: "/bedrijf/profiel" },
 				{ name: "Meldingen", path: "/meldingen" },
-				{ name: "Ervaringsdeskundigen", path: "./ervaringsdeskundigen" }
+				{ name: "Ervaringsdeskundigen", path: "/bedrijf/ervaringsdeskundigen" }
 			]} 
 		/>
 	);

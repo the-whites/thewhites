@@ -8,9 +8,12 @@ import LoadingAnimation from "../LoadingAnimation/LoadingAnimation";
 import { useNavigate } from "react-router-dom";
 import { ONDERZOEK_DATA } from "../../constants/onderzoekData";
 import { getFormattedDateLocale } from "../../util/Util";
+import { fetchApi } from "../../hooks/useApi";
 
 const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 	const [showStartdatum, setShowStartDatum] = useState(true);
+	const [onderzoekBekijken, setOnderzoekBekijken] = useState(false);
+	const [deelnemers, setDeelnemers] = useState([]);
 
 	const navigate = useNavigate();
 
@@ -35,12 +38,44 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 			}
 		}
 	}, [onderzoek]);
-      
+
+	
+
+	const handleDeelnemers = async () => {
+		const deelnemers = await fetchApi({route: "api/onderzoek/"+onderzoek[ONDERZOEK_DATA.ID]+"/deelnemers"});
+		if (deelnemers.status === 200) {
+			console.log(deelnemers.data);
+			setDeelnemers(deelnemers.data);
+			setOnderzoekBekijken(true);
+		} else {
+			console.log(`Fout bij het ophalen van gegevens. Status: ${deelnemers.status}`);
+		}
+	};
+
+
 	return (
 		<>
+			{onderzoekBekijken && (
+				deelnemers.map((deskundige) => (
+					<div key={deskundige.id} className="deskundige-container">
+						<div className="deskundige-veld"><strong>Naam:</strong> {deskundige.voornaam}</div>
+						<div className="deskundige-veld"><strong>Postcode:</strong> {deskundige.postcode}</div>
+						<div className="deskundige-veld"><strong>Telefoonnummer:</strong> {deskundige.telefoonnummer}</div>
+						<div className="deskundige-veld"><strong>Hulpmiddel:</strong> {deskundige.hulpmiddel}</div>
+						<div className="deskundige-veld"><strong>Ziekte:</strong> {deskundige.ziekte}</div>
+						<div className="deskundige-veld"><strong>Beschikbaarheid:</strong> {deskundige.beschikbaarheid}</div>
+						<div className="deskundige-veld">
+							<strong>Beperkingen:</strong>{deskundige.ErvaringsdeskundigeBeperkingen?.map((beperking, index) => (
+								<span key={index}>{beperking.naam}{index < deskundige.ErvaringsdeskundigeBeperkingen.length - 1 ? ", " : ""}</span>))}
+						</div>
+						<div className="deskundige-veld">
+							<strong>Voorkeur Benadering:</strong> {deskundige.ErvaringsdeskundigeVoorkeur?.benaderingswijze}
+						</div>
+					</div>
+				)))}
 			{onderzoek !== null ? (
 				<>
-					<Container>
+					<Container hidden = {onderzoekBekijken ? "hidden" : ""}>
 						<Row>
 							<h1 className="titel">{onderzoek.onderzoekNaam}</h1>
 						</Row>
@@ -63,7 +98,7 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 							<Col><h3>{new Date() < new Date(onderzoek[ONDERZOEK_DATA.EIND_DATUM]) ? `voor het ${showStartdatum ? "begint" : "eindigt"}` : ""}</h3></Col>
 						</Row>
 						<Row className="data-row-buttons">
-							<Col><Button>Bekijk deelnemers</Button></Col>
+							<Col><Button onClick={handleDeelnemers}>Bekijk deelnemers</Button></Col>
 							<Col><Button onClick={() => navigate(-1)} variant="outline-secondary">Terug naar lopende onderzoeken</Button></Col>
 							<Col>
 								<Button onClick={() => navigate(`/bedrijf/onderzoeken/wijzig/${onderzoek[ONDERZOEK_DATA.ID]}`)}>

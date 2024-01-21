@@ -11,6 +11,7 @@ namespace AspTest.Models
         public string Emailadres { get; set; }
         public string Rol { get; set; }
         public bool SetupProfielInfo {get; set;}
+        
         public Ervaringsdeskundige? Ervaringsdeskundige {get; set;}
         public Bedrijf? Bedrijf {get; set;}
 

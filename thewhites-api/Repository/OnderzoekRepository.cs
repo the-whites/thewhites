@@ -56,6 +56,7 @@ namespace AspTest.Repository
                 .Include(o => o.Bedrijf)
                 .Include(o => o.OnderzoekCategories)
                     .ThenInclude(oc => oc.Type)
+                .Include(o => o.OnderzoekDeelname)
                 .Include(o => o.BeperkingCriteria)
                     .ThenInclude(bc => bc.Beperking)
                 .Include(o => o.LeeftijdCriteria)
