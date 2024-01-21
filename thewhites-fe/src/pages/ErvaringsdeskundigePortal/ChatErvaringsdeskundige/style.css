@@ -12,7 +12,16 @@
     position: relative;
 }
 
+.chat-message-body {
+    max-height: 350px;
+    overflow-y: scroll;
+}
+
 .chat-input {
 
+}
+
+.chat-msg-send-badge {
+    background-color: #131B56 !important;
 }
 

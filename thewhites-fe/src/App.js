@@ -88,7 +88,9 @@ function App() {
 								<Route element={<RequireAuth allowedRoles={[ROLES.ervaringsdeskundige]} />}>
 									<Route path="/ervaringsdeskundige" element={<ErvaringsdekundigePortal />} >
 										<Route index element={<DefaultErvaringsdeskundigePage />} />
-										<Route path="chat" element={<ChatErvaringsdeskundige />} />
+										<Route path="chat" element={<ChatErvaringsdeskundige />}>
+											<Route path=":id" element={<ChatErvaringsdeskundige />} />
+										</Route>
 										<Route path="overzicht" element={<Overzichtonderzoeken />} />
 										<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
 									</Route>
