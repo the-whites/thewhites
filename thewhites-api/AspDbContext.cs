@@ -136,6 +136,19 @@ namespace AspTest
                 .HasIndex(ot => new { ot.OnderzoekTypeId, ot.ErvaringsdeskundigeId })
                 .IsUnique();
             ///////////////////////////////////////////////////
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.GebruikerAfzender)
+                .WithMany()
+                .HasForeignKey(c => c.GebruikerAfzenderId)
+                .OnDelete(DeleteBehavior.NoAction); // NO ACTION
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.GebruikerOntvanger)
+                .WithMany()
+                .HasForeignKey(c => c.GebruikerOntvangerId)
+                .OnDelete(DeleteBehavior.NoAction); // NO ACTION
+
         }
     }
 }
