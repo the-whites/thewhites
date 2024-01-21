@@ -5,7 +5,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../constants/roles";
-import handi from "../../assets/rolstoel-tablet.png";
+import rolstoelTabletImage from "../../assets/rolstoel-tablet.png";
 
 import "./Home.css";
 
@@ -52,7 +52,7 @@ const Home = () => {
 						<p>Waar we streven naar hoogste normen van gebruiksvriendelijkheid en toegankelijkheid. Voor iedereen, ongeacht hun achtergrond of mogelijkheden.</p>
 					</Col>
 					<Col lg="6">
-						<img src={handi} alt="handi" className="img-fluid" />
+						<img src={rolstoelTabletImage} alt="Figuur van vrouw op rolstoel op haar tablet" className="img-fluid" />
 					</Col>
 				</Row>
 				<Row className="home-kop justify-content-md-center">
