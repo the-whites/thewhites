@@ -16,6 +16,13 @@
 .over-ons p:last-child {
     margin-bottom: 80px;
 }
+.over-ons-header {
+    margin-bottom: 20px;
+}
+
+.over-ons-header:not(:first-child) {
+    margin-top: 75px;
+}
 
 .container-over-ons {
     text-align: left;
