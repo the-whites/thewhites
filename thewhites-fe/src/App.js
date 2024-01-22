@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { ProfielProvider } from "./pages/ProfielPaginas/ProfielContext";
 
 import Home from "./pages/Home/Home";
 import OverOns from "./pages/OverOns/OverOns";
@@ -46,62 +45,62 @@ import Layout from "./components/Toastify/ToastifyLayout";
 import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import { CookiePrompt } from "./components/Cookies/CookiePrompt";
+import { CookiesVerklaring } from "./pages/Cookies/Cookies";
 function App() {
 
 	return (
 		<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID} >
 			<div className="App">
 				<UserProvider>
-					<ProfielProvider>
-						<CookiePrompt />
-						<NavigationBar /> 
-						<div className="main-body">
-							<Routes>
-								<Route path="/" element={<Home />} />
-								<Route path="/over-ons" element={<OverOns />} />
-								<Route path="/privacy-policy" element={<PrivacyPolicy />} />
-								<Route path="/contact" element={<Contact />} />
-								<Route element={<RequireAuth allowedRoles={[ROLES.beheerder, ROLES.ervaringsdeskundige, ROLES.bedrijf]} />}>
-									<Route path="/meldingen" element={<Meldingen />} />
+					<CookiePrompt />
+					<NavigationBar /> 
+					<div className="main-body">
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/over-ons" element={<OverOns />} />
+							<Route path="/privacy-policy" element={<PrivacyPolicy />} />
+							<Route path="/contact" element={<Contact />} />
+							<Route path="/cookies" element={<CookiesVerklaring />} />
+							<Route element={<RequireAuth allowedRoles={[ROLES.beheerder, ROLES.ervaringsdeskundige, ROLES.bedrijf]} />}>
+								<Route path="/meldingen" element={<Meldingen />} />
+							</Route>
+							<Route element={<RequireAuth allowedRoles={[ROLES.beheerder]} />}>
+								<Route path="/beheerder" element={<BeheerderPortal />}>
+									<Route index element={<DefaultBeheerderPage />} />
+									<Route path="ervaringsdeskundigBHP" element={<ErvaringsdeskundigeBHP />} />
+									<Route path="onderzoeken" element={<Onderzoeken />} />
+									<Route path="bedrijven" element={<Bedrijven />} />
 								</Route>
-								<Route element={<RequireAuth allowedRoles={[ROLES.beheerder]} />}>
-									<Route path="/beheerder" element={<BeheerderPortal />}>
-										<Route index element={<DefaultBeheerderPage />} />
-										<Route path="ervaringsdeskundigBHP" element={<ErvaringsdeskundigeBHP />} />
-										<Route path="onderzoeken" element={<Onderzoeken />} />
-										<Route path="bedrijven" element={<Bedrijven />} />
+							</Route>
+							<Route element={<RequireAuth allowedRoles={[ROLES.bedrijf]} />}>
+								<Route path="/bedrijf" element={<Layout><BedrijvenPortal /></Layout>} >
+									<Route index element={<DefaultBedrijvenPage />} />
+									<Route path="chat" element={<Chat />} />
+									<Route path="onderzoeken" element={<BedrijfOnderzoeken />}>
+										<Route index element={<DefaultOnderzoekenTab />} />
+										<Route path="nieuw" element={<NieuwOnderzoek />} />
+										<Route path="lopende-onderzoeken" element={<LopendeOnderzoeken />} />
+										<Route path="oude-onderzoeken" element={<OudeOnderzoeken />} />
+										<Route path=":id" element={<BeheerOnderzoek />} />
+										<Route path="wijzig/:id" element={<WijzigOnderzoek />} />
 									</Route>
+									<Route path="profiel" element={<Profiel />} />
 								</Route>
-								<Route element={<RequireAuth allowedRoles={[ROLES.bedrijf]} />}>
-									<Route path="/bedrijf" element={<Layout><BedrijvenPortal /></Layout>} >
-										<Route index element={<DefaultBedrijvenPage />} />
-										<Route path="chat" element={<Chat />} />
-										<Route path="onderzoeken" element={<BedrijfOnderzoeken />}>
-											<Route index element={<DefaultOnderzoekenTab />} />
-											<Route path="nieuw" element={<NieuwOnderzoek />} />
-											<Route path="lopende-onderzoeken" element={<LopendeOnderzoeken />} />
-											<Route path="oude-onderzoeken" element={<OudeOnderzoeken />} />
-											<Route path=":id" element={<BeheerOnderzoek />} />
-											<Route path="wijzig/:id" element={<WijzigOnderzoek />} />
-										</Route>
-										<Route path="profiel" element={<Profiel />} />
-									</Route>
+							</Route>
+							<Route element={<RequireAuth allowedRoles={[ROLES.ervaringsdeskundige]} />}>
+								<Route path="/ervaringsdeskundige" element={<ErvaringsdekundigePortal />} >
+									<Route index element={<DefaultErvaringsdeskundigePage />} />
+									<Route path="chat/:id" element={<ChatErvaringsdeskundige />} />
+									<Route path="overzicht" element={<Overzichtonderzoeken />} />
+									<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
 								</Route>
-								<Route element={<RequireAuth allowedRoles={[ROLES.ervaringsdeskundige]} />}>
-									<Route path="/ervaringsdeskundige" element={<ErvaringsdekundigePortal />} >
-										<Route index element={<DefaultErvaringsdeskundigePage />} />
-										<Route path="chat/:id" element={<ChatErvaringsdeskundige />} />
-										<Route path="overzicht" element={<Overzichtonderzoeken />} />
-										<Route path="profiel" element={<ProfielErvaringsdeskundige />} />
-									</Route>
-								</Route>
-								<Route path="profielPagina" element={<ProfielPagina />} />
-								<Route path="medischePagina" element={<MedischePagina/>} />
-								<Route path="bevestingsPagina" element={<BevestigingsPagina/>} />
-							</Routes>
-						</div>
-						<Footer />
-					</ProfielProvider>
+							</Route>
+							<Route path="profielPagina" element={<ProfielPagina />} />
+							<Route path="medischePagina" element={<MedischePagina/>} />
+							<Route path="bevestingsPagina" element={<BevestigingsPagina/>} />
+						</Routes>
+					</div>
+					<Footer />
 				</UserProvider>
 			</div>
 		</GoogleOAuthProvider>

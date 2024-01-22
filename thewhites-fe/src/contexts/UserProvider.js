@@ -12,6 +12,25 @@ export const CustomLoginContext = createContext("");
 export const AuthContext = createContext("");
 export const ProfielContext = createContext();
 
+const initiëleProfielData = {
+	// Persoonlijke gegevens
+	voornaam: "",
+	achternaam: "",
+	postcode: "",
+	emailadres: "",
+	telefoonnummer: "",
+	beperkingTypes: [],
+  
+	// Medische gegevens
+	aandoening: "",
+	hulpmiddelen: "",
+	onderzoekTypes: [],
+	portaalbenadering: false,
+	beschikbaar: "",
+	telefonischBenadering: false,
+	toestemmingUitnodigingen: false
+};
+
 export const UserProvider = ({ children }) => {
 	const [username, setUsername] = useState("");
 	const [role, setRole] = useState("");
@@ -23,6 +42,7 @@ export const UserProvider = ({ children }) => {
 	const navigate = useNavigate();
 	const [setupVoornaam, setSetupVoornaam]= useState("");
 	const [setupAchternaam, setSetupAchternaam]= useState("");
+	const [profielData, setProfielData] = useState(initiëleProfielData);
 
 	useEffect(() => {
 		if (googleCredentials)
@@ -81,7 +101,9 @@ export const UserProvider = ({ children }) => {
 	return (
 		<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
 			<UserContext.Provider value={{ username, setUsername, setupVoornaam, setupAchternaam, role, setRole: setValidRole, userId, setUserId}}>
-				{children}
+				<ProfielContext.Provider value={{ profielData, setProfielData }}>
+					{children}
+				</ProfielContext.Provider>
 			</UserContext.Provider>
 		</CustomLoginContext.Provider>
 	);

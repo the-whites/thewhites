@@ -6,15 +6,8 @@ export const CookiePrompt = () => {
 	const [isVisible, setIsVisible] = useState(Cookies.get("cookies_accepted_dewhites") === "ja" ? false : true);
 
 	const handleAcceptCookies = () => {
-		const date = new Date(Date.now());
-		date.setFullYear(date.getFullYear() + 1);
-
-        console.log(date);
-
 		setIsVisible(false);
-		Cookies.set("cookies_accepted_dewhites", "ja", {expires: date});
-
-        console.log("hey");
+		Cookies.set("cookies_accepted_dewhites", "ja", {expires: 365});
 	};
 
 	return (
