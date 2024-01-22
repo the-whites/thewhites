@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Row, Col, Container, Button } from "react-bootstrap";
+import { Row, Col, Container, Button, Card } from "react-bootstrap";
 import Countdown from "react-countdown";
 import CountUp from "react-countup";
 
@@ -55,24 +55,29 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 
 	return (
 		<>
-			{onderzoekBekijken && (
-				deelnemers.map((deskundige) => (
-					<div key={deskundige.id} className="deskundige-container">
-						<div className="deskundige-veld"><strong>Naam:</strong> {deskundige.voornaam}</div>
-						<div className="deskundige-veld"><strong>Postcode:</strong> {deskundige.postcode}</div>
-						<div className="deskundige-veld"><strong>Telefoonnummer:</strong> {deskundige.telefoonnummer}</div>
-						<div className="deskundige-veld"><strong>Hulpmiddel:</strong> {deskundige.hulpmiddel}</div>
-						<div className="deskundige-veld"><strong>Ziekte:</strong> {deskundige.ziekte}</div>
-						<div className="deskundige-veld"><strong>Beschikbaarheid:</strong> {deskundige.beschikbaarheid}</div>
-						<div className="deskundige-veld">
-							<strong>Beperkingen:</strong>{deskundige.ErvaringsdeskundigeBeperkingen?.map((beperking, index) => (
-								<span key={index}>{beperking.naam}{index < deskundige.ErvaringsdeskundigeBeperkingen.length - 1 ? ", " : ""}</span>))}
-						</div>
-						<div className="deskundige-veld">
-							<strong>Voorkeur Benadering:</strong> {deskundige.ErvaringsdeskundigeVoorkeur?.benaderingswijze}
-						</div>
-					</div>
-				)))}
+			<Container>
+				{onderzoekBekijken && (
+					deelnemers.map((deskundige) => (
+						<Card key={deskundige.deelname.ervaringsdeskundige.id}>
+							<div  className="deskundige-container">
+								<div className="deskundige-veld"><strong>Naam:</strong> {deskundige.voornaam}</div>
+								<div className="deskundige-veld"><strong>Postcode:</strong> {deskundige.deelname.ervaringsdeskundige.postcode}</div>
+								<div className="deskundige-veld"><strong>Telefoonnummer:</strong> {deskundige.deelname.ervaringsdeskundige.telefoonnummer}</div>
+								<div className="deskundige-veld"><strong>Hulpmiddel:</strong> {deskundige.deelname.ervaringsdeskundige.hulpmiddel}</div>
+								<div className="deskundige-veld"><strong>Ziekte:</strong> {deskundige.deelname.ervaringsdeskundige.ziekte}</div>
+								<div className="deskundige-veld"><strong>Beschikbaarheid:</strong> {deskundige.deelname.ervaringsdeskundige.beschikbaarheid}</div>
+								<div className="deskundige-veld">
+									<strong>Beperkingen:</strong>{deskundige.beperking.map((beperkingItem, index) => (
+										<span key={index}>{beperkingItem}{index < deskundige.beperking.length - 1 ? ", " : ""}</span>))}
+								</div>
+								<strong className="deskundige-veld">Voorkeur benadering portaal:</strong> {deskundige.voorkeur.portaal ? "ja" : "nee"}
+								<strong className="deskundige-veld">Voorkeur benadering telefonisch:</strong> {deskundige.voorkeur.telefonisch  ? "ja" : "nee"}
+								<strong className="deskundige-veld">Toestemming uitnodiging van commerciele partijen:</strong> {deskundige.voorkeur.toestemmingUitnodiging  ? "ja" : "nee"}
+							
+							</div>
+						</Card>
+					)))}
+			</Container>
 			{onderzoek !== null ? (
 				<>
 					<Container hidden = {onderzoekBekijken ? "hidden" : ""}>

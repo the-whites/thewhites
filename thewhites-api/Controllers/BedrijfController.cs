@@ -72,12 +72,5 @@ namespace AspTest.Controllers
             
             return Ok(onderzoek);
         }
-        [Authorize]
-        [HttpGet("alleErvaringsdeskundigen")]
-        public async Task<IActionResult> GetAllErvaringsdeskundigen()
-        {
-            var ervaringsdeskundigenDetails = await ervaringsdeskundigeRepository.GetAllErvaringsdeskundigenDetailsAsync();
-            return Ok(ervaringsdeskundigenDetails);
-        }
     }
 }

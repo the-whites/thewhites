@@ -29,7 +29,6 @@ import WijzigOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/BeheerOnderzoek
 import NieuwOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/NieuwOnderzoek/NieuwOnderzoek";
 import DefaultOnderzoekenTab from "./pages/BedrijvenPortal/Onderzoeken/DefaultOnderzoekenTab/DefaultOnderzoekenTab";
 import BedrijfOnderzoeken from "./pages/BedrijvenPortal/Onderzoeken/Onderzoeken";
-import ErvaringsdeskundigePagina from"./pages/BedrijvenPortal/Ervaringsdeskundige/ErvaringsdeskundigeTab";
 import ProfielPagina from "./pages/ProfielPaginas/ProfielPagina"; 
 import MedischePagina from "./pages/ProfielPaginas/Medischepagina";
 import BevestigingsPagina from "./pages/ProfielPaginas/BevestingPagina";
@@ -82,7 +81,6 @@ function App() {
 											<Route path="wijzig/:id" element={<WijzigOnderzoek />} />
 										</Route>
 										<Route path="profiel" element={<Profiel />} />
-										<Route path="ervaringsdeskundigen" element={<ErvaringsdeskundigePagina />} />
 									</Route>
 								</Route>
 								<Route element={<RequireAuth allowedRoles={[ROLES.ervaringsdeskundige]} />}>

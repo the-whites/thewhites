@@ -143,9 +143,19 @@ namespace AspTest.Controllers
             var deelnames = _context.OnderzoekDeelnames
                 .Include(od => od.Ervaringsdeskundige)
                     .ThenInclude(e => e.Gebruiker)
+                    .Include(od => od.Ervaringsdeskundige)
+                    .ThenInclude(e => e.ErvaringsdeskundigeBeperkingen)
+                    .ThenInclude(e => e.Beperking)
+                    .Include(od => od.Ervaringsdeskundige)
+                    .ThenInclude(od => od.ErvaringsdeskundigeVoorkeur)
                 .Where(p => p.Onderzoek == onderzoek)
                 .ToList()
-                .Select(d => new{deelname = d,voornaam = GeneralUtils.GetFullNaamFromGebruiker(d.Ervaringsdeskundige.Gebruiker)});
+                .Select(d => new{
+                    deelname = d,
+                    voornaam = GeneralUtils.GetFullNaamFromGebruiker(d.Ervaringsdeskundige.Gebruiker), 
+                    beperking = d.Ervaringsdeskundige.ErvaringsdeskundigeBeperkingen.Select(eb => eb.Beperking.Naam),
+                    voorkeur = d.Ervaringsdeskundige.ErvaringsdeskundigeVoorkeur,
+                });
 
             if(deelnames == null)
             {

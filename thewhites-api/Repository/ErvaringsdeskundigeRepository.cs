@@ -67,31 +67,6 @@ namespace AspTest.Repository
 
             return ervBenaderingVoorkeur;
             }
-            public async Task<IEnumerable<Ervaringsdeskundige>> GetAllErvaringsdeskundigenDetailsAsync()
-            {
-                return await _context.Ervaringsdeskundigen
-                    .Include(e => e.ErvaringsdeskundigeBeperkingen)
-                    .Include(e => e.ErvaringsdeskundigeVoorkeur)
-                    .Include(e => e.ErvaringsdeskundigeOnderzoekTypes)
-                    .Include(e => e.OnderzoekDeelname)
-                    .Select(e => new Ervaringsdeskundige
-                    {
-                        Id = e.Id,
-                        Postcode = e.Postcode,
-                        Telefoonnummer = e.Telefoonnummer,
-                        Gebruiker = e.Gebruiker,
-                        Hulpmiddel = e.Hulpmiddel,
-                        Ziekte = e.Ziekte,
-                        Beschikbaarheid = e.Beschikbaarheid,
-                        Geboortedatum = e.Geboortedatum,
-                        GebruikerId = e.GebruikerId,
-                        ErvaringsdeskundigeBeperkingen = e.ErvaringsdeskundigeBeperkingen,
-                        ErvaringsdeskundigeVoorkeur = e.ErvaringsdeskundigeVoorkeur,
-                        ErvaringsdeskundigeOnderzoekTypes = e.ErvaringsdeskundigeOnderzoekTypes,
-                        OnderzoekDeelname = e.OnderzoekDeelname
-                    })
-                    .ToListAsync();
-            }
 
         }
 }

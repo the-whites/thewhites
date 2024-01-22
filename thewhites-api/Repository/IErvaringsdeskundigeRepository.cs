@@ -22,6 +22,5 @@ namespace AspTest.Repository
             bool toestemmingUitnodigingen,
             bool withSaveChange = true
         );
-        Task<IEnumerable<Ervaringsdeskundige>> GetAllErvaringsdeskundigenDetailsAsync();
     }
 }
