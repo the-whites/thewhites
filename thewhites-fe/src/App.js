@@ -45,6 +45,7 @@ import Meldingen from "./pages/Meldingen/Meldingen";
 import Layout from "./components/Toastify/ToastifyLayout";
 import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
+import { CookiePrompt } from "./components/Cookies/CookiePrompt";
 function App() {
 
 	return (
@@ -52,6 +53,7 @@ function App() {
 			<div className="App">
 				<UserProvider>
 					<ProfielProvider>
+						<CookiePrompt />
 						<NavigationBar /> 
 						<div className="main-body">
 							<Routes>
