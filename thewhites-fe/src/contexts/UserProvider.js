@@ -27,6 +27,8 @@ export const UserProvider = ({ children }) => {
 	useEffect(() => {
 		if (googleCredentials)
 		{
+			console.log(googleCredentials);
+
 			const getJwtToken = async () => {
 				const response = await postApi({route: "api/Login/login_google", body: JSON.stringify(googleCredentials)});
 		

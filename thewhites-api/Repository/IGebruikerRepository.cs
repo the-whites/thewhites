@@ -10,5 +10,6 @@ namespace AspTest.Repository
 
         Task<Gebruiker> CreateGebruiker(string voornaam, string achternaam, string googleid, string emailadres, string rol = "ervaringsdeskundige");
         IQueryable<Gebruiker> GetGebruikersWithQueryable();
+        void DeleteGebruiker(Gebruiker gebruiker);
     }
 }

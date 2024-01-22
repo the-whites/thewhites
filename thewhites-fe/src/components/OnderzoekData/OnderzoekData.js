@@ -7,7 +7,7 @@ import "./OnderzoekData.css";
 import LoadingAnimation from "../LoadingAnimation/LoadingAnimation";
 import { useNavigate } from "react-router-dom";
 import { ONDERZOEK_DATA } from "../../constants/onderzoekData";
-import { getFormattedDateLocale } from "../../util/Util";
+import { getFormattedDateLocale, getFormattedDateTimeLocale } from "../../util/Util";
 import { fetchApi } from "../../hooks/useApi";
 
 const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
@@ -100,7 +100,7 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 						</Row>
 						<Row>
 							<Col><h3>deelnemers</h3></Col>
-							<Col><h3>gemaakt op {getFormattedDateLocale(new Date(onderzoek[ONDERZOEK_DATA.GEMAAKT_OP]))}</h3></Col>
+							<Col><h3>gemaakt op {getFormattedDateTimeLocale(new Date(onderzoek[ONDERZOEK_DATA.GEMAAKT_OP]))}</h3></Col>
 							<Col><h3>{new Date() < new Date(onderzoek[ONDERZOEK_DATA.EIND_DATUM]) ? `voor het ${showStartdatum ? "begint" : "eindigt"}` : ""}</h3></Col>
 						</Row>
 						<Row className="data-row-buttons">

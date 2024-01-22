@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../MainStyles.css";
 import "./CustomDatePicker.css";
 
-const CustomDatePicker = ({ label = "", value = null, placeholder = "Kies een datum", isInvalid = false, required = false, canEdit = true, handleChange = () => {} }) => {
+const CustomDatePicker = ({ label = "", value = null, placeholder = "Kies een datum", dateFormat = "yyyy-MM-dd HH:mm", timeFormat = "HH:mm", isInvalid = false, required = false, canEdit = true, handleChange = () => {} }) => {
 	const [selectedDateTime, setSelectedDateTime] = useState(value);
 
 	const handleDateChange = (date) => {
@@ -28,9 +28,9 @@ const CustomDatePicker = ({ label = "", value = null, placeholder = "Kies een da
 						selected={selectedDateTime}
 						onChange={handleDateChange}
 						showTimeSelect
-						timeFormat="HH:mm"
+						timeFormat={timeFormat}
 						timeIntervals={30}
-						dateFormat="yyyy-MM-dd HH:mm"
+						dateFormat={dateFormat}
 						placeholderText={placeholder}
 						className={`form-control custom-date-picker ${isInvalid ? "is-invalid" : ""}`}
 						disabled={!canEdit}

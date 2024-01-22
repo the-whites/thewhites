@@ -4,6 +4,7 @@ import { Container, Table, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { postApi } from "../../hooks/useApi";
 import "./Medischepagina.css";
+import { getFormattedDateLocale } from "../../util/Util";
 
 const BevestigingsPagina = () => {
 	const { profielData } = useContext(ProfielContext);
@@ -18,7 +19,7 @@ const BevestigingsPagina = () => {
 		const body = profielData;
 		body.onderzoekTypes = body.onderzoekTypes.map((type) => type.id) == null ? [] : body.onderzoekTypes.map((type) => type.id);
 		body.beperkingTypes = body.beperkingTypes.map((type) => type.id) == null ? [] : body.beperkingTypes.map((type) => type.id);
-		
+
 		try {
 			const response = await postApi({
 				route: "api/ErvaringsDeskundige/create-profiel-info",
@@ -51,6 +52,10 @@ const BevestigingsPagina = () => {
 						<tr>
 							<td>Achternaam</td>
 							<td>{profielData.achternaam}</td>
+						</tr>
+						<tr>
+							<td>Geboortedatum</td>
+							<td>{getFormattedDateLocale(profielData.geboortedatum)}</td>
 						</tr>
 						<tr>
 							<td>Postcode</td>

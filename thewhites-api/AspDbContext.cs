@@ -27,6 +27,7 @@ namespace AspTest
         public DbSet<ErvaringsdeskundigeBenaderingVoorkeur> ErvaringsdeskundigeBenaderingVoorkeuren { get; set; }
         public DbSet<ErvaringsdeskundigeOnderzoekType> ErvaringsdeskundigeVoorkeurOnderzoekTypes { get; set; }
         public DbSet<OnderzoekDeelname> OnderzoekDeelnames { get; set;}
+        public DbSet<Chat> Chats {get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -135,6 +136,19 @@ namespace AspTest
                 .HasIndex(ot => new { ot.OnderzoekTypeId, ot.ErvaringsdeskundigeId })
                 .IsUnique();
             ///////////////////////////////////////////////////
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.GebruikerAfzender)
+                .WithMany()
+                .HasForeignKey(c => c.GebruikerAfzenderId)
+                .OnDelete(DeleteBehavior.NoAction); // NO ACTION
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.GebruikerOntvanger)
+                .WithMany()
+                .HasForeignKey(c => c.GebruikerOntvangerId)
+                .OnDelete(DeleteBehavior.NoAction); // NO ACTION
+
         }
     }
 }
