@@ -73,7 +73,8 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 								<strong className="deskundige-veld">Voorkeur benadering portaal:</strong> {deskundige.voorkeur.portaal ? "ja" : "nee"}
 								<strong className="deskundige-veld">Voorkeur benadering telefonisch:</strong> {deskundige.voorkeur.telefonisch  ? "ja" : "nee"}
 								<strong className="deskundige-veld">Toestemming uitnodiging van commerciele partijen:</strong> {deskundige.voorkeur.toestemmingUitnodiging  ? "ja" : "nee"}
-							
+								<br/>
+								<strong className="deskundige-veld">Feedback:</strong> {deskundige.deelname.feedback}
 							</div>
 						</Card>
 					)))}
