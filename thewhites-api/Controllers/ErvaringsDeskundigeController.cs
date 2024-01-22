@@ -220,7 +220,7 @@ namespace AspTest.Controllers
             if (onderzoek.EindDatum.Ticks < DateTime.Now.Ticks)
                 return Unauthorized("Onderzoek is finished.");
             
-            var isEligibleForOnderzoek = _onderzoekService.IsErvaringsdeskundigeBinnenCriteria(ervaringsdeskundigeInfo, onderzoek, out string reden);
+            var isEligibleForOnderzoek = OnderzoekService.IsErvaringsdeskundigeBinnenCriteria(ervaringsdeskundigeInfo, onderzoek, out string reden);
 
             if (!isEligibleForOnderzoek)
                 return Unauthorized(reden);
