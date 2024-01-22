@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "./OverOns.css";
-import { Container } from "react-bootstrap";
 
 const OverOns = () => {
 	return (
