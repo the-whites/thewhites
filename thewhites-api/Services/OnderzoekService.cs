@@ -27,7 +27,7 @@ namespace AspTest.Services
             this.beperkingRepository = beperkingRepository;
             this.onderzoekTypeRepository = onderzoekTypeRepository;
         }
-        public bool IsErvaringsdeskundigeBinnenCriteria(Ervaringsdeskundige ervDeskundige, Onderzoek onderzoek, out string reden)
+        public static bool IsErvaringsdeskundigeBinnenCriteria(Ervaringsdeskundige ervDeskundige, Onderzoek onderzoek, out string reden)
         {
             int leeftijd = GeneralUtils.GetLeeftijdFromGebDatum(ervDeskundige.Geboortedatum);
             bool isBinnenLeeftijdGroep = onderzoek.LeeftijdCriteria.Any((lc) => lc.MinLeeftijd <= leeftijd && leeftijd <= lc.MaxLeeftijd);
