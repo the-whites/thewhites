@@ -70,7 +70,7 @@ namespace AspTest.Controllers
 
             if(gebruiker == null)
             {
-                return Unauthorized("Gebruiker bestaat niet");
+                return Unauthorized("Geen gebruiker gevonden");
             }
 
             ICollection<Notificatie> meldingen = _notificatieRepository.GetNotificatiesFromGebruiker(gebruiker);
@@ -90,7 +90,7 @@ namespace AspTest.Controllers
 
             if(gebruiker == null)
             {
-                return Unauthorized("Gebruiker bestaat niet");
+                return Unauthorized("Geen gebruiker gevonden");
             }
 
             int meldingenCount = _notificatieRepository.GetUnreadNotificationsCount(gebruiker);
@@ -110,7 +110,7 @@ namespace AspTest.Controllers
 
             if(gebruiker == null)
             {
-                return Unauthorized("Gebruiker bestaat niet");
+                return Unauthorized("Geen gebruiker gevonden");
             }
 
             Notificatie? notificatie = _notificatieRepository.GetNotificatieById(meldingId);
@@ -142,7 +142,7 @@ namespace AspTest.Controllers
 
             if(gebruiker == null)
             {
-                return Unauthorized("Gebruiker bestaat niet");
+                return Unauthorized("Geen gebruiker gevonden");
             }
 
             Response.Cookies.Delete("refresh_token");

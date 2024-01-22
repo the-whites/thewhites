@@ -114,16 +114,16 @@ namespace AspTest.Controllers
 
             // TODO: check max length
             if (refreshToken.Length < 1)
-                return BadRequest("Invalid refresh token. Reset cookies and re-authenticate.");
+                return BadRequest("Incorrecte refresh token. Reset cookies en log opnieuw in.");
             
             if (oldTokenModel.oldToken == null || oldTokenModel.oldToken.Equals(""))
-                return BadRequest("Invalid access token.");
+                return BadRequest("Incorrecte access token.");
 
             ClaimsPrincipal? tokenPrincipalStore = IdentityService.ValidateAndGetExpiredJwtToken(oldTokenModel.oldToken);
             string? userIdString = tokenPrincipalStore?.FindFirstValue("user_id");
 
             if (userIdString == null)
-                return Unauthorized("Invalid token.");
+                return Unauthorized("Incorrecte token.");
 
 
             bool result = int.TryParse(userIdString, out int userId);
@@ -140,13 +140,13 @@ namespace AspTest.Controllers
                 RefreshToken? foundRefreshToken = gebruiker.RefreshTokens.FirstOrDefault(rf => rf.Token.Equals(refreshToken));
                 
                 if (foundRefreshToken == null)
-                    return Unauthorized("Invalid refresh token.");
+                    return Unauthorized("Incorrecte refresh token.");
                 
                 if (foundRefreshToken.Expires < DateTime.Now)
-                    return Unauthorized("Token expired.");
+                    return Unauthorized("Token is verlopen.");
                 
                 if (gebruiker.GoogleId == null)
-                    return Unauthorized("No google account was found.");
+                    return Unauthorized("Geen google account gevonden.");
 
                 // Delete old refresh token
                 //await _refreshTokenRepository.DeleteRefreshToken(foundRefreshToken);
@@ -173,7 +173,7 @@ namespace AspTest.Controllers
             Gebruiker? gebruiker = _gebruikerRepository.GetGebruikerById(userId);
 
             if (gebruiker == null)
-                return Unauthorized("No user found.");
+                return Unauthorized("Geen gebruiker gevonden.");
 
             var profile = new {
                 id = gebruiker.Id,

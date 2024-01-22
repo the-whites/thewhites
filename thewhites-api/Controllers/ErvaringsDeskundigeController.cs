@@ -71,12 +71,12 @@ namespace AspTest.Controllers
                     .FirstOrDefault(g4 => g4.Id == userId);
 
             if (gebruiker == null)
-                return Unauthorized("No user found.");
+                return Unauthorized("Gebruiker niet gevonden.");
             
             var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
 
             if (ervaringsdeskundigeInfo == null)
-                return Unauthorized("No ervaringsdeskundige info found.");
+                return Unauthorized("Geen ervaringsdeskundige info gevonden.");
             
             var _beperkingTypes = ervaringsdeskundigeInfo.ErvaringsdeskundigeBeperkingen.Select(
                 x => new { id = x.BeperkingId, naam = x.Beperking.Naam, omschrijving = x.Beperking.Omschrijving }
@@ -108,7 +108,7 @@ namespace AspTest.Controllers
                 return BadRequest(ModelState);
 
             if (!GeneralUtils.IsNumeric(model.telefoonnummer))
-                return BadRequest("Telefoonnummer input is invalid. Check telefoonnummer input.");
+                return BadRequest("Telefoonnummer input is incorrect. Check telefoonnummer input.");
 
             Claim? UserIdClaim = User.FindFirst("user_id");
             int.TryParse(UserIdClaim!.Value, out int userId);
@@ -129,12 +129,12 @@ namespace AspTest.Controllers
                     .FirstOrDefault(g4 => g4.Id == userId);
 
             if (gebruiker == null)
-                return Unauthorized("No user found.");
+                return Unauthorized("Gebruiker niet gevonden.");
             
             var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
 
             if (ervaringsdeskundigeInfo == null)
-                return Unauthorized("No ervaringsdeskundige info found.");
+                return Unauthorized("Geen ervaringsdeskundige info gevonden.");
 
             // maak beperking & onderzoek types voor de ervaringsdeskundige leeg
             await _beperkingRepository.ClearBeperkingenGebruiker(ervaringsdeskundigeInfo, false);
@@ -196,12 +196,12 @@ namespace AspTest.Controllers
                     .FirstOrDefault(g4 => g4.Id == userId);
 
             if (gebruiker == null)
-                return Unauthorized("No user found.");
+                return Unauthorized("Gebruiker niet gevonden.");
             
             var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
 
             if (ervaringsdeskundigeInfo == null)
-                return Unauthorized("No ervaringsdeskundige info found.");
+                return Unauthorized("Geen ervaringsdeskundige info gevonden.");
             
             var onderzoek = _onderzoekRepository.GetOnderzoekenWithQueryable()
                 .Include(o => o.OnderzoekDeelname)
@@ -212,13 +212,13 @@ namespace AspTest.Controllers
                 .FirstOrDefault(o => o.Id == onderzoekId);
 
             if (onderzoek == null)
-                return Unauthorized("No onderzoek found.");
+                return Unauthorized("Geen onderzoek gevonden.");
 
             if (onderzoek.OnderzoekDeelname.Any(od => od.Ervaringsdeskundige == ervaringsdeskundigeInfo))
-                return Unauthorized("You are already enrolled in this onderzoek.");
+                return Unauthorized("U neemt al deel aan dit onderzoek.");
 
             if (onderzoek.EindDatum.Ticks < DateTime.Now.Ticks)
-                return Unauthorized("Onderzoek is finished.");
+                return Unauthorized("Onderzoek is al afgesloten.");
             
             var isEligibleForOnderzoek = _onderzoekService.IsErvaringsdeskundigeBinnenCriteria(ervaringsdeskundigeInfo, onderzoek, out string reden);
 
@@ -311,12 +311,12 @@ namespace AspTest.Controllers
                 .FirstOrDefault(g4 => g4.Id == userId);
 
             if (gebruiker == null)
-                return Unauthorized("No user found.");
+                return Unauthorized("Geen gebruiker gevonden.");
             
             var ervaringsdeskundigeInfo = gebruiker.Ervaringsdeskundige;
 
             if (ervaringsdeskundigeInfo == null)
-                return Unauthorized("No ervaringsdeskundige info found.");
+                return Unauthorized("Geen ervaringsdeskundige info gevonden.");
             
             var onderzoekDeelname = _context.OnderzoekDeelnames.Include(od => od.Onderzoek).FirstOrDefault(od => od.OnderzoekId == onderzoekId);
 
@@ -398,7 +398,7 @@ namespace AspTest.Controllers
                     .FirstOrDefault(g4 => g4.Id == userId);
 
             if (gebruiker == null)
-                return Unauthorized("No user found.");
+                return Unauthorized("Geen gebruiker gevonden.");
 
             var ervaringsdeskundigeInfo = await _ervaringsdeskundigeRepository.CreateErvaringsdeskundigeVoorGebruiker(
                     gebruiker,
