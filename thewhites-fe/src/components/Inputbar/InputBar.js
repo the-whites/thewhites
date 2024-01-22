@@ -30,6 +30,7 @@ const InputBar = ({ type = "text", placeholder = "", label = "", value = undefin
 							rows={type === "textarea" ? 4 : 1}
 							isInvalid={isInvalid}
 							disabled={!canEdit}
+							data-cy={`input-field-${label.toLowerCase().replace(/\s+/g, "").replace(/\//g, "-")}`}
 						/>
 						
 						{infoText && (

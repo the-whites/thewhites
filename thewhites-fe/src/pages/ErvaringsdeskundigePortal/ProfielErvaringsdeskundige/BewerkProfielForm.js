@@ -4,6 +4,7 @@ import InputBar from "../../../components/Inputbar/InputBar";
 import MultiSelectionBar from "../../../components/MultiSelectionBar/MultiSelectionBar";
 
 export const BewerkProfielForm = ({profielData, setProfielData = (items) => {}, formIsValidated = true, handleSubmitForm = (event) => {}, beperkingItems, onderzoekTypeItems}) => {
+	console.log(profielData);
 	return (
 		<Form validated={formIsValidated} onSubmit={handleSubmitForm}>
 			<Container>
@@ -49,6 +50,7 @@ export const BewerkProfielForm = ({profielData, setProfielData = (items) => {}, 
 						<div className="bewerk-profiel-checkbox">
 							<label htmlFor="com-benadering">Of commerciële partijen u mogen benaderen</label>
 							<input 
+								data-cy="commerciele-benadering-voorkeur-checkbox"
 								type="checkbox" 
 								id="com-benadering" 
 								name="com-benadering-voorkeur" 

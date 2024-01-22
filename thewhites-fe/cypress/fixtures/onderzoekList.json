@@ -1,0 +1,23 @@
+{
+    "onderzoekList": [
+      {
+        "id": 1,
+        "titel": "A onderzoek",
+        "startDatum": "2022-01-01T12:00:00",
+        "eindDatum": "2022-02-01T12:00:00"
+      },
+      {
+        "id": 2,
+        "titel": "F onderzoek",
+        "startDatum": "2022-03-01T12:00:00",
+        "eindDatum": "2025-04-01T12:00:00"
+      },
+      {
+        "id": 3,
+        "titel": "5 onderzoek",
+        "startDatum": "2021-03-01T12:00:00",
+        "eindDatum": "2020-04-01T12:00:00"
+      }
+    ]
+  }
+  

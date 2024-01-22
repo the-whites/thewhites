@@ -64,7 +64,7 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 			<Row className="justify-content-center">
 				{titleSort.map((info, index) => (
 					<Col key={index} xs={2} className="text-right">
-						<h3>{info.title} {info.sorted} {info.sorted ? <FaArrowUp onClick={() => toggleSort(info)}/> : <FaArrowDown onClick={() => toggleSort(info)}/>}</h3>
+						<h3>{info.title} {info.sorted} {info.sorted ? <FaArrowUp onClick={() => toggleSort(info)}/> : <FaArrowDown id="sort-icon" onClick={() => toggleSort(info)}/>}</h3>
 					</Col>
 				))}
 				<Col xs={2}>
@@ -78,7 +78,7 @@ const OnderzoekLijst = ({ onderzoekLijst, handleClickButton }) => {
 				"Geen onderzoeken gevonden" 
 				: 
 				onderzoekenShown.map(onderzoek => (
-					<div className="m-4" key={onderzoek.id}>
+					<div className="m-4" data-cy="onderzoeken-preview-div" key={onderzoek.id}>
 						<OnderzoekPreviewButton handleClickButton={(id) => handleClickButton(id)} onderzoek={onderzoek} />
 					</div>
 				))}

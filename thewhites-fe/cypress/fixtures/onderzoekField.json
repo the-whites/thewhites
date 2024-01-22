@@ -1,0 +1,29 @@
+{
+    "onderzoek": {
+      "naam": "Test onderzoek naam",
+      "omschrijving": "Test omschrijving",
+      "inhoud": "Test inhoud",
+      "typeOnderzoek": [],
+      "beperking": [],
+      "leeftijd": [
+        {
+          "minLeeftijd": 10,
+          "maxLeeftijd": 10
+        },
+        {
+          "minLeeftijd": 50,
+          "maxLeeftijd": 77
+        }
+      ],
+      "postcode": [
+        {
+          "postcode": "2255GW"
+        }
+      ],
+      "startDatum": "2021-02-01T12:00:00.000-0000",
+      "eindDatum": "2022-02-01T12:00:00.000-0000",
+      "locatie": "Test locatie",
+      "beloning": "Test beloning"
+    }
+}
+  

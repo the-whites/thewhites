@@ -1,0 +1,19 @@
+{
+    "testProfileData": {
+      "benaderingVoorkeur": [
+        {
+          "telefonisch": true,
+          "portaal": true,
+          "commercieel": true
+        }
+      ],
+      "beperkingTypes": [],
+      "beschikbaarheid": "maandag",
+      "geboortedatum": "2024-01-01T00:00:00.000Z",
+      "hulpmiddel": "test hulpmiddel",
+      "onderzoekTypes": [],
+      "telefoonnummer": "0612345678",
+      "ziekte": "test ziekte"
+    }
+}
+  
