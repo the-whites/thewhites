@@ -156,10 +156,6 @@ const OnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderzoeken
 	};
 
 	useEffect(() => {
-
-	}, [invalidPostcodes]);
-
-	useEffect(() => {
 		if(onderzoek) {
 			setLocalOnderzoekData(onderzoek);
 
@@ -301,10 +297,10 @@ const OnderzoekForm = ({ handleOnderzoekDataChange, beperkingen, typeOnderzoeken
 
 				<Row className="justify-content-center mt-3">
 					<Col md={4} className="text-start">
-						<Button onClick={() => navigate(-1)} variant="outline-danger">Terug</Button>
+						<Button data-cy="onderzoek-button-cancel" onClick={() => navigate(-1)} variant="outline-danger">Terug</Button>
 					</Col>
 					<Col md={2} className="text-end">
-						<Button onClick={handleSubmit}>{buttonConfirmText}</Button>
+						<Button data-cy="onderzoek-button-confirm" onClick={handleSubmit}>{buttonConfirmText}</Button>
 					</Col>
 				</Row>
 				<div className="mb-4" />

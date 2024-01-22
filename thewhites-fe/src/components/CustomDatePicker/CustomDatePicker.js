@@ -34,6 +34,7 @@ const CustomDatePicker = ({ label = "", value = null, placeholder = "Kies een da
 						placeholderText={placeholder}
 						className={`form-control custom-date-picker ${isInvalid ? "is-invalid" : ""}`}
 						disabled={!canEdit}
+						id={`datepicker-${label.toLowerCase().replace(/\s+/g, "")}`}
 					/>
 					
 				</Col>
