@@ -12,19 +12,19 @@ export const Footer = () => {
 				</Col>
 					
 				<Col>
-					<a className="over-ons" href="https://www.accessibility.nl/over-ons">Over ons</a>
+					<a className="over-ons" href="/over-ons">Over ons</a>
 				</Col>	
 
 				<Col>	
-					<a className="contact" href="https://www.accessibility.nl/contact">Contact</a>
+					<a className="contact" href="/contact">Contact</a>
 				</Col>
 
 				<Col>	
-					<a className="cookies" href="https://www.accessibility.nl/cookies">Cookies</a>	
+					<a className="cookies" href="/cookies">Cookies</a>	
 				</Col>	
 				
 				<Col>	
-					<a className="privacy-policy" href="https://www.accessibility.nl/privacy-policy">Privacy policy</a>
+					<a className="privacy-policy" href="/privacy-policy">Privacy policy</a>
 				</Col>
 			</Row>	
 		</>

@@ -44,6 +44,7 @@ import Footer from "./components/Footer/Footer";
 import Meldingen from "./pages/Meldingen/Meldingen";
 import Layout from "./components/Toastify/ToastifyLayout";
 import ChatErvaringsdeskundige from "./pages/ErvaringsdeskundigePortal/ChatErvaringsdeskundige/ChatErvaringdeskundige";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 function App() {
 
 	return (
@@ -56,6 +57,7 @@ function App() {
 							<Routes>
 								<Route path="/" element={<Home />} />
 								<Route path="/over-ons" element={<OverOns />} />
+								<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 								<Route path="/contact" element={<Contact />} />
 								<Route element={<RequireAuth allowedRoles={[ROLES.beheerder, ROLES.ervaringsdeskundige, ROLES.bedrijf]} />}>
 									<Route path="/meldingen" element={<Meldingen />} />

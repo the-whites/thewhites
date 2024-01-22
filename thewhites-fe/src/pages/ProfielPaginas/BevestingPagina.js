@@ -15,10 +15,13 @@ const BevestigingsPagina = () => {
 	};
 
 	const handleBevestigen = async () => {
-
+		console.log(profielData);
 		const body = profielData;
-		body.onderzoekTypes = body.onderzoekTypes.map((type) => type.id) == null ? [] : body.onderzoekTypes.map((type) => type.id);
-		body.beperkingTypes = body.beperkingTypes.map((type) => type.id) == null ? [] : body.beperkingTypes.map((type) => type.id);
+		
+		if (body.onderzoekTypes.length > 0)
+			body.onderzoekTypes = body.onderzoekTypes.map((type) => type.id);
+		if (body.beperkingTypes.length > 0)
+			body.beperkingTypes = body.beperkingTypes.map((type) => type.id);
 
 		try {
 			const response = await postApi({
