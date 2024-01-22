@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import PortalWelcomeMessage from "../../../components/PortalWelcomeMessage/PortalWelcomeMessage";
 import { Button,  Card,  Col, Container, Row } from "react-bootstrap";
 
-import "./style.css";
 import { fetchApi, postApi } from "../../../hooks/useApi";
 import { SingleChat } from "../../../components/Chat/SingleChat";
 import { useParams } from "react-router-dom";

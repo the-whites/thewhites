@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row, ToggleButton } from "react-bootstrap";
 import { fetchApi, postApi } from "../../hooks/useApi";
 import { UserContext } from "../../contexts/UserProvider";
 import { SingleChat } from "./SingleChat";
@@ -70,19 +70,23 @@ export const MultiChat = () => {
 				<Card className="chat-container">
 					<Card.Body>
 						<Row className="h-100">
-							<Col md={3} className="chat-list-panel">
-
-								{chatPartners.map(chatPartner => 	<Card key={chatPartner.id}>
-									<Card.Body>
-										<Button 
-											variant="outline-secondary" 
-											className="w-100 h-100"
-											onClick={() => setSelectedChatPartner(chatPartner)}
-										>
-											{chatPartner.naam}
-										</Button>
-									</Card.Body>
-								</Card>)}
+							<Col md={3}>
+								<h3>Chat Partners</h3>
+								<div className="overflow-auto chat-list-panel">
+									{chatPartners.map(chatPartner => <Card key={chatPartner.id}>
+										<Card.Body>
+											<ToggleButton 
+												type="checkbox"
+												variant="outline-secondary" 
+												checked={chatPartner.id === selectedChatPartner?.id}
+												className="w-100 h-100"
+												onClick={() => setSelectedChatPartner(chatPartner)}
+											>
+												{chatPartner.naam}
+											</ToggleButton>
+										</Card.Body>
+									</Card>)}
+								</div>
 							</Col>
 							<Col md={9} className="chat-message-window">
 								{selectedChatPartner != null && 

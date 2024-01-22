@@ -12,7 +12,7 @@ const InputBar = ({ type = "text", placeholder = "", label = "", value = undefin
 	return (
 		<>
 			<Form.Group as={Row} className="mb-3">
-				<Form.Label column sm="2" className="label" style={{ textAlign: "right" }}>
+				<Form.Label column sm="2" className="label" style={{ textAlign: "left" }}>
 					{label} {required && "*"}
 				</Form.Label>
 				<Col sm="6">
