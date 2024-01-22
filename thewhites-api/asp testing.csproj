@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>asp_testing</RootNamespace>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
       <IsPackable>false</IsPackable> <!-- Optional, if you don't want to pack the test project -->
     <GenerateProgramFile>false</GenerateProgramFile> <!-- Required for ASP.NET Core projects to prevent a build error -->
   </PropertyGroup>
