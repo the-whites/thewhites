@@ -6,6 +6,7 @@ import { ErvaringsdeskundigeOnderzoekFeedback } from "./ErvaringsdeskundigeOnder
 import { ErvaringsdeskundigeOnderzoekInhoud } from "./ErvaringsdeskundigeOnderzoekInhoud";
 import { formatResponseError } from "../../../util/Util";
 import ConfirmationModal from "../../../components/ConfirmationModal/ConfirmationModal";
+import { useNavigate } from "react-router-dom";
 
 export const ErvaringsdeskundigeOnderzoekenOverzicht = () => {
 	const [currentOnderzoek, setCurrentOnderzoek] = useState(null);
@@ -13,6 +14,7 @@ export const ErvaringsdeskundigeOnderzoekenOverzicht = () => {
 	const [showVerlaatConfirmModal, setShowVerlaatConfirmModal] = useState(false);
 	const [verlaatOnderzoekId, setVerlaatOnderzoekId] = useState(null);
 	const [error, setError] = useState(null);
+	const navigate = useNavigate();
 
 	const fetchDeelgenomenOnderzoeken = async () => {
 		const response = await fetchApi({route: "api/ErvaringsDeskundige/mijn-onderzoeken"});
@@ -99,6 +101,7 @@ export const ErvaringsdeskundigeOnderzoekenOverzicht = () => {
 								<span>{onderzoek.titel}</span>
 								<div>								
 									<Button variant="outline-danger" onClick={() => handleVerlaten(onderzoek.id)}>Verlaten</Button>
+									<Button variant="outline-secondary" onClick={() => navigate("/ervaringsdeskundige/chat/" + onderzoek.bedrijf.gebruikerId)}>Chatten</Button>
 									<Button variant="primary" onClick={() => setCurrentOnderzoek(onderzoek)}>Bekijken</Button>
 								</div>
 							</ListGroup.Item>

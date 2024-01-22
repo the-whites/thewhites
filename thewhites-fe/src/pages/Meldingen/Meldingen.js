@@ -80,6 +80,7 @@ const Meldingen = () => {
 			{role === ROLES.beheerder ? <BeheerderNavbar /> : ""}
 			{role === ROLES.ervaringsdeskundige ? <ErvaringsdeskundigeNavbar /> : ""}
 			<Container className="text-center">
+				<br />
 				<h1 className="main-text">Meldingen</h1>
 				<p className="sub-text">Je hebt {getOngelezenMeldingenCount()} ongelezen melding{getOngelezenMeldingenCount() === 1 ? "" : "en"}, {username}.</p>
 				{meldingen.length < 1 ? (

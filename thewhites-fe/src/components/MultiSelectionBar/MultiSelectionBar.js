@@ -73,7 +73,7 @@ const MultiSelectionBar = ({
 			</Row>
 			<Row className="g-2">
 				<Col xs={2}>
-					<p className="label">{label} {required && "*"}</p>
+					<p className="label" style={{ textAlign: "left" }}>{label} {required && "*"}</p>
 				</Col>
 				<Col xs={6}>
 					<Dropdown className="w-100">

@@ -14,6 +14,7 @@ using AspTest.Services;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using AspTest.Repository;
+using System.Diagnostics;
 
 namespace AspTest.Controllers
 {
@@ -47,7 +48,6 @@ namespace AspTest.Controllers
 
         // Hier kan een gebruiker m.b.v. de credentials vanuit de frontend (GoogleLogin component) deze route aanroepen, om een sessie-token te verkrijgen.
         // Met deze sessie-token kan er over de site genavigeerd worden.
-        // TODO: sessie-token in cookies, zodat je niet constant de Bearer <token> header moet geven per authorized API call.
         [HttpPost("login_google")]
         public async Task<IActionResult> GoogleLogin([FromBody] LoginGoogleModel test)
         {
@@ -80,12 +80,17 @@ namespace AspTest.Controllers
                 DateTime.Now.AddDays(1)
             );
 
-            Response.Cookies.Append("refresh_token", refreshToken.Token, new CookieOptions {
-                HttpOnly = true,
-                Expires = refreshToken.Expires,
-                SameSite = SameSiteMode.Strict,
-                Secure = true
-            });
+            if (Request.Cookies["cookies_accepted_dewhites"] != null && Request.Cookies["cookies_accepted_dewhites"]!.Equals("ja"))
+            {
+                Response.Cookies.Append("refresh_token", refreshToken.Token, new CookieOptions {
+                    HttpOnly = true,
+                    Expires = refreshToken.Expires,
+                    SameSite = SameSiteMode.Strict,
+                    Secure = true
+                });
+            }
+
+            Debug.WriteLine("testing");
 
             // Return de gemaakte token
             return Ok(new {token = token});

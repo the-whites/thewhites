@@ -318,10 +318,13 @@ namespace AspTest.Controllers
             if (ervaringsdeskundigeInfo == null)
                 return Unauthorized("No ervaringsdeskundige info found.");
             
-            var onderzoekDeelname = _context.OnderzoekDeelnames.FirstOrDefault(od => od.OnderzoekId == onderzoekId);
+            var onderzoekDeelname = _context.OnderzoekDeelnames.Include(od => od.Onderzoek).FirstOrDefault(od => od.OnderzoekId == onderzoekId);
 
             if (onderzoekDeelname == null)
                 return Unauthorized("Geen onderzoek gevonden.");
+            
+            if (onderzoekDeelname.Onderzoek.StartDatum > DateTime.Now)
+                return Unauthorized("Je kan geen feedback geven als het onderzoek niet gestart is.");
             
             onderzoekDeelname.Feedback = feedbackModel.feedback;
 
