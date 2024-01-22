@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { fetchApi, postApi } from "../../../hooks/useApi";
 import { OnderzoekInfo } from "../../../components/OnderzoekInfo/OnderzoekInfo";
@@ -28,7 +28,9 @@ export const ErvaringsdeskundigeOnderzoekenOverzicht = () => {
 	};
 
 	useEffect(() => {
+		
 		fetchDeelgenomenOnderzoeken();
+
 	}, []);
 
 	const handleVerlaten = async (onderzoekId) => {

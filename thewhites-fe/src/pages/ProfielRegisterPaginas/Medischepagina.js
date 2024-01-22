@@ -121,7 +121,7 @@ const medischepagina = () => {
 						/>
 					</div>	
 
-					<p>U vindt de privacyverklaring <a href="#">hier</a></p>				
+					<p>U vindt de privacyverklaring <a href="/privacy-policy">hier</a></p>				
 				</Row>
 				<div className="button-container">
 					<Button variant="secondary" type="button" onClick={navigateBack} className="button-spacing">Terug</Button>

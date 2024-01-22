@@ -96,7 +96,9 @@ const ProfielPagina = () => {
 							isInvalid={profielData.geboortedatum == null}
 							dateFormat="yyyy-MM-dd"
 							timeFormat={null}
-							canEdit={true} />
+							canEdit={true} 
+							
+						/>
 						<MultiSelectionBar
 							label="Type beperkingen"
 							required

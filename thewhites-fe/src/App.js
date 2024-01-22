@@ -1,7 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home/Home";
@@ -28,9 +28,9 @@ import WijzigOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/BeheerOnderzoek
 import NieuwOnderzoek from "./pages/BedrijvenPortal/Onderzoeken/NieuwOnderzoek/NieuwOnderzoek";
 import DefaultOnderzoekenTab from "./pages/BedrijvenPortal/Onderzoeken/DefaultOnderzoekenTab/DefaultOnderzoekenTab";
 import BedrijfOnderzoeken from "./pages/BedrijvenPortal/Onderzoeken/Onderzoeken";
-import ProfielPagina from "./pages/ProfielPaginas/ProfielPagina"; 
-import MedischePagina from "./pages/ProfielPaginas/Medischepagina";
-import BevestigingsPagina from "./pages/ProfielPaginas/BevestingPagina";
+import ProfielPagina from "./pages/ProfielRegisterPaginas/ProfielPagina"; 
+import MedischePagina from "./pages/ProfielRegisterPaginas/Medischepagina";
+import BevestigingsPagina from "./pages/ProfielRegisterPaginas/BevestingPagina";
 
 import NavigationBar from "./components/Navbar/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";

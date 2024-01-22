@@ -100,7 +100,7 @@ export const UserProvider = ({ children }) => {
 
 	return (
 		<CustomLoginContext.Provider value={{googleCredentials, setGoogleCredentials}}>
-			<UserContext.Provider value={{ username, setUsername, setupVoornaam, setupAchternaam, role, setRole: setValidRole, userId, setUserId}}>
+			<UserContext.Provider value={{ username, setUsername, profielSetupStatus, setupVoornaam, setupAchternaam, role, setRole: setValidRole, userId, setUserId}}>
 				<ProfielContext.Provider value={{ profielData, setProfielData }}>
 					{children}
 				</ProfielContext.Provider>
