@@ -62,7 +62,10 @@ export const ErvaringsdeskundigeOnderzoekenOverzicht = () => {
 			<OnderzoekInfo onderzoek={currentOnderzoek} />
 			<ErvaringsdeskundigeOnderzoekInhoud onderzoek={currentOnderzoek} />
 			<br />
-			<ErvaringsdeskundigeOnderzoekFeedback onderzoek={currentOnderzoek} />
+			<ErvaringsdeskundigeOnderzoekFeedback 
+				onderzoek={currentOnderzoek} 
+				hidden={new Date(currentOnderzoek.startDatum).getTime() > Date.now() ? "hidden" : "" } 
+			/>
 			<br />
 			<Button variant="outline-secondary" onClick={() => setCurrentOnderzoek(null)}>
 				Terug

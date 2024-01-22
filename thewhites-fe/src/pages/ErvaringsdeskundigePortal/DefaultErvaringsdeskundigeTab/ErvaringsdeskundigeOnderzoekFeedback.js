@@ -10,6 +10,7 @@ export const ErvaringsdeskundigeOnderzoekFeedback = ({onderzoek}) => {
 	const [error, setError] = useState(null);
 	const [feedback, setFeedback] = useState("");
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
+	const isStarted = new Date(onderzoek.startDatum).getTime() < Date.now();
 
 	useEffect(() => {
 		const fetchFeedback = async () => {
@@ -63,6 +64,9 @@ export const ErvaringsdeskundigeOnderzoekFeedback = ({onderzoek}) => {
 						<Form.Group >
 							<Card.Body>
 								{error}
+								{!isStarted && <Alert>
+									Omdat het onderzoek nog niet gestart is, kun je nog geen feedback geven.
+								</Alert>}
 								<Form.Label><h4>Feedback</h4></Form.Label>
 								<Form.Control 
 									as="textarea" 
@@ -70,11 +74,12 @@ export const ErvaringsdeskundigeOnderzoekFeedback = ({onderzoek}) => {
 									value={feedback}
 									onChange={(e) => setFeedback(e.target.value)}
 									rows={5} 
+									disabled={!isStarted}
 								/>
 						
 							</Card.Body>
 							<Card.Footer>
-								<Button variant="success" type="submit">
+								<Button variant="success" type="submit" disabled={!isStarted}>
 							Opslaan
 								</Button>
 							</Card.Footer>
