@@ -86,7 +86,7 @@ const OnderzoekData = ({ onderzoek, aantalDeelnemers}) => {
 							<h1 className="titel">{onderzoek.onderzoekNaam}</h1>
 						</Row>
 						<Row className="data-row-numbers">
-							<Col><h2><CountUp start={0} end={aantalDeelnemers} duration={2.5} /></h2></Col>
+							<Col><h2>Bekijk</h2></Col>
 							<Col><h2>{onderzoek[ONDERZOEK_DATA.NAAM]}</h2></Col>
 							<Col>
 								<h2>

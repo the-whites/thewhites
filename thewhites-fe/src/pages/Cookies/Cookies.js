@@ -37,7 +37,7 @@ export const CookiesVerklaring = () => {
 					<p>Door het gebruik van onze website ga je akkoord met het plaatsen van deze cookies op je apparaat. Je kunt cookies op elk moment beheren door je browserinstellingen aan te passen. Houd er rekening mee dat het uitschakelen van bepaalde cookies de functionaliteit van de website kan beïnvloeden.</p>
 				
 					<p>Je kunt ook door op de volgende knop te klikken je instemming op deze cookies intrekken (als je eerder akkoord heb gegeven).</p>
-					<Button variant="secondary" onClick={() => {Cookies.remove("cookies_accepted_dewhites"); document.location.reload();}}>Ja</Button>
+					<Button variant="secondary" onClick={() => {Cookies.remove("cookies_accepted_dewhites"); document.location.reload();}}>Intrekken</Button>
 				</Col>
 			</Row>
 		</Container>
