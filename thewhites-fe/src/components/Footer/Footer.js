@@ -6,27 +6,31 @@ import { Col, Container, Row } from "react-bootstrap";
 export const Footer = () => {
 	return (
 		<>
-			<Row className="footer">
-				<Col>	
-					<div className="copyright">© Copyright 2024 Stichting Accessibilty</div>	
-				</Col>
+			<div className="footer">
+				<Container>
+					<Row className="footer-row">
+						<Col>	
+							<div className="copyright">© Copyright 2024 Stichting Accessibilty</div>	
+						</Col>
+						
+						<Col>
+							<a href="/over-ons">Over ons</a>
+						</Col>	
+
+						<Col>	
+							<a  href="/contact">Contact</a>
+						</Col>
+
+						<Col>	
+							<a href="/cookies">Cookies</a>	
+						</Col>	
 					
-				<Col>
-					<a className="over-ons" href="/over-ons">Over ons</a>
-				</Col>	
-
-				<Col>	
-					<a className="contact" href="/contact">Contact</a>
-				</Col>
-
-				<Col>	
-					<a className="cookies" href="/cookies">Cookies</a>	
-				</Col>	
-				
-				<Col>	
-					<a className="privacy-policy" href="/privacy-policy">Privacy policy</a>
-				</Col>
-			</Row>	
+						<Col>	
+							<a href="/privacy-policy">Privacy verklaring</a>
+						</Col>
+					</Row>
+				</Container>
+			</div>	
 		</>
 	);
 };

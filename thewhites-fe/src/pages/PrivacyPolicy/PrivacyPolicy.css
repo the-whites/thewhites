@@ -11,8 +11,8 @@
     display: inline-block;
 }
 
-p {
-    margin-bottom: 10px
+.privacy-policy p {
+    margin-bottom: 10px;
 }
 
 .contact-privacy {

@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const PrivacyPolicy = () => {
 	return (
 		<Container md className="privacy-policy">
+			<br />
+			<h1>Privacy Verklaring</h1>
 			{/* Algemeen */}
 			<Row>
 				<Col md={10}>

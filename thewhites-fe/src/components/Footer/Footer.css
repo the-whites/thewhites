@@ -1,10 +1,15 @@
 .footer {
-    min-height: 100px;
-    align-items: center;
-    justify-content: center;
+
     background-color: rgb(33, 37, 41);
     color: lightgray;
+    text-wrap: balance;
     margin: 0;
+}
+
+.footer-row {
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
 }
 
 .copyright:hover {
