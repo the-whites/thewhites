@@ -13,10 +13,13 @@ namespace AspTest.Controllers
         private readonly IBedrijfRepository bedrijfRepository;
         private readonly IOnderzoekRepository onderzoekRepository;
 
-        public BedrijfController(IBedrijfRepository bedrijfRepository, IOnderzoekRepository onderzoekRepository)
+        private readonly IErvaringsdeskundigeRepository ervaringsdeskundigeRepository;
+
+        public BedrijfController(IBedrijfRepository bedrijfRepository, IOnderzoekRepository onderzoekRepository, IErvaringsdeskundigeRepository ervaringsdeskundigeRepository)
         {
             this.bedrijfRepository = bedrijfRepository;
             this.onderzoekRepository = onderzoekRepository;
+            this.ervaringsdeskundigeRepository = ervaringsdeskundigeRepository;
         }
 
         [Authorize]

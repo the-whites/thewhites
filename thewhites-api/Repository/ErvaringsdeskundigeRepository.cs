@@ -1,14 +1,17 @@
 using AspTest.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspTest.Repository
 {
     public class ErvaringsdeskundigeRepository : IErvaringsdeskundigeRepository
     {
         private readonly AspDbContext _context;
-
-        public ErvaringsdeskundigeRepository(AspDbContext context)
+        private readonly ILogger<ErvaringsdeskundigeRepository> _logger;
+        public ErvaringsdeskundigeRepository(AspDbContext context, ILogger<ErvaringsdeskundigeRepository> logger)
         {
             _context = context;
+            _logger = logger;
+
         }
 
         public async Task<Ervaringsdeskundige> CreateErvaringsdeskundigeVoorGebruiker(
@@ -63,6 +66,7 @@ namespace AspTest.Repository
                 await _context.SaveChangesAsync();
 
             return ervBenaderingVoorkeur;
+            }
+
         }
-    }
 }
